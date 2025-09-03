@@ -5,6 +5,8 @@ import { dirname, join } from "node:path"
 
 import { config } from "dotenv"
 
+import logger from "./logger"
+
 import users from "./routes/users"
 
 config({
@@ -30,7 +32,7 @@ app.get("/about", (_, res) => {
     })
 })
 
-app.use("/api/users", users)
+app.use("/api/users", logger, users)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`)

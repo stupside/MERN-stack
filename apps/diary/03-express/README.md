@@ -13,3 +13,4 @@
 9. Add limit as query handle to the list users.
 10. Use Express router to cleanup the main.
 11. Allow raw json body.
+12. Add console log middleware.
