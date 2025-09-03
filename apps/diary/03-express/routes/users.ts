@@ -1,4 +1,5 @@
 import express from "express"
+import { HttpError } from "../http/error"
 
 const router = express.Router()
 
@@ -24,7 +25,7 @@ router.get("/:id", (req, res, next) => {
     if (user) {
         return res.json(user)
     }
-    return next(new Error(`User with id ${req.params.id} not found`))
+    return next(new HttpError(404, `User with id ${req.params.id} not found`))
 })
 
 // Delete user by id
@@ -33,7 +34,7 @@ router.delete("/:id", (req, res, next) => {
         users.delete(req.params.id)
         return res.status(204).send()
     }
-    return next(new Error(`User with id ${req.params.id} not found`))
+    return next(new HttpError(404, `User with id ${req.params.id} not found`))
 })
 
 // Create a new user

@@ -15,3 +15,4 @@
 11. Allow raw json body.
 12. Add console log middleware.
 13. Add error handler middleware.
+14. Create and use HttpError extending Error for the error handler.
