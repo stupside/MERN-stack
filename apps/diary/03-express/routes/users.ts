@@ -19,21 +19,21 @@ router.get("/", (req, res) => {
 })
 
 // Get user by id
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
     const user = users.get(req.params.id)
     if (user) {
         return res.json(user)
     }
-    res.status(404).send("User not found")
+    return next(new Error(`User with id ${req.params.id} not found`))
 })
 
 // Delete user by id
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
     if (users.has(req.params.id)) {
         users.delete(req.params.id)
         return res.status(204).send()
     }
-    res.status(404).send("User not found")
+    return next(new Error(`User with id ${req.params.id} not found`))
 })
 
 // Create a new user

@@ -5,7 +5,8 @@ import { dirname, join } from "node:path"
 
 import { config } from "dotenv"
 
-import logger from "./logger"
+import { loggerHandler } from "./middlewares/logger"
+import { errorHandler } from "./middlewares/errors"
 
 import users from "./routes/users"
 
@@ -23,6 +24,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use(errorHandler)
+
 app.use(express.static(join(__dirname, "static")))
 
 app.get("/about", (_, res) => {
@@ -32,7 +35,7 @@ app.get("/about", (_, res) => {
     })
 })
 
-app.use("/api/users", logger, users)
+app.use("/api/users", loggerHandler, users)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`)
