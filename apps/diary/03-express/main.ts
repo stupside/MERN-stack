@@ -26,6 +26,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use(loggerHandler)
+
 app.use(express.static(join(__dirname, "static")))
 
 app.get("/about", (_, res) => {
@@ -35,7 +37,7 @@ app.get("/about", (_, res) => {
     })
 })
 
-app.use("/api/users", loggerHandler, users)
+app.use("/api/users", users)
 
 app.use(catchallHandler)
 app.use(errorHandler)

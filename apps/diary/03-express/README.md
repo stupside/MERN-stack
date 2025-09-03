@@ -17,3 +17,4 @@
 13. Add error handler middleware.
 14. Create and use HttpError extending Error for the error handler.
 15. Create and use catchall handler.
+16. Improve logger middlware with colors.

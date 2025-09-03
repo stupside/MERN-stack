@@ -25,6 +25,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "03-express@workspace:apps/diary/03-express"
   dependencies:
+    colors: "npm:1.4.0"
     dotenv: "npm:^17.2.2"
     express: "npm:^5.1.0"
   languageName: unknown
@@ -821,6 +822,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"backend-fa46e7@workspace:apps/backend":
+  version: 0.0.0-use.local
+  resolution: "backend-fa46e7@workspace:apps/backend"
+  languageName: unknown
+  linkType: soft
+
 "backend@workspace:apps/project/backend":
   version: 0.0.0-use.local
   resolution: "backend@workspace:apps/project/backend"
@@ -935,6 +942,13 @@ __metadata:
     color-convert: "npm:^2.0.1"
     color-string: "npm:^1.9.0"
   checksum: 10c0/7fbe7cfb811054c808349de19fb380252e5e34e61d7d168ec3353e9e9aacb1802674bddc657682e4e9730c2786592a4de6f8283e7e0d3870b829bb0b7b2f6118
+  languageName: node
+  linkType: hard
+
+"colors@npm:1.4.0":
+  version: 1.4.0
+  resolution: "colors@npm:1.4.0"
+  checksum: 10c0/9af357c019da3c5a098a301cf64e3799d27549d8f185d86f79af23069e4f4303110d115da98483519331f6fb71c8568d5688fa1c6523600044fd4a54e97c4efb
   languageName: node
   linkType: hard
 
