@@ -35,6 +35,21 @@ const listUsers = async (_: IncomingMessage, res: ServerResponse<IncomingMessage
     }))
 }
 
+// POST /api/users
+const createUser = async (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+    let body = ""
+    req.on("data", chunk => {
+        body += chunk.toString()
+    })
+    req.on("end", () => {
+        const { name } = JSON.parse(body)
+        const uuid = crypto.randomUUID()
+        users.set(uuid, { name })
+        res.setHeader("Content-Type", "application/json")
+        res.end(JSON.stringify({ id: uuid.toString() }))
+    })
+}
+
 const server = createServer((req, res) => {
     logger(req, res, async () => {
         if (req.url === "/") {
@@ -46,6 +61,9 @@ const server = createServer((req, res) => {
                 switch (req.method) {
                     case "GET": {
                         return listUsers(req, res)
+                    }
+                    case "POST": {
+                        return createUser(req, res)
                     }
                 }
             }

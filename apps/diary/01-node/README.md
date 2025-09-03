@@ -11,3 +11,4 @@
 7. Add an inmemory user store and a route to list all users saved.
 8. Add a logger middleware that console logs req properties.
 9. Cleanup by making request handlers.
+10. Add create user route and handler.
