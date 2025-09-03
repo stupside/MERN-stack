@@ -7,3 +7,4 @@
 3. Add task list
 4. Add delete task
 5. Add remind task
+6. Implement add task

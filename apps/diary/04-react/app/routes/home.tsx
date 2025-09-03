@@ -45,11 +45,16 @@ export default function Home() {
     );
   };
 
+  const addTask = async (task: Omit<TaskType, "id">) => {
+    const newTask = { ...task, id: Date.now().toString() };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
   return <div className="flex flex-col min-h-screen">
     <Header title="Home" />
     <main className="flex-grow container mx-auto p-4">
       <h1>Welcome to the Home Page</h1>
-      <Tasks tasks={tasks} onDelete={deleteTask} onRemind={remindTask} />
+      <Tasks tasks={tasks} onDelete={deleteTask} onRemind={remindTask} onAdd={addTask} />
     </main>
     <Footer />
   </div>;
