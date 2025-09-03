@@ -3,7 +3,7 @@ import Header from "~/components/Header";
 import type { Route } from "./+types/home";
 
 import Footer from "~/components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TaskType } from "~/components/Tasks/Task";
 import Tasks from "~/components/Tasks";
 
@@ -17,21 +17,17 @@ export function meta(_: Route.MetaArgs) {
 export default function Home() {
 
   const [tasks, setTasks] = useState<TaskType[]>([
-    {
-      id: "1",
-      remind: false,
-      date: new Date("2023-03-01"),
-      title: "Task 1",
-      description: "Description for Task 1"
-    },
-    {
-      id: "2",
-      remind: true,
-      date: new Date("2023-03-02"),
-      title: "Task 2",
-      description: "Description for Task 2"
-    }
   ]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch("http://localhost:5000/tasks");
+      const data = await response.json() as TaskType[];
+      return data;
+    };
+
+    fetchTasks().then(setTasks);
+  }, []);
 
   const deleteTask = async (id: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));

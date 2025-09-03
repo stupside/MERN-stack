@@ -10,3 +10,4 @@
 6. Implement add task
 7. Toggle add task form
 8. Add json server for json db
+9. Fetch tasks from json db

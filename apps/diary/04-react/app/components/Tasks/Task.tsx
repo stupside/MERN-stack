@@ -2,7 +2,7 @@ import type { FC } from "react";
 
 export type TaskType = {
     id: string
-    date: Date
+    date: string
     title: string
     remind: boolean
     description: string
@@ -19,7 +19,7 @@ const Task: FC<{
             <div className="flex-grow">
                 <h3 className="text-lg font-semibold">{title}</h3>
                 <p className="text-gray-700">{description}</p>
-                <small className="text-gray-500">{date.toDateString()}</small>
+                <small className="text-gray-500">{date}</small>
             </div>
             <div className="ml-4">
                 <button

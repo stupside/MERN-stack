@@ -18,7 +18,7 @@ const AddTask: FC<{
             return alert("Please fill in all fields");
         }
 
-        await onAdd({ title, description, date });
+        await onAdd({ title, description, date: date.toISOString() });
     };
 
     if (!showAdd) {
