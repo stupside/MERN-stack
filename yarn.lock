@@ -13,6 +13,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"02-mongo@workspace:apps/diary/02-mongo":
+  version: 0.0.0-use.local
+  resolution: "02-mongo@workspace:apps/diary/02-mongo"
+  languageName: unknown
+  linkType: soft
+
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
