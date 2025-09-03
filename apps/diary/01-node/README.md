@@ -8,3 +8,4 @@
 4. Instead of returning Hello the API now returns values from the req param.
 5. Added conditional responses in the http server handler for minimal routing.
 6. Requesting / will load a static html and return it to the client.
+7. Add an inmemory user store and a route to list all users saved.

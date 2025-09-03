@@ -15,19 +15,42 @@ config({
 
 const PORT = process.env.PORT
 
-const server = createServer((req, res) => {
+type UserID = string
 
+type User = {
+    name: string
+}
+
+const users = new Map<UserID, User>()
+
+users.set("1", { name: "John Doe" })
+users.set("2", { name: "Jane Doe" })
+
+const server = createServer((req, res) => {
     if (req.url === "/") {
         res.setHeader("Content-Type", "text/html")
         res.end(readFile(join(__dirname, "static", "index.html"), "utf-8"))
     } else {
-        res.setHeader("Content-Type", "application/json")
-        res.end(JSON.stringify({
-            message: "Hello!", req: {
-                url: req.url,
-                method: req.method,
+
+        if (req.url === "/api/users") {
+            switch (req.method) {
+                case "GET": {
+                    res.setHeader("Content-Type", "application/json")
+                    res.end(JSON.stringify({
+                        users: Array.from(users.entries())
+                    }))
+                    return
+                }
             }
-        }))
+
+            res.setHeader("Content-Type", "application/json")
+            res.end(JSON.stringify({
+                message: "Hello!", req: {
+                    url: req.url,
+                    method: req.method,
+                }
+            }))
+        }
     }
 })
 
