@@ -4,16 +4,18 @@ export type TaskType = {
     id: string
     date: Date
     title: string
+    remind: boolean
     description: string
 }
 
 const Task: FC<{
     task: Omit<TaskType, "id">,
     onDelete: () => Promise<void>
-}> = ({ task, onDelete }) => {
+    onRemind: () => Promise<void>
+}> = ({ task, onDelete, onRemind }) => {
     const { date, title, description } = task;
     return (
-        <div className="border p-4 mb-4 rounded flex">
+        <div className={`border p-4 mb-4 rounded flex items-start ${task.remind ? "bg-yellow-100" : ""}`}>
             <div className="flex-grow">
                 <h3 className="text-lg font-semibold">{title}</h3>
                 <p className="text-gray-700">{description}</p>
@@ -26,6 +28,13 @@ const Task: FC<{
                     onClick={onDelete}
                 >
                     Delete
+                </button>
+                <button
+                    type="button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer ml-2"
+                    onClick={onRemind}
+                >
+                    {task.remind ? "Unremind" : "Remind"}
                 </button>
             </div>
         </div>
