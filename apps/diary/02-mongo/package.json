@@ -6,5 +6,8 @@
         "dev": "yarn dlx tsx watch main.ts",
         "build": "yarn dlx tsc",
         "start": "node dist/main.js"
+    },
+    "dependencies": {
+        "mongodb": "^6.19.0"
     }
 }
