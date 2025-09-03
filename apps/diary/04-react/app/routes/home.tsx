@@ -43,7 +43,14 @@ export default function Home() {
   };
 
   const addTask = async (task: Omit<TaskType, "id">) => {
-    const newTask = { ...task, id: Date.now().toString() };
+    const response = await fetch("http://localhost:5000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+    const newTask = await response.json();
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
