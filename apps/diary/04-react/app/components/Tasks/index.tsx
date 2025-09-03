@@ -13,12 +13,14 @@ const Tasks: FC<{
         <>
             <div>
                 <h2 className="text-xl font-bold mb-4">Tasks</h2>
-                <AddTask onAdd={async (task) => {
-                    await onAdd({
-                        ...task,
-                        remind: false
-                    });
-                }} />
+                <div className="mb-4">
+                    <AddTask onAdd={async (task) => {
+                        await onAdd({
+                            ...task,
+                            remind: false
+                        });
+                    }} />
+                </div>
             </div>
             <ul>
                 {tasks.length ? tasks.map((task) => (
