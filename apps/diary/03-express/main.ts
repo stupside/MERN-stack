@@ -1,12 +1,16 @@
 import os from "node:os"
 
+import express from "express"
+
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
 import { config } from "dotenv"
 
-import { loggerHandler } from "./middlewares/logger"
 import { errorHandler } from "./middlewares/errors"
+import { loggerHandler } from "./middlewares/logger"
+import { catchallHandler } from "./middlewares/catchall"
+
 
 import users from "./routes/users"
 
@@ -17,28 +21,24 @@ config({
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-import express from "express"
-import { catchallHandler } from "./middlewares/catchall"
-
 const app = express()
-
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(errorHandler)
-app.use(catchallHandler)
-
 app.use(express.static(join(__dirname, "static")))
 
 app.get("/about", (_, res) => {
-    res.send({
+    return res.send({
         "os.name": os.platform(),
         "os.version": os.release()
     })
 })
 
 app.use("/api/users", loggerHandler, users)
+
+app.use(catchallHandler)
+app.use(errorHandler)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`)
