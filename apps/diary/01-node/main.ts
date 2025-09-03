@@ -1,4 +1,4 @@
-import { createServer } from "node:http"
+import { createServer, IncomingMessage, ServerResponse } from "node:http"
 
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
@@ -27,6 +27,14 @@ const users = new Map<UserID, User>()
 users.set("1", { name: "John Doe" })
 users.set("2", { name: "Jane Doe" })
 
+// GET /api/users
+const listUsers = async (_: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+    res.setHeader("Content-Type", "application/json")
+    res.end(JSON.stringify({
+        users: Array.from(users.entries())
+    }))
+}
+
 const server = createServer((req, res) => {
     logger(req, res, async () => {
         if (req.url === "/") {
@@ -37,22 +45,18 @@ const server = createServer((req, res) => {
             if (req.url === "/api/users") {
                 switch (req.method) {
                     case "GET": {
-                        res.setHeader("Content-Type", "application/json")
-                        res.end(JSON.stringify({
-                            users: Array.from(users.entries())
-                        }))
-                        return
+                        return listUsers(req, res)
                     }
                 }
-
-                res.setHeader("Content-Type", "application/json")
-                res.end(JSON.stringify({
-                    message: "Hello!", req: {
-                        url: req.url,
-                        method: req.method,
-                    }
-                }))
             }
+
+            res.setHeader("Content-Type", "application/json")
+            res.end(JSON.stringify({
+                message: "Hello!", req: {
+                    url: req.url,
+                    method: req.method,
+                }
+            }))
         }
     })
 })

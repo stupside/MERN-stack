@@ -10,3 +10,4 @@
 6. Requesting / will load a static html and return it to the client.
 7. Add an inmemory user store and a route to list all users saved.
 8. Add a logger middleware that console logs req properties.
+9. Cleanup by making request handlers.
