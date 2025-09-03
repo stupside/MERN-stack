@@ -36,9 +36,7 @@ const users = new Map<UserID, User>()
 
 // Get all users
 app.get("/api/users", (req, res) => {
-
     const limit = parseInt(req.query.limit as string, 10) || 10
-
     res.json(Array.from(users.entries()).slice(0, limit))
 })
 
@@ -46,20 +44,18 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", (req, res) => {
     const user = users.get(req.params.id)
     if (user) {
-        res.json(user)
-    } else {
-        res.status(404).send("User not found")
+        return res.json(user)
     }
+    res.status(404).send("User not found")
 })
 
 // Delete user by id
 app.delete("/api/users/:id", (req, res) => {
     if (users.has(req.params.id)) {
         users.delete(req.params.id)
-        res.status(204).send()
-    } else {
-        res.status(404).send("User not found")
+        return res.status(204).send()
     }
+    res.status(404).send("User not found")
 })
 
 // Create a new user
