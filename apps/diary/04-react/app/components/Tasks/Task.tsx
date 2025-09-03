@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { Link } from "react-router";
 
 export type TaskType = {
     id: string
@@ -9,17 +10,20 @@ export type TaskType = {
 }
 
 const Task: FC<{
-    task: Omit<TaskType, "id">,
+    task: TaskType,
     onDelete: () => Promise<void>
     onRemind: () => Promise<void>
 }> = ({ task, onDelete, onRemind }) => {
-    const { date, title, description } = task;
+    const { id, date, title, description } = task;
+
     return (
         <div className={`border p-4 mb-4 rounded flex items-start ${task.remind ? "bg-yellow-100" : ""}`}>
             <div className="flex-grow">
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="text-gray-700">{description}</p>
-                <small className="text-gray-500">{date}</small>
+                <Link to={`/${id}`}>
+                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <p className="text-gray-700">{description}</p>
+                    <small className="text-gray-500">{date}</small>
+                </Link>
             </div>
             <div className="ml-4">
                 <button

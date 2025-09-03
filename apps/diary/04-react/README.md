@@ -14,3 +14,4 @@
 10. Delete task from db
 11. Add task to db
 12. Add update task in db
+13. Add task details page
