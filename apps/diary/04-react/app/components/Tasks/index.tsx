@@ -4,18 +4,23 @@ import Task from "./Task";
 
 const Tasks: FC<{
     tasks: TaskType[]
-}> = ({ tasks }) => {
+    onDelete: (id: string) => Promise<void>
+}> = ({ tasks, onDelete }) => {
     return (
-        <div>
-            <h2>Tasks</h2>
+        <>
+            <h2 className="text-xl font-bold mb-4">Tasks</h2>
             <ul>
-                {tasks.map((task) => (
+                {tasks.length ? tasks.map((task) => (
                     <li key={task.id}>
-                        <Task id={task.id} date={task.date} title={task.title} description={task.description} />
+                        <Task task={task} onDelete={async () => {
+                            await onDelete(task.id);
+                        }} />
                     </li>
-                ))}
+                )) : (
+                    <li className="text-gray-500">No tasks available</li>
+                )}
             </ul>
-        </div>
+        </>
     );
 }
 

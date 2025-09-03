@@ -31,11 +31,15 @@ export default function Home() {
     }
   ]);
 
+  const deleteTask = async (id: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  };
+
   return <div className="flex flex-col min-h-screen">
     <Header title="Home" />
     <main className="flex-grow container mx-auto p-4">
       <h1>Welcome to the Home Page</h1>
-      <Tasks tasks={tasks} />
+      <Tasks tasks={tasks} onDelete={deleteTask} />
     </main>
     <Footer />
   </div>;

@@ -5,3 +5,4 @@
 1. Create the react app using create-react-router cf. https://react.dev/learn/creating-a-react-app
 2. Add header and footer with props.
 3. Add task list
+4. Add delete task
