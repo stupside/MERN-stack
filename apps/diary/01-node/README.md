@@ -13,3 +13,4 @@
 9. Cleanup by making request handlers.
 10. Add create user route and handler.
 11. Add get user from id route handler.
+12. Add delete user by id route handler.

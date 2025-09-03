@@ -42,11 +42,16 @@ const createUser = async (req: IncomingMessage, res: ServerResponse<IncomingMess
         body += chunk.toString()
     })
     req.on("end", () => {
-        const { name } = JSON.parse(body)
         const uuid = crypto.randomUUID()
-        users.set(uuid, { name })
-        res.setHeader("Content-Type", "application/json")
-        res.end(JSON.stringify({ id: uuid.toString() }))
+        try {
+            res.setHeader("Content-Type", "application/json")
+            users.set(uuid, JSON.parse(body))
+            res.end(JSON.stringify({ id: uuid.toString() }))
+        } catch {
+            res.statusCode = 400
+            res.setHeader("Content-Type", "application/json")
+            res.end(JSON.stringify({ message: "Invalid request body" }))
+        }
     })
     return res;
 }
@@ -54,13 +59,34 @@ const createUser = async (req: IncomingMessage, res: ServerResponse<IncomingMess
 // GET /api/users/:id
 const getUserById = async (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
     const id = req.url?.split("/").pop()
-    const user = users.get(id!)
+    if (!id) {
+        res.statusCode = 400
+        return res.end(JSON.stringify({ message: "Invalid user ID" }))
+    }
+    const user = users.get(id)
     if (!user) {
         res.statusCode = 404
         return res.end(JSON.stringify({ message: "User not found" }))
     }
     res.setHeader("Content-Type", "application/json")
     return res.end(JSON.stringify({ id, ...user }))
+}
+
+// DELETE /api/users/:id
+const deleteUserById = async (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+    const id = req.url?.split("/").pop()
+    if (!id) {
+        res.statusCode = 400
+        return res.end(JSON.stringify({ message: "Invalid user ID" }))
+    }
+    const user = users.get(id)
+    if (!user) {
+        res.statusCode = 404
+        return res.end(JSON.stringify({ message: "User not found" }))
+    }
+    users.delete(id)
+    res.setHeader("Content-Type", "application/json")
+    return res.end(JSON.stringify({ message: "User deleted" }))
 }
 
 const server = createServer((req, res) => {
@@ -80,6 +106,11 @@ const server = createServer((req, res) => {
                 }
                 case "POST": {
                     return createUser(req, res)
+                }
+                case "DELETE": {
+                    if (req.url?.includes("/api/users/")) {
+                        return deleteUserById(req, res)
+                    }
                 }
             }
         }
