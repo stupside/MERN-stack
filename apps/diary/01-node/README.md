@@ -7,3 +7,4 @@
 3. Added configurable PORT of the server that was hardcoded to be 3000.
 4. Instead of returning Hello the API now returns values from the req param.
 5. Added conditional responses in the http server handler for minimal routing.
+6. Requesting / will load a static html and return it to the client.
