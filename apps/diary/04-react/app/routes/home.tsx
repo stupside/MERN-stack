@@ -30,6 +30,7 @@ export default function Home() {
   }, []);
 
   const deleteTask = async (id: string) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" });
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
