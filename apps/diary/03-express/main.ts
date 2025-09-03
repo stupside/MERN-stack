@@ -25,7 +25,7 @@ app.get("/about", (_, res) => {
     })
 })
 
-type UserID = number
+type UserID = string
 
 type User = {
     name: string
@@ -34,8 +34,37 @@ type User = {
 
 const users = new Map<UserID, User>()
 
+// Get all users
 app.get("/api/users", (_, res) => {
     res.json(users.entries())
+})
+
+// Get user by id
+app.get("/api/users/:id", (req, res) => {
+    const user = users.get(req.params.id)
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(404).send("User not found")
+    }
+})
+
+// Delete user by id
+app.delete("/api/users/:id", (req, res) => {
+    if (users.has(req.params.id)) {
+        users.delete(req.params.id)
+        res.status(204).send()
+    } else {
+        res.status(404).send("User not found")
+    }
+})
+
+// Create a new user
+app.post("/api/users", (req, res) => {
+    const user: User = req.body
+    const userId = crypto.randomUUID()
+    users.set(userId, user)
+    res.status(201).json({ id: userId })
 })
 
 app.listen(process.env.PORT, () => {

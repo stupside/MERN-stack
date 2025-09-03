@@ -9,3 +9,4 @@
 5. Add api route handle that returns the content of a file.
 6. Add static folder to express to server files from it directly.
 7. Add posts REST API with a getter to list users.
+8. Add posts get by id, delete by id and create route handlers.
