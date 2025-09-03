@@ -5,3 +5,4 @@
 1. Created the project with a minimal hello world main file.
 2. Added a basic express with port configured from env file.
 3. Added a express http server that returns Hello in response to requests.
+4. Added a about route that returns os informations as json.
