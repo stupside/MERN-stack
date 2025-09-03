@@ -1,0 +1,10 @@
+{
+    "type": "module",
+    "name": "backend",
+    "packageManager": "yarn@4.9.4",
+    "scripts": {
+        "dev": "tsx watch main.ts",
+        "build": "tsc",
+        "start": "node dist/main.js"
+    }
+}
