@@ -18,3 +18,4 @@
 14. Create and use HttpError extending Error for the error handler.
 15. Create and use catchall handler.
 16. Improve logger middlware with colors.
+17. Move handlers to controllers.
