@@ -5,6 +5,7 @@ import { dirname, join } from "node:path"
 import { readFile } from "node:fs/promises"
 
 import { config } from "dotenv"
+import { logger } from "./logger"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -27,31 +28,33 @@ users.set("1", { name: "John Doe" })
 users.set("2", { name: "Jane Doe" })
 
 const server = createServer((req, res) => {
-    if (req.url === "/") {
-        res.setHeader("Content-Type", "text/html")
-        res.end(readFile(join(__dirname, "static", "index.html"), "utf-8"))
-    } else {
+    logger(req, res, async () => {
+        if (req.url === "/") {
+            res.setHeader("Content-Type", "text/html")
+            res.end(await readFile(join(__dirname, "static", "index.html"), "utf-8"))
+        } else {
 
-        if (req.url === "/api/users") {
-            switch (req.method) {
-                case "GET": {
-                    res.setHeader("Content-Type", "application/json")
-                    res.end(JSON.stringify({
-                        users: Array.from(users.entries())
-                    }))
-                    return
+            if (req.url === "/api/users") {
+                switch (req.method) {
+                    case "GET": {
+                        res.setHeader("Content-Type", "application/json")
+                        res.end(JSON.stringify({
+                            users: Array.from(users.entries())
+                        }))
+                        return
+                    }
                 }
+
+                res.setHeader("Content-Type", "application/json")
+                res.end(JSON.stringify({
+                    message: "Hello!", req: {
+                        url: req.url,
+                        method: req.method,
+                    }
+                }))
             }
-
-            res.setHeader("Content-Type", "application/json")
-            res.end(JSON.stringify({
-                message: "Hello!", req: {
-                    url: req.url,
-                    method: req.method,
-                }
-            }))
         }
-    }
+    })
 })
 
 server.listen(PORT, () => {
