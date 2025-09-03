@@ -35,8 +35,11 @@ type User = {
 const users = new Map<UserID, User>()
 
 // Get all users
-app.get("/api/users", (_, res) => {
-    res.json(users.entries())
+app.get("/api/users", (req, res) => {
+
+    const limit = parseInt(req.query.limit as string, 10) || 10
+
+    res.json(Array.from(users.entries()).slice(0, limit))
 })
 
 // Get user by id
