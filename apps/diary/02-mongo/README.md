@@ -1,3 +1,7 @@
+# 3 September 2025
+
+**02-mongo is based on the crash course at https://www.youtube.com/watch?v=2QQGWYe7IDU**
+
 ```sh
 # Show the db
 db
