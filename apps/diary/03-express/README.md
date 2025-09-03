@@ -7,3 +7,5 @@
 3. Added a express http server that returns Hello in response to requests.
 4. Added a about route that returns os informations as json.
 5. Add api route handle that returns the content of a file.
+6. Add static folder to express to server files from it directly.
+7. Add posts REST API with a getter to list users.

@@ -25,6 +25,19 @@ app.get("/about", (_, res) => {
     })
 })
 
+type UserID = number
+
+type User = {
+    name: string
+    email: string
+}
+
+const users = new Map<UserID, User>()
+
+app.get("/api/users", (_, res) => {
+    res.json(users.entries())
+})
+
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`)
 })
