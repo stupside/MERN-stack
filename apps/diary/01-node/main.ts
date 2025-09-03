@@ -30,7 +30,7 @@ users.set("2", { name: "Jane Doe" })
 // GET /api/users
 const listUsers = async (_: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
     res.setHeader("Content-Type", "application/json")
-    res.end(JSON.stringify({
+    return res.end(JSON.stringify({
         users: Array.from(users.entries())
     }))
 }
@@ -48,34 +48,49 @@ const createUser = async (req: IncomingMessage, res: ServerResponse<IncomingMess
         res.setHeader("Content-Type", "application/json")
         res.end(JSON.stringify({ id: uuid.toString() }))
     })
+    return res;
+}
+
+// GET /api/users/:id
+const getUserById = async (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+    const id = req.url?.split("/").pop()
+    const user = users.get(id!)
+    if (!user) {
+        res.statusCode = 404
+        return res.end(JSON.stringify({ message: "User not found" }))
+    }
+    res.setHeader("Content-Type", "application/json")
+    return res.end(JSON.stringify({ id, ...user }))
 }
 
 const server = createServer((req, res) => {
     logger(req, res, async () => {
         if (req.url === "/") {
             res.setHeader("Content-Type", "text/html")
-            res.end(await readFile(join(__dirname, "static", "index.html"), "utf-8"))
-        } else {
+            return res.end(await readFile(join(__dirname, "static", "index.html"), "utf-8"))
+        }
 
-            if (req.url === "/api/users") {
-                switch (req.method) {
-                    case "GET": {
-                        return listUsers(req, res)
+        if (req.url?.startsWith("/api/users")) {
+            switch (req.method) {
+                case "GET": {
+                    if (req.url?.includes("/api/users/")) {
+                        return getUserById(req, res)
                     }
-                    case "POST": {
-                        return createUser(req, res)
-                    }
+                    return listUsers(req, res)
+                }
+                case "POST": {
+                    return createUser(req, res)
                 }
             }
-
-            res.setHeader("Content-Type", "application/json")
-            res.end(JSON.stringify({
-                message: "Hello!", req: {
-                    url: req.url,
-                    method: req.method,
-                }
-            }))
         }
+
+        res.setHeader("Content-Type", "application/json")
+        return res.end(JSON.stringify({
+            message: "Hello!", req: {
+                url: req.url,
+                method: req.method,
+            }
+        }))
     })
 })
 
