@@ -34,7 +34,25 @@ export default function Home() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
+  const getTask = async (id: string) => {
+    const response = await fetch(`http://localhost:5000/tasks/${id}`);
+    const task = await response.json();
+    return task as TaskType;
+  };
+
   const remindTask = async (id: string) => {
+
+    const task = await getTask(id);
+    if (!task) return;
+
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ remind: !task.remind }),
+    });
+
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === id ? { ...task, remind: !task.remind } : task

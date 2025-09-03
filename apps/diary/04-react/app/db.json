@@ -4,7 +4,8 @@
       "id": "2",
       "title": "Task 2",
       "date": "2023-10-02",
-      "description": "This is the second task"
+      "description": "This is the second task",
+      "remind": false
     },
     {
       "title": "Test",

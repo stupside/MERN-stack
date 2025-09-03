@@ -13,3 +13,4 @@
 9. Fetch tasks from json db
 10. Delete task from db
 11. Add task to db
+12. Add update task in db
