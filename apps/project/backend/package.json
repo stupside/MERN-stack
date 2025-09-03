@@ -3,8 +3,8 @@
   "name": "backend",
   "packageManager": "yarn@4.9.4",
   "scripts": {
-    "dev": "tsx watch main.ts",
-    "build": "tsc",
+    "dev": "yarn dlx tsx watch main.ts",
+    "build": "yarn dlx tsc",
     "start": "node dist/main.js"
   },
   "dependencies": {

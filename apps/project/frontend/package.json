@@ -2,9 +2,9 @@
   "name": "frontend",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start"
+    "dev": "yarn dlx next dev --turbopack",
+    "build": "yarn dlx next build --turbopack",
+    "start": "yarn dlx next start"
   },
   "dependencies": {
     "next": "15.5.2",
