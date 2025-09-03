@@ -8,6 +8,8 @@ __metadata:
 "01-node@workspace:apps/diary/01-node":
   version: 0.0.0-use.local
   resolution: "01-node@workspace:apps/diary/01-node"
+  dependencies:
+    dotenv: "npm:^17.2.2"
   languageName: unknown
   linkType: soft
 
@@ -947,6 +949,13 @@ __metadata:
   version: 2.0.4
   resolution: "detect-libc@npm:2.0.4"
   checksum: 10c0/c15541f836eba4b1f521e4eecc28eefefdbc10a94d3b8cb4c507689f332cc111babb95deda66f2de050b22122113189986d5190be97d51b5a2b23b938415e67c
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^17.2.2":
+  version: 17.2.2
+  resolution: "dotenv@npm:17.2.2"
+  checksum: 10c0/be66513504590aff6eccb14167625aed9bd42ce80547f4fe5d195860211971a7060949b57108dfaeaf90658f79e40edccd3f233f0a978bff507b5b1565ae162b
   languageName: node
   linkType: hard
 

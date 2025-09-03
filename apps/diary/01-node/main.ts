@@ -1,6 +1,12 @@
 import { createServer } from "node:http"
 
-const PORT = 3000
+import { config } from "dotenv"
+
+config({
+    debug: true
+})
+
+const PORT = process.env.PORT
 
 const server = createServer((_, res) => {
     res.setHeader("Content-Type", "application/json")
