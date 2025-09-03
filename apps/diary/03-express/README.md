@@ -12,3 +12,4 @@
 8. Add posts get by id, delete by id and create route handlers.
 9. Add limit as query handle to the list users.
 10. Use Express router to cleanup the main.
+11. Allow raw json body.
