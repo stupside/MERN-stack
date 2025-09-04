@@ -2,7 +2,6 @@ import type { RequestHandler } from "express";
 
 import z from "zod";
 
-import User from "../../core/domain/user";
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 
@@ -16,13 +15,9 @@ const createPartyReqBodySchema = z.object({
 
 export const createParty: RequestHandler<never, z.infer<typeof createPartyResBodySchema>, z.infer<typeof createPartyReqBodySchema>> = async (req, res) => {
 
-    const user = new User({
-        name: req.body.name,
-    });
-
     const party = new Party({
-        name: `${req.body.name}'s Party`,
-        users: [user]
+        name: req.body.name,
+        users: [] // TODO: add owner userk
     });
     await party.save();
 

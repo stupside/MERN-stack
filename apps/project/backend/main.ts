@@ -1,12 +1,13 @@
-import dotenv from "dotenv";
-
 import express from "express"
 
+import dotenv from "dotenv";
+
+import { usersRouter } from "./app/routers/users";
 import { moviesRouter } from "./app/routers/movies";
 import { partiesRouter } from "./app/routers/parties";
 
-import loggerMiddleware from "./app/middlewares/logger";
 import errorMiddleware from "./app/middlewares/error";
+import loggerMiddleware from "./app/middlewares/logger";
 
 import { connect } from "./core/database/connect";
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 const api = express.Router();
 
 app.use("/api", api);
+api.use("/users", usersRouter);
 api.use("/movies", moviesRouter);
 api.use("/parties", partiesRouter);
 

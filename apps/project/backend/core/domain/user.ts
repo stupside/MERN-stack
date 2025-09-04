@@ -4,7 +4,11 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-    }
+    },
+    hash: {
+        type: String,
+        required: true,
+    },
 });
 
 userSchema.index({ name: 1 }, { unique: false });
