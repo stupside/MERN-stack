@@ -6,15 +6,18 @@
     "dev": "yarn dlx tsx watch main.ts",
     "build": "yarn dlx tsc",
     "start": "node dist/main.js",
+    "openapi:tmdb": "openapi-typescript https://developer.themoviedb.org/openapi/64542913e1f86100738e227f -o ./types/api/tmdb/index.d.ts"
   },
   "dependencies": {
     "express": "^5.1.0",
     "mongoose": "8.18.0",
     "openapi-fetch": "0.14.0",
+    "ws": "8.18.3",
     "zod": "4.1.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/ws": "^8.18.1",
+    "openapi-typescript": "^7.9.1"
   }
 }

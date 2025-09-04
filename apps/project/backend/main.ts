@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 
 import express from "express"
 
+import { moviesRouter } from "./app/routers/movies";
 import { partiesRouter } from "./app/routers/parties";
 
 import loggerMiddleware from "./app/middlewares/logger";
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 const api = express.Router();
 
 app.use("/api", api);
+api.use("/movies", moviesRouter);
 api.use("/parties", partiesRouter);
 
 app.listen(process.env.PORT, () => {
