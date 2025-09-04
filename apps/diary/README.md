@@ -82,3 +82,5 @@ As a side note, i choosed to use Docker to host a Mongodb server in localhost.
 This crash course episode is dedicated to protecting the api routes of the express server. I followed the course to apply the elements directly to the project. First i have added user routes to allow users to register into the app, and later login and get a JWT token from it. The JWT payload only includes the user's id and name and have an validty of 7 days.
 
 I will use this mecanism to protect parties so only allowed people can actually interact with the party they are invited to. To do so i have followed the instructions to create an auth middleware that is in charge of verifying the JWT token before the requests are handled, and then extract the token payload so later on i can access the current user's informations such as it's id. I added the jwt payload to the express request and used so typescript sugar to extend express Request type. After adding the auth middleware to the routers, i can finally get the user's informations.
+
+I also added some validations using zod library.

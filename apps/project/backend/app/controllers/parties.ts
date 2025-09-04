@@ -1,9 +1,8 @@
-import type { RequestHandler } from "express";
-
 import z from "zod";
 
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
+import { requestHandler } from "../../core/express/handler";
 
 const createPartyResBodySchema = z.object({
     id: z.string(),
@@ -13,16 +12,19 @@ const createPartyReqBodySchema = z.object({
     name: z.string().min(2).max(100),
 });
 
-export const createParty: RequestHandler<never, z.infer<typeof createPartyResBodySchema>, z.infer<typeof createPartyReqBodySchema>> = async (req, res) => {
+export const createParty = requestHandler({
+    request: createPartyReqBodySchema,
+    result: createPartyResBodySchema,
+}, async (req, res) => {
 
     const party = new Party({
         name: req.body.name,
-        users: [] // TODO: add owner userk
+        users: [] // TODO: add owner user
     });
     await party.save();
 
     return res.status(201).send({ id: party.id });
-};
+});
 
 const getPartyByIdReqParamsSchema = z.object({
     id: z.string(),
@@ -36,7 +38,10 @@ const getPartyByIdResBodySchema = z.object({
     })),
 });
 
-export const getPartyById: RequestHandler<z.infer<typeof getPartyByIdReqParamsSchema>, z.infer<typeof getPartyByIdResBodySchema>> = async (req, res, next) => {
+export const getPartyById = requestHandler({
+    params: getPartyByIdReqParamsSchema,
+    result: getPartyByIdResBodySchema,
+}, async (req, res, next) => {
     const party = await Party.findById(req.params.id);
     if (!party) {
         return next(new HttpError(404, "Party not found"));
@@ -46,4 +51,4 @@ export const getPartyById: RequestHandler<z.infer<typeof getPartyByIdReqParamsSc
         name: party.name,
         users: party.users.map(user => ({ id: user.id })),
     });
-};
+});
