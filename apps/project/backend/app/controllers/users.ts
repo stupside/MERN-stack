@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 
 import z from "zod";
+import { SignJWT } from "jose";
 import argon2 from "argon2";
 
 import User from "../../core/domain/user";
@@ -32,7 +33,21 @@ export const loginUser: RequestHandler<never, z.infer<typeof loginUserResBodySch
         return next(new HttpError(401, "Invalid credentials"));
     }
 
-    return res.status(200).send({ token: "fake-jwt-token" }); // TODO: implement JWT
+    const now = new Date();
+
+    const token = await new SignJWT({
+        user: {
+            id: user.id,
+            name: user.name,
+        }
+    })
+        .setIssuedAt(now)
+        .setNotBefore(now)
+        .setExpirationTime(new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)) // 7 days
+        .setProtectedHeader({ alg: "HS256" })
+        .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+
+    return res.status(200).send({ token });
 };
 
 const signupNewUserReqBodySchema = z.object({
