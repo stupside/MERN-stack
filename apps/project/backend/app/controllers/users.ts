@@ -1,18 +1,25 @@
 import type { RequestHandler } from "express";
 
 import z from "zod";
-import { SignJWT } from "jose";
 import argon2 from "argon2";
 
 import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
+import { generateToken } from "../../core/auth/payload";
 
 const myUserInfoResBodySchema = z.object({
     id: z.string(),
     name: z.string(),
 });
 
-export const myUserInfo: RequestHandler<never, z.infer<typeof myUserInfoResBodySchema>> = async (req, res) => { };
+export const myUserInfo: RequestHandler<never, z.infer<typeof myUserInfoResBodySchema>> = async (req, res, next) => {
+    const user = await User.findById(req.jwt.user.id);
+    if (!user) {
+        return next(new HttpError(404, "User not found"));
+    }
+
+    return res.status(200).send({ id: user.id, name: user.name });
+};
 
 const loginUserReqBodySchema = z.object({
     name: z.string().min(2).max(100),
@@ -33,19 +40,7 @@ export const loginUser: RequestHandler<never, z.infer<typeof loginUserResBodySch
         return next(new HttpError(401, "Invalid credentials"));
     }
 
-    const now = new Date();
-
-    const token = await new SignJWT({
-        user: {
-            id: user.id,
-            name: user.name,
-        }
-    })
-        .setIssuedAt(now)
-        .setNotBefore(now)
-        .setExpirationTime(new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)) // 7 days
-        .setProtectedHeader({ alg: "HS256" })
-        .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+    const token = await generateToken({ id: user.id, name: user.name });
 
     return res.status(200).send({ token });
 };

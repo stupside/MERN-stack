@@ -10,6 +10,7 @@ import errorMiddleware from "./app/middlewares/error";
 import loggerMiddleware from "./app/middlewares/logger";
 
 import { connect } from "./core/database/connect";
+import authMiddleware from "./app/middlewares/auth";
 
 dotenv.config();
 
@@ -27,8 +28,8 @@ const api = express.Router();
 
 app.use("/api", api);
 api.use("/users", usersRouter);
-api.use("/movies", moviesRouter);
-api.use("/parties", partiesRouter);
+api.use("/movies", authMiddleware, moviesRouter);
+api.use("/parties", authMiddleware, partiesRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on http://localhost:${process.env.PORT}`);
