@@ -1,4 +1,4 @@
-import { searchMoviesReqBodySchema } from "libraries/api";
+import { type searchMoviesReqBodySchema, searchMoviesResBodySchema } from "libraries/api";
 import type { z } from "zod";
 import { token } from "../../core/auth/service";
 
@@ -19,7 +19,7 @@ export const searchMovies = async (params: z.infer<typeof searchMoviesReqBodySch
     }
 
     const json = await res.json();
-    const result = await searchMoviesReqBodySchema.safeParseAsync(json);
+    const result = await searchMoviesResBodySchema.safeParseAsync(json);
 
     return result;
 }
