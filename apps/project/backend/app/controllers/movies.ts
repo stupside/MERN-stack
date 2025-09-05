@@ -1,16 +1,8 @@
-import z from "zod";
+import { searchMoviesReqBodySchema, searchMoviesResBodySchema } from "api";
 
 import { request } from "../../core/clients/tmdb";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-
-const searchMoviesReqBodySchema = z.object({
-    name: z.string().min(1),
-});
-
-const searchMoviesResBodySchema = z.array(z.object({
-    tmdbId: z.number(),
-}));
 
 export const searchMovies = requestHandler({
     request: searchMoviesReqBodySchema,

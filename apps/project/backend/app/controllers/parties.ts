@@ -1,16 +1,8 @@
-import z from "zod";
+import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema } from "api";
 
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-
-const createPartyResBodySchema = z.object({
-    id: z.string(),
-});
-
-const createPartyReqBodySchema = z.object({
-    name: z.string().min(2).max(100),
-});
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -24,18 +16,6 @@ export const createParty = requestHandler({
     await party.save();
 
     return res.status(201).send({ id: party.id });
-});
-
-const getPartyByIdReqParamsSchema = z.object({
-    id: z.string(),
-});
-
-const getPartyByIdResBodySchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    users: z.array(z.object({
-        id: z.string(),
-    })),
 });
 
 export const getPartyById = requestHandler({

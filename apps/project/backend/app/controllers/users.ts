@@ -1,15 +1,11 @@
-import { z } from "zod";
 import argon2 from "argon2";
+
+import { loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, signupNewUserReqBodySchema, signupNewUserResBodySchema } from "api";
 
 import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
 import { generateToken } from "../../core/auth/payload";
 import { requestHandler } from "../../core/express/handler";
-
-const myUserInfoResBodySchema = z.object({
-    id: z.string(),
-    name: z.string(),
-});
 
 export const myUserInfo = requestHandler({
     result: myUserInfoResBodySchema,
@@ -20,15 +16,6 @@ export const myUserInfo = requestHandler({
     }
 
     return res.status(200).send({ id: user.id, name: user.name });
-});
-
-const loginUserReqBodySchema = z.object({
-    name: z.string().min(2).max(100),
-    password: z.string().min(6).max(100),
-});
-
-const loginUserResBodySchema = z.object({
-    token: z.string(),
 });
 
 export const loginUser = requestHandler({
@@ -47,15 +34,6 @@ export const loginUser = requestHandler({
     const token = await generateToken({ id: user.id, name: user.name });
 
     return res.status(200).send({ token });
-});
-
-const signupNewUserReqBodySchema = z.object({
-    name: z.string().min(2).max(100),
-    password: z.string().min(6).max(100),
-});
-
-const signupNewUserResBodySchema = z.object({
-    id: z.string(),
 });
 
 export const signupUser = requestHandler({
