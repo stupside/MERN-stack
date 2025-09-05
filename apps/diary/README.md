@@ -63,13 +63,13 @@ Integrating with JSON Server was very cool as i did not knew this little tool. D
 
 This module tied together everything I had learned so far. I could see how the Node.js server, Express API, and React frontend could work together to create a complete web application.
 
-## Date: 4 September 2025
+## Date: 4-5 September 2025
 **Activity** MERN Crash Course
 **Learning outcome**
 
 As the project will be built on the MERN Stack i have made the choice to create the project as i'm watching this crash course to practice directly on it.
 
-# Course EP-1
+# Course EP-1 4 September
 
 Most of the things seen in this video are covered in the previous crashcourses. It includes setting up the express server, creating controllers, handlers, as well as creating basic middlewares like for logging and error handling. 
 
@@ -77,10 +77,18 @@ The only thing that stands out of the first video is how to connect the server t
 
 As a side note, i choosed to use Docker to host a Mongodb server in localhost.
 
-# Course EP-2
+# Course EP-2 4 September
 
 This crash course episode is dedicated to protecting the api routes of the express server. I followed the course to apply the elements directly to the project. First i have added user routes to allow users to register into the app, and later login and get a JWT token from it. The JWT payload only includes the user's id and name and have an validty of 7 days.
 
 I will use this mecanism to protect parties so only allowed people can actually interact with the party they are invited to. To do so i have followed the instructions to create an auth middleware that is in charge of verifying the JWT token before the requests are handled, and then extract the token payload so later on i can access the current user's informations such as it's id. I added the jwt payload to the express request and used so typescript sugar to extend express Request type. After adding the auth middleware to the routers, i can finally get the user's informations.
 
 I also added some validations using zod library.
+
+# Course EP-3 5 September
+
+This crash cours is about calling the backend we made during the EP-2. I used this course to help me build my project using React. I will bootstrap the projet with NextJS.
+
+One of the first steps was to know what page i would like to have in my application, and get a better idea of what the UX would looks like. Basicily the project will allow users to select a movie from a movie list, and then start a party. The party is shared to another user. The video player is in sync between every users. This allows people to watch movies together, in sync.
+
+This crash course will help me understand how React works. I wont be using Redux but might use something like Zustand instead or not. To store the auth token, instead of storing it in the localstorage, i will use NextJS actions, and use the token on server side only and store it secruly in an encrypted cookie.
