@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "./user";
+import Movie from "./movie";
 
 const partySchema = new mongoose.Schema({
     name: {
@@ -10,7 +11,8 @@ const partySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    users: [User.schema]
+    users: [User.schema],
+    movies: [Movie.schema]
 });
 
 partySchema.index({ code: 1 }, { unique: true });

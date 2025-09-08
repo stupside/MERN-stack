@@ -30,6 +30,7 @@ export const getPartyById = requestHandler({
         id: party.id,
         name: party.name,
         users: party.users.map(user => ({ id: user.id, name: user.name })),
+        movies: party.movies.map(movie => ({ id: movie.id, title: movie.title })),
     });
 });
 

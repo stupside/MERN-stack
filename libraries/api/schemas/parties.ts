@@ -19,6 +19,10 @@ export const getPartyByIdResBodySchema = z.object({
         id: z.string(),
         name: z.string(),
     })),
+    movies: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+    })),
 });
 
 export const getAllPartiesResBodySchema = z.array(z.object({
