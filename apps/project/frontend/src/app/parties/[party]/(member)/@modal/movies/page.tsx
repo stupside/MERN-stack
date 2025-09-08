@@ -1,30 +1,32 @@
 "use client"
 
 import { useState, useEffect } from "react";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { useRouter } from 'next/navigation'
 
 import type { z } from "zod";
 import type { NextPage } from "next";
-import type { searchMoviesResBodySchema } from "api";
+import type { searchMoviesResBodySchema } from "libraries/api";
 
 import { searchMovies } from "./action";
 import { Movies } from "./_private/Movies";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const Page: NextPage = () => {
     const params = useParams<{
         party: string
     }>();
+    const router = useRouter()
 
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>('');
     const [movies, setMovies] = useState<z.infer<typeof searchMoviesResBodySchema>>([]);
-
+    const [isOpen, setIsOpen] = useState(true);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             const fetchMovies = async () => {
                 try {
-                    if (!name) {
+                    if (!name.trim()) {
                         setMovies([]);
                     } else {
                         const result = await searchMovies({ name });
@@ -40,39 +42,53 @@ const Page: NextPage = () => {
             }
 
             fetchMovies();
-        }, 1000);
+        }, 300);
 
         return () => clearTimeout(timer);
     }, [name])
 
+    const handleClose = () => {
+        setIsOpen(false)
+        router.back()
+    }
+
     return (
-        <div
-            className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50 p-4"
-        >
-            <div className="bg-white rounded-xl max-w-7xl w-full max-h-[95vh] overflow-hidden shadow-2xl border border-gray-100">
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                    <h2 className="text-2xl font-light text-gray-800">Search Movies</h2>
-                    <Link
-                        href=".."
-                        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600"
-                    >
-                        ×
-                    </Link>
-                </div>
-                <div className="p-6 overflow-y-auto max-h-[calc(95vh-120px)]">
-                    <div className="mb-6">
-                        <input
-                            type="text"
-                            value={name || ''}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Search movies..."
-                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none transition-all text-gray-800 placeholder-gray-500"
-                        />
+        <Dialog open={isOpen} onClose={handleClose}>
+            <DialogBackdrop className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
+            
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+                <DialogPanel className="w-full max-w-6xl bg-white rounded-xl shadow-xl max-h-[90vh] flex flex-col">
+                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <DialogTitle className="text-xl font-medium text-gray-900">
+                            Search Movies
+                        </DialogTitle>
+                        <button
+                            type="button"
+                            onClick={handleClose}
+                            className="text-gray-400 hover:text-gray-600"
+                        >
+                            ✕
+                        </button>
                     </div>
-                    <Movies party={params.party} movies={movies} />
-                </div>
+                    
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        <div className="p-6 flex-shrink-0">
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Search movies..."
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none"
+                                autoFocus
+                            />
+                        </div>
+                        <div className="flex-1 px-6 pb-6 overflow-y-auto">
+                            <Movies party={params.party} movies={movies} />
+                        </div>
+                    </div>
+                </DialogPanel>
             </div>
-        </div>
+        </Dialog>
     );
 }
 

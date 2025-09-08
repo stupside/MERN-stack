@@ -12,9 +12,10 @@ export const Movies: FC<{
 }> = ({ party, movies }) => {
     if (movies.length === 0) {
         return (
-            <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No movies found</p>
-                <p className="text-gray-400 text-sm mt-2">Try searching for a different movie</p>
+            <div className="text-center py-20">
+                <div className="text-6xl mb-4">🎬</div>
+                <p className="text-gray-500 text-lg mb-2">Start typing to search for movies</p>
+                <p className="text-gray-400 text-sm">Enter a movie title in the search box above</p>
             </div>
         );
     }

@@ -9,12 +9,12 @@ const Page: NextPage<PropsWithChildren<{
 }) => {
         return (
             <>
-                {modal}
                 <div className="min-h-screen bg-white flex items-center justify-center p-6">
                     <div className="w-full max-w-6xl">
                         {children}
                     </div>
                 </div>
+                {modal}
             </>
         );
     }

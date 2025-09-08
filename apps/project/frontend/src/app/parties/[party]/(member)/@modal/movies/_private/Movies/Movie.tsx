@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const Movie: FC<{ party: string, movie: z.infer<typeof searchMoviesResBodySchema>[number] }> = ({ party, movie }) => {
     return (
-        <Link href={`/party/${party}/movies/${movie.ref}`} className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
+        <Link href={`/parties/${party}/movies/${movie.ref}`} className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
             {movie.images.poster ? (
                 <div className="aspect-[2/3] relative overflow-hidden">
                     <Image

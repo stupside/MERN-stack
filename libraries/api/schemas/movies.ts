@@ -14,7 +14,7 @@ export const searchMoviesResBodySchema = z.array(z.object({
 }));
 
 export const getMovieByIdParamsSchema = z.object({
-    id: z.number().min(1),
+    id: z.coerce.number(),
 });
 
 export const getMovieByIdResBodySchema = z.object({

@@ -1,6 +1,7 @@
 "use server";
 
 import { getMovieByIdParamsSchema, getMovieByIdResBodySchema } from "api/schemas/movies";
+import { token } from "apps/project/frontend/src/core/auth/service";
 import z from "zod";
 
 const MOVIES_URL = "/movies";
@@ -11,6 +12,7 @@ export const getMovieById = async (params: z.infer<typeof getMovieByIdParamsSche
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${await token()}`,
         },
     });
 
