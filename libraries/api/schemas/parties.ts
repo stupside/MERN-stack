@@ -51,10 +51,6 @@ export const removeMovieFromPartyReqParamsSchema = z.object({
     id: z.string(),
 });
 
-export const joinPartyReqParamsSchema = z.object({
-    id: z.string(),
-});
-
 export const joinPartyReqBodySchema = z.object({
     code: z.string(),
 });

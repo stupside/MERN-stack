@@ -6,7 +6,7 @@ import { requestHandler } from "../../core/express/handler";
 import User, { IUser } from "../../core/domain/user";
 import { IMovie } from "../../core/domain/movie";
 import { getMovie } from "../../core/utils/movies";
-import { joinPartyReqBodySchema, joinPartyReqParamsSchema } from "libraries/api/schemas/parties";
+import { joinPartyReqBodySchema } from "libraries/api/schemas/parties";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -137,9 +137,8 @@ export const removeMovieFromParty = requestHandler({
 
 export const joinParty = requestHandler({
     request: joinPartyReqBodySchema,
-    params: joinPartyReqParamsSchema,
 }, async (req, res, next) => {
-    const party = await Party.findById(req.params.id).populate<{
+    const party = await Party.findOne({ code: req.body.code }).populate<{
         users: IUser[]
     }>([
         {
