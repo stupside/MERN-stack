@@ -1,6 +1,6 @@
 import { type searchMoviesReqBodySchema, searchMoviesResBodySchema } from "libraries/api";
 import type { z } from "zod";
-import { token } from "../../core/auth/service";
+import { token } from "../../../../core/auth/service";
 
 const MOVIES_URL = '/movies';
 

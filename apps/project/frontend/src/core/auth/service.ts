@@ -1,3 +1,5 @@
+"use server";
+
 import { type loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, type signupNewUserReqBodySchema, signupNewUserResBodySchema } from "libraries/api";
 import { cookies } from "next/headers";
 

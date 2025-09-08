@@ -1,8 +1,11 @@
+"use client"
+
 import type { NextPage } from "next";
+
 import { Player } from "./_private/Player";
 
 const Page: NextPage<{
-    params: Promise<{ id: string }>
+    params: Promise<{ movie: string }>
 }> = async (props) => {
     const params = await props.params;
 
@@ -10,9 +13,9 @@ const Page: NextPage<{
         title: "Movie Title",
     }
 
-    return <div>
-        <Player title={movie.title} tmdbId={params.id} />
-    </div>;
+    return (
+        <Player title={movie.title} tmdbId={params.movie} />
+    );
 }
 
 export default Page;
