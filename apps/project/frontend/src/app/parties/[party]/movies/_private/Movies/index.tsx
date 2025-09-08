@@ -12,7 +12,7 @@ export const Movies: FC<{
     return (
         <div>
             {movies.map((movie) => (
-                <Movie key={movie.tmdbId} movie={movie} />
+                <Movie key={movie.ref} movie={movie} />
             ))}
         </div>
     );

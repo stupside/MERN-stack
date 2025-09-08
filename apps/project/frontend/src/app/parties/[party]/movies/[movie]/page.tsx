@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { getMovieById } from "./action";
 
 const Page: NextPage<{
-    params: Promise<{ party: string; movie: string }>
+    params: Promise<{ party: string; movie: number }>
 }> = async (props) => {
     const params = await props.params;
 
@@ -11,7 +11,7 @@ const Page: NextPage<{
     return (
         <div>
             <h1>Movie Details</h1>
-            <p>TMDB ID: {movie.tmdbId}</p>
+            <p>TMDB ID: {movie.ref}</p>
             <p>Title: {movie.title}</p>
         </div>
     );

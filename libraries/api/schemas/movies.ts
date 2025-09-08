@@ -1,3 +1,4 @@
+import { title } from "process";
 import z from "zod";
 
 export const searchMoviesReqBodySchema = z.object({
@@ -5,7 +6,7 @@ export const searchMoviesReqBodySchema = z.object({
 });
 
 export const searchMoviesResBodySchema = z.array(z.object({
-    tmdbId: z.number(),
+    ref: z.number(),
 }));
 
 export const getMovieByIdParamsSchema = z.object({
@@ -13,5 +14,6 @@ export const getMovieByIdParamsSchema = z.object({
 });
 
 export const getMovieByIdResBodySchema = z.object({
-    tmdbId: z.number(),
+    ref: z.number(),
+    title: z.string(),
 });

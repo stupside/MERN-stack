@@ -28,7 +28,7 @@ export const searchMovies = requestHandler({
     }
 
     return res.json(movies.data.results.map(movie => ({
-        tmdbId: movie.id,
+        ref: movie.id,
     })));
 });
 
@@ -45,6 +45,7 @@ export const getMovieById = requestHandler({
     }
 
     return res.json({
-        tmdbId: movie.id,
+        ref: movie.ref,
+        title: movie.title,
     });
 });

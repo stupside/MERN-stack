@@ -14,7 +14,7 @@ const Page: NextPage<{
     }
 
     return (
-        <Player title={movie.title} tmdbId={params.movie} />
+        <Player title={movie.title} ref={params.movie} />
     );
 }
 

@@ -1,11 +1,11 @@
 import { type FC, useEffect, useRef, useState } from "react";
 
 export const Player: FC<{
+    ref: number;
     title: string;
-    tmdbId: string;
 }> = (props) => {
 
-    const url = `https://vidlink.pro/movie/${props.tmdbId}`;
+    const url = `https://vidlink.pro/movie/${props.ref}`;
 
     const refIframe = useRef<HTMLIFrameElement>(null);
     const [video, setVideo] = useState<HTMLVideoElement>();
