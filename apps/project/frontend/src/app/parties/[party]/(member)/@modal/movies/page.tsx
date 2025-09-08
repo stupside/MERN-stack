@@ -9,10 +9,16 @@ import type { searchMoviesResBodySchema } from "api";
 import { searchMovies } from "./action";
 import { Movies } from "./_private/Movies";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const Page: NextPage = () => {
+    const params = useParams<{
+        party: string
+    }>();
+
     const [name, setName] = useState<string>();
     const [movies, setMovies] = useState<z.infer<typeof searchMoviesResBodySchema>>([]);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -63,7 +69,7 @@ const Page: NextPage = () => {
                             className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none transition-all text-gray-800 placeholder-gray-500"
                         />
                     </div>
-                    <Movies movies={movies} />
+                    <Movies party={params.party} movies={movies} />
                 </div>
             </div>
         </div>

@@ -7,8 +7,9 @@ import type { searchMoviesResBodySchema } from "libraries/api";
 import { Movie } from "./Movie";
 
 export const Movies: FC<{
+    party: string,
     movies: z.infer<typeof searchMoviesResBodySchema>
-}> = ({ movies }) => {
+}> = ({ party, movies }) => {
     if (movies.length === 0) {
         return (
             <div className="text-center py-12">
@@ -21,7 +22,7 @@ export const Movies: FC<{
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {movies.map((movie) => (
-                <Movie key={movie.ref} movie={movie} />
+                <Movie key={movie.ref} party={party} movie={movie} />
             ))}
         </div>
     );

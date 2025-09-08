@@ -2,15 +2,16 @@ import type { searchMoviesResBodySchema } from "libraries/api";
 import type { FC } from "react";
 import type { z } from "zod";
 import Image from "next/image";
+import Link from "next/link";
 
-export const Movie: FC<{ movie: z.infer<typeof searchMoviesResBodySchema>[number] }> = ({ movie }) => {
+export const Movie: FC<{ party: string, movie: z.infer<typeof searchMoviesResBodySchema>[number] }> = ({ party, movie }) => {
     return (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
+        <Link href={`/party/${party}/movies/${movie.ref}`} className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
             {movie.images.poster ? (
                 <div className="aspect-[2/3] relative overflow-hidden">
-                    <Image 
-                        src={movie.images.poster} 
-                        alt={`${movie.title} poster`} 
+                    <Image
+                        src={movie.images.poster}
+                        alt={`${movie.title} poster`}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -28,6 +29,6 @@ export const Movie: FC<{ movie: z.infer<typeof searchMoviesResBodySchema>[number
                     {movie.title}
                 </h3>
             </div>
-        </div>
+        </Link>
     );
 }
