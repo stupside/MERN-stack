@@ -5,7 +5,7 @@ import { token } from "../../core/auth/service";
 
 const PARTIES_URL = "/parties";
 
-export const createParty = async (params: z.infer<typeof createPartyReqBodySchema>) => {
+export const createParty = async (body: z.infer<typeof createPartyReqBodySchema>) => {
     const url = `${process.env.BACKEND_URL}${PARTIES_URL}`
     const res = await fetch(url, {
         method: 'POST',
@@ -13,7 +13,7 @@ export const createParty = async (params: z.infer<typeof createPartyReqBodySchem
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${await token()}`,
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(body),
     });
     if (!res.ok) {
         throw new Error('Failed to create party');

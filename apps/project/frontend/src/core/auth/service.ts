@@ -38,14 +38,14 @@ export const info = async () => {
     return result;
 }
 
-export const login = async (params: z.infer<typeof loginUserReqBodySchema>) => {
+export const login = async (body: z.infer<typeof loginUserReqBodySchema>) => {
     const url = `${process.env.BACKEND_URL}${LOGIN_URL}`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(body),
     });
     if (!res.ok) {
         throw new Error('Failed to login');
@@ -61,14 +61,14 @@ export const login = async (params: z.infer<typeof loginUserReqBodySchema>) => {
     return result;
 }
 
-export const register = async (params: z.infer<typeof registerNewUserReqBodySchema>) => {
+export const register = async (body: z.infer<typeof registerNewUserReqBodySchema>) => {
     const url = `${process.env.BACKEND_URL}${REGISTER_URL}`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(body),
     });
     if (!res.ok) {
         throw new Error('Failed to register');
