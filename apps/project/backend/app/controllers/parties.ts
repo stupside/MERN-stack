@@ -1,4 +1,4 @@
-import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema } from "api";
+import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema } from "api";
 
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
@@ -31,4 +31,14 @@ export const getPartyById = requestHandler({
         name: party.name,
         users: party.users.map(user => ({ id: user.id })),
     });
+});
+
+export const getAllParties = requestHandler({
+    result: getAllPartiesResBodySchema,
+}, async (_, res) => {
+    const parties = await Party.find();
+    return res.json(parties.map(party => ({
+        id: party.id,
+        name: party.name,
+    })));
 });
