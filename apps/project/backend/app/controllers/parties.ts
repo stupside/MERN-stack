@@ -3,9 +3,10 @@ import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqPara
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-import { IUser } from "../../core/domain/user";
+import User, { IUser } from "../../core/domain/user";
 import { IMovie } from "../../core/domain/movie";
 import { getMovie } from "../../core/utils/movies";
+import { joinPartyReqBodySchema, joinPartyReqParamsSchema } from "libraries/api/schemas/parties";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -116,6 +117,35 @@ export const removeMovieFromParty = requestHandler({
     }
 
     party.movies = party.movies.filter(movie => movie.ref !== req.body.id);
+    await party.save();
+
+    return res.json({});
+});
+
+export const joinParty = requestHandler({
+    request: joinPartyReqBodySchema,
+    params: joinPartyReqParamsSchema,
+}, async (req, res, next) => {
+    const party = await Party.findById(req.params.id).populate<{
+        users: IUser[]
+    }>([
+        {
+            path: "users",
+        }
+    ]);
+    if (!party) {
+        return next(new HttpError(404, "Party not found"));
+    }
+    if (party.users.find(user => user.id === req.jwt.user.id)) {
+        return next(new HttpError(400, "User already in party"));
+    }
+
+    const user = await User.findById(req.jwt.user.id);
+    if (!user) {
+        return next(new HttpError(404, "User not found"));
+    }
+
+    party.users.push(user);
     await party.save();
 
     return res.json({});

@@ -1,11 +1,11 @@
 import z from "zod";
-import { joinPartyReqParamsSchema } from "libraries/api/schemas/parties";
+import { joinPartyReqBodySchema, joinPartyReqParamsSchema } from "libraries/api/schemas/parties";
 
 import { token } from "../../../../../core/auth/service";
 
 const PARTIES_URL = "/parties";
 
-export const joinParty = async (params: z.infer<typeof joinPartyReqParamsSchema>) => {
+export const joinParty = async (params: z.infer<typeof joinPartyReqParamsSchema>, body: z.infer<typeof joinPartyReqBodySchema>) => {
     const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/join`;
     const res = await fetch(url, {
         method: "POST",
@@ -14,9 +14,7 @@ export const joinParty = async (params: z.infer<typeof joinPartyReqParamsSchema>
             "Authorization": `Bearer ${await token()}`
         },
         credentials: "include",
-        body: JSON.stringify({
-            code: params.code
-        }),
+        body: JSON.stringify(body),
     });
 
     if (!res.ok) {

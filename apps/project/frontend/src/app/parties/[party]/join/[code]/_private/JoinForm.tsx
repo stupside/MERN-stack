@@ -9,6 +9,7 @@ export const JoinForm: FC<{
 }> = ({ party, code }) => {
     const [_, dispatch, isPending] = useActionState((_: unknown, formData: FormData) => joinParty({
         id: formData.get("id") as string,
+    }, {
         code: formData.get("code") as string,
     }), null);
 
