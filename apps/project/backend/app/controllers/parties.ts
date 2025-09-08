@@ -3,9 +3,9 @@ import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqPara
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-import { request } from "../../core/clients/tmdb";
 import { IUser } from "../../core/domain/user";
-import Movie, { IMovie } from "../../core/domain/movie";
+import { IMovie } from "../../core/domain/movie";
+import { getMovie } from "../../core/utils/movies";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -82,34 +82,10 @@ export const addMovieToParty = requestHandler({
         return next(new HttpError(400, "Movie already in party"));
     }
 
-    const getMovie = async () => {
-
-        if (await Movie.countDocuments({ ref: req.body.id })) {
-            return Movie.findOne({ ref: req.body.id });
-        }
-
-        const movie = await request((client) => client.GET("/3/movie/{movie_id}", {
-            params: {
-                path: {
-                    movie_id: req.body.id,
-                }
-            }
-        }));
-        if (!movie.data) {
-            return new HttpError(404, "Movie not found");
-        }
-
-        return new Movie({
-            ref: req.body.id,
-            title: movie.data.title,
-        }).save();
-    }
-
-    const movie = await getMovie();
+    const movie = await getMovie(req.body.id);
     if (movie instanceof HttpError) {
         return next(movie);
     }
-
     if (!movie) {
         return next(new HttpError(500, "Could not retrieve movie"));
     }

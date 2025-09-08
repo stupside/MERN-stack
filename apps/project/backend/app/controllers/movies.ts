@@ -4,6 +4,7 @@ import { request } from "../../core/clients/tmdb";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
 import { getMovieByIdParamsSchema, getMovieByIdResBodySchema } from "libraries/api/schemas/movies";
+import { getMovie } from "../../core/utils/movies";
 
 export const searchMovies = requestHandler({
     request: searchMoviesReqBodySchema,
@@ -35,24 +36,15 @@ export const getMovieById = requestHandler({
     params: getMovieByIdParamsSchema,
     result: getMovieByIdResBodySchema,
 }, async (req, res, next) => {
-
-    const movie = await request(client => client.GET(`/3/movie/{movie_id}`, {
-        params: {
-            path: {
-                movie_id: req.params.id
-            }
-        }
-    }));
-
-    if (movie.error) {
-        return next(new HttpError(502, "Failed to fetch movie details"));
+    const movie = await getMovie(req.params.id);
+    if (movie instanceof HttpError) {
+        return next(movie);
     }
-
-    if (!movie.data.id) {
-        return next(new HttpError(500, "Malformed response from TMDB"));
+    if (!movie) {
+        return next(new HttpError(500, "Failed to fetch or create movie"));
     }
 
     return res.json({
-        tmdbId: movie.data.id,
+        tmdbId: movie.id,
     });
 });
