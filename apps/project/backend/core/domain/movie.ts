@@ -12,7 +12,7 @@ export interface IMovie extends mongoose.Document {
 }
 
 const movieSchema = new mongoose.Schema({
-    ref: { type: Number, required: true, unique: true },
+    ref: { type: Number, required: true },
     title: { type: String, required: true },
     images: {
         poster: { type: String, required: false },
