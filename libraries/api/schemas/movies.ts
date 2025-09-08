@@ -1,4 +1,3 @@
-import { title } from "process";
 import z from "zod";
 
 export const searchMoviesReqBodySchema = z.object({
@@ -7,6 +6,11 @@ export const searchMoviesReqBodySchema = z.object({
 
 export const searchMoviesResBodySchema = z.array(z.object({
     ref: z.number(),
+    title: z.string(),
+    images: z.object({
+        poster: z.url().nullable(),
+        backdrop: z.url().nullable(),
+    })
 }));
 
 export const getMovieByIdParamsSchema = z.object({
@@ -16,4 +20,8 @@ export const getMovieByIdParamsSchema = z.object({
 export const getMovieByIdResBodySchema = z.object({
     ref: z.number(),
     title: z.string(),
+    images: z.object({
+        poster: z.url().nullable(),
+        backdrop: z.url().nullable(),
+    })
 });

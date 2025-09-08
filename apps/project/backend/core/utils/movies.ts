@@ -22,5 +22,9 @@ export const getMovie = async (id: number) => {
     return new Movie({
         ref: movie.data.id,
         title: movie.data.title,
+        images: {
+            poster: movie.data.poster_path ? `https://image.tmdb.org/t/p/w500${movie.data.poster_path}` : null,
+            backdrop: movie.data.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.data.backdrop_path}` : null,
+        }
     }).save();
 }

@@ -29,6 +29,11 @@ export const searchMovies = requestHandler({
 
     return res.json(movies.data.results.map(movie => ({
         ref: movie.id,
+        title: movie.title ?? "Untitled",
+        images: {
+            poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
+            backdrop: movie.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` : null,
+        }
     })));
 });
 
@@ -47,5 +52,9 @@ export const getMovieById = requestHandler({
     return res.json({
         ref: movie.ref,
         title: movie.title,
+        images: {
+            poster: movie.images.poster,
+            backdrop: movie.images.backdrop,
+        }
     });
 });
