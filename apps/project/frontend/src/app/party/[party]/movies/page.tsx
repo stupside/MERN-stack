@@ -17,11 +17,15 @@ const Page: NextPage = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const result = await searchMovies({ name: name ?? "" });
-                if (result.success) {
-                    setMovies(result.data);
+                if (!name) {
+                    setMovies([]);
                 } else {
-                    console.error("Failed to parse movies response", result.error);
+                    const result = await searchMovies({ name });
+                    if (result.success) {
+                        setMovies(result.data);
+                    } else {
+                        console.error("Failed to parse movies response", result.error);
+                    }
                 }
             } catch (error) {
                 console.error("Failed to fetch movies", error);
