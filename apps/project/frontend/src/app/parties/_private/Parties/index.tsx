@@ -13,7 +13,7 @@ export const Parties: FC<{
                 <p className="text-gray-400 text-sm mt-2">Create your first party to get started</p>
             </div>
         ) : (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {parties.map(party => (
                     <Party key={party.id} party={party} />
                 ))}

@@ -16,13 +16,11 @@ export const searchMovies = requestHandler({
             query: {
                 query: req.body.name
             }
-        }
+        },
     }));
-
     if (movies.error) {
-        return next(new HttpError(502, "Failed to fetch movies"));
+        return next(new HttpError(502, `Failed to fetch movies: ${JSON.stringify(movies)}`));
     }
-
     if (!movies.data.results) {
         return next(new HttpError(500, "Malformed response from TMDB"));
     }

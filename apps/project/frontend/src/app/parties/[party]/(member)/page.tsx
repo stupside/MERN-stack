@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { Movies } from "./_private/Movies";
 import { getPartyById } from "./action";
 import { Users } from "./_private/Users";
@@ -37,6 +38,15 @@ const Page: NextPage<{
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-semibold text-gray-900">Movies</h2>
+                    <Link
+                        href={`/parties/${params.party}/movies`}
+                        className="px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] font-medium"
+                    >
+                        Search Movies
+                    </Link>
+                </div>
                 <Movies movies={party.data.movies} />
             </div>
             <div className="lg:col-span-1">

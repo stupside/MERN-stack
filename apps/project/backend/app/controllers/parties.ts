@@ -69,11 +69,21 @@ export const getPartyById = requestHandler({
 
 export const getAllParties = requestHandler({
     result: getAllPartiesResBodySchema,
-}, async (_, res) => {
-    const parties = await Party.find();
+}, async (req, res) => {
+    const parties = await Party.find({
+        $or: [
+            { owner: { $eq: req.jwt.user.id } },
+            { users: { $in: [req.jwt.user.id] } }
+        ]
+    }).populate<{ owner: IUser }>([
+        {
+            path: "owner",
+        }
+    ]);
     return res.json(parties.map(party => ({
         id: party.id,
         name: party.name,
+        owner: { id: party.owner.id, name: party.owner.name }
     })));
 })
 
