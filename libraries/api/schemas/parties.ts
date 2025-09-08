@@ -17,6 +17,7 @@ export const getPartyByIdResBodySchema = z.object({
     name: z.string(),
     users: z.array(z.object({
         id: z.string(),
+        name: z.string(),
     })),
 });
 

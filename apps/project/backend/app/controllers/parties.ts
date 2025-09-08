@@ -29,7 +29,7 @@ export const getPartyById = requestHandler({
     return res.json({
         id: party.id,
         name: party.name,
-        users: party.users.map(user => ({ id: user.id })),
+        users: party.users.map(user => ({ id: user.id, name: user.name })),
     });
 });
 
