@@ -1,13 +1,13 @@
 "use server";
 
-import { type loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, type signupNewUserReqBodySchema, signupNewUserResBodySchema } from "libraries/api";
+import { type loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, type registerNewUserReqBodySchema, registerNewUserResBodySchema } from "libraries/api";
 import { cookies } from "next/headers";
 
 import type { z } from "zod";
 
 const INFO_URL = '/users/me';
 const LOGIN_URL = '/users/login';
-const SIGNUP_URL = '/users/signup';
+const REGISTER_URL = '/users/register';
 
 const USER_TOKEN_KEY = 'user:token' as const;
 
@@ -61,8 +61,8 @@ export const login = async (params: z.infer<typeof loginUserReqBodySchema>) => {
     return result;
 }
 
-export const signup = async (params: z.infer<typeof signupNewUserReqBodySchema>) => {
-    const url = `${process.env.BACKEND_URL}${SIGNUP_URL}`;
+export const register = async (params: z.infer<typeof registerNewUserReqBodySchema>) => {
+    const url = `${process.env.BACKEND_URL}${REGISTER_URL}`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -71,11 +71,11 @@ export const signup = async (params: z.infer<typeof signupNewUserReqBodySchema>)
         body: JSON.stringify(params),
     });
     if (!res.ok) {
-        throw new Error('Failed to signup');
+        throw new Error('Failed to register');
     }
 
     const json = await res.json();
-    const result = await signupNewUserResBodySchema.safeParseAsync(json);
+    const result = await registerNewUserResBodySchema.safeParseAsync(json);
 
     return result;
 }

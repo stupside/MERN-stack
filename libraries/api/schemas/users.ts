@@ -14,11 +14,11 @@ export const loginUserResBodySchema = z.object({
     token: z.string(),
 });
 
-export const signupNewUserReqBodySchema = z.object({
+export const registerNewUserReqBodySchema = z.object({
     name: z.string().min(2).max(100),
     password: z.string().min(6).max(100),
 });
 
-export const signupNewUserResBodySchema = z.object({
+export const registerNewUserResBodySchema = z.object({
     id: z.string(),
 });

@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 
-import { loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, signupNewUserReqBodySchema, signupNewUserResBodySchema } from "api";
+import { loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, registerNewUserReqBodySchema, registerNewUserResBodySchema } from "api";
 
 import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
@@ -36,9 +36,9 @@ export const loginUser = requestHandler({
     return res.status(200).send({ token });
 });
 
-export const signupUser = requestHandler({
-    request: signupNewUserReqBodySchema,
-    result: signupNewUserResBodySchema,
+export const registerUser = requestHandler({
+    request: registerNewUserReqBodySchema,
+    result: registerNewUserResBodySchema,
 }, async (req, res) => {
     const user = new User({
         name: req.body.name,
