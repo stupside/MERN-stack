@@ -36,9 +36,13 @@ export const getPartyById = requestHandler({
     result: getPartyByIdResBodySchema,
 }, async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
+        owner: IUser
         users: IUser[],
-        movies: IMovie[]
+        movies: IMovie[],
     }>([
+        {
+            path: "owner",
+        },
         {
             path: "users",
         },
@@ -51,15 +55,15 @@ export const getPartyById = requestHandler({
     }
     return res.json({
         id: party.id,
+        code: party.code,
         name: party.name,
         users: party.users.map(user => {
-            if (!user) throw new Error("User not found");
             return { id: user.id, name: user.name };
         }),
         movies: party.movies.map(movie => {
-            if (!movie) throw new Error("Movie not found");
             return { id: movie.id, title: movie.title };
-        })
+        }),
+        owner: { id: party.owner.id, name: party.owner.name }
     });
 });
 

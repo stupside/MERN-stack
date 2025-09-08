@@ -15,6 +15,11 @@ export const getPartyByIdReqParamsSchema = z.object({
 export const getPartyByIdResBodySchema = z.object({
     id: z.string(),
     name: z.string(),
+    code: z.string(),
+    owner: z.object({
+        id: z.string(),
+        name: z.string(),
+    }),
     users: z.array(z.object({
         id: z.string(),
         name: z.string(),
