@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+export interface IUser extends mongoose.Document {
+    name: string;
+    hash: string;
+}
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -13,6 +18,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ name: 1 }, { unique: false });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

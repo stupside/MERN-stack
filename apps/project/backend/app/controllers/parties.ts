@@ -4,6 +4,8 @@ import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
 import { request } from "../../core/clients/tmdb";
+import { IUser } from "../../core/domain/user";
+import Movie, { IMovie } from "../../core/domain/movie";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -23,22 +25,30 @@ export const getPartyById = requestHandler({
     params: getPartyByIdReqParamsSchema,
     result: getPartyByIdResBodySchema,
 }, async (req, res, next) => {
-    const party = await Party.findById(req.params.id);
+    const party = await Party.findById(req.params.id).populate<{
+        users: IUser[],
+        movies: IMovie[]
+    }>([
+        {
+            path: "users",
+        },
+        {
+            path: "movies",
+        }
+    ])
     if (!party) {
         return next(new HttpError(404, "Party not found"));
     }
     return res.json({
         id: party.id,
         name: party.name,
-        users: party.users.map(row => {
-            const user = row.get("type");
+        users: party.users.map(user => {
             if (!user) throw new Error("User not found");
-            return { id: row.id, name: user.name };
+            return { id: user.id, name: user.name };
         }),
-        movies: party.movies.map((row) => {
-            const movie = row.get("type");
+        movies: party.movies.map(movie => {
             if (!movie) throw new Error("Movie not found");
-            return { id: row.id, title: movie.title };
+            return { id: movie.id, title: movie.title };
         })
     });
 });
@@ -57,27 +67,54 @@ export const addMovieToParty = requestHandler({
     params: addMovieToPartyReqParamsSchema,
     request: addMovieToPartyReqBodySchema,
 }, async (req, res, next) => {
-    const party = await Party.findById(req.params.id);
+    const party = await Party.findById(req.params.id).populate<{
+        movies: IMovie[]
+    }>([
+        {
+            path: "movies",
+        }
+    ]);
 
     if (!party) {
         return next(new HttpError(404, "Party not found"));
     }
-    if (party.movies.find(movie => movie.id === req.body.id)) {
+    if (party.movies.find(movie => movie.ref === req.body.id)) {
         return next(new HttpError(400, "Movie already in party"));
     }
 
-    const movie = await request((client) => client.GET("/3/movie/{movie_id}", {
-        params: {
-            path: {
-                movie_id: req.body.id,
-            }
+    const getMovie = async () => {
+
+        if (await Movie.countDocuments({ ref: req.body.id })) {
+            return Movie.findOne({ ref: req.body.id });
         }
-    }));
-    if (movie.error) {
-        return next(new HttpError(400, "Invalid movie ID"));
+
+        const movie = await request((client) => client.GET("/3/movie/{movie_id}", {
+            params: {
+                path: {
+                    movie_id: req.body.id,
+                }
+            }
+        }));
+        if (!movie.data) {
+            return new HttpError(404, "Movie not found");
+        }
+
+        return new Movie({
+            ref: req.body.id,
+            title: movie.data.title,
+        }).save();
     }
 
-    party.movies.push({ id: req.body.id, title: movie.data.title });
+    const movie = await getMovie();
+    if (movie instanceof HttpError) {
+        return next(movie);
+    }
+
+    if (!movie) {
+        return next(new HttpError(500, "Could not retrieve movie"));
+    }
+
+    party.movies.push(movie);
     await party.save();
 
     return res.json({});
@@ -87,16 +124,22 @@ export const removeMovieFromParty = requestHandler({
     params: removeMovieFromPartyReqParamsSchema,
     request: removeMovieFromPartyReqBodySchema,
 }, async (req, res, next) => {
-    const party = await Party.findById(req.params.id);
+    const party = await Party.findById(req.params.id).populate<{
+        movies: IMovie[]
+    }>([
+        {
+            path: "movies",
+        }
+    ]);
 
     if (!party) {
         return next(new HttpError(404, "Party not found"));
     }
-    if (!party.movies.find(movie => movie.id === req.body.id)) {
+    if (!party.movies.find(movie => movie.ref === req.body.id)) {
         return next(new HttpError(400, "Movie not in party"));
     }
 
-    party.movies.pull({ id: req.body.id });
+    party.movies = party.movies.filter(movie => movie.ref !== req.body.id);
     await party.save();
 
     return res.json({});
