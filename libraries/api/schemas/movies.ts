@@ -7,3 +7,11 @@ export const searchMoviesReqBodySchema = z.object({
 export const searchMoviesResBodySchema = z.array(z.object({
     tmdbId: z.number(),
 }));
+
+export const getMovieByIdParamsSchema = z.object({
+    id: z.number().min(1),
+});
+
+export const getMovieByIdResBodySchema = z.object({
+    tmdbId: z.number(),
+});
