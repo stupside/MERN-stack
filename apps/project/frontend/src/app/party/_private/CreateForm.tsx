@@ -1,8 +1,9 @@
 "use client"
 
-import { type FC, useActionState } from "react"
+import { type FC, useActionState, useEffect } from "react"
 
 import { createParty } from "../action";
+import { redirect } from "next/navigation";
 
 export const CreateForm: FC = () => {
     const [state, dispatch, isPending] = useActionState(
@@ -11,6 +12,12 @@ export const CreateForm: FC = () => {
         }),
         null
     );
+
+    useEffect(() => {
+        if (state?.id) {
+            redirect(`/party/${state.id}`);
+        }
+    }, [state]);
 
     return <>
         <form action={dispatch} style={{ marginBottom: 20 }}>
