@@ -6,7 +6,7 @@ import { requestHandler } from "../../core/express/handler";
 import User, { IUser } from "../../core/domain/user";
 import { IMovie } from "../../core/domain/movie";
 import { getMovie } from "../../core/utils/movies";
-import { joinPartyReqBodySchema } from "libraries/api/schemas/parties";
+import { joinPartyReqBodySchema, joinPartyResBodySchema } from "libraries/api/schemas/parties";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -136,13 +136,18 @@ export const removeMovieFromParty = requestHandler({
 });
 
 export const joinParty = requestHandler({
+    result: joinPartyResBodySchema,
     request: joinPartyReqBodySchema,
 }, async (req, res, next) => {
     const party = await Party.findOne({ code: req.body.code }).populate<{
-        users: IUser[]
+        owner: IUser,
+        users: IUser[],
     }>([
         {
             path: "users",
+        },
+        {
+            path: "owner",
         }
     ]);
     if (!party) {
@@ -150,6 +155,9 @@ export const joinParty = requestHandler({
     }
     if (party.users.find(user => user.id === req.jwt.user.id)) {
         return next(new HttpError(400, "User already in party"));
+    }
+    if (party.owner.id === req.jwt.user.id) {
+        return next(new HttpError(400, "User is the owner of the party"));
     }
 
     const user = await User.findById(req.jwt.user.id);
@@ -160,5 +168,7 @@ export const joinParty = requestHandler({
     party.users.push(user);
     await party.save();
 
-    return res.json({});
+    return res.json({
+        id: party.id,
+    });
 });

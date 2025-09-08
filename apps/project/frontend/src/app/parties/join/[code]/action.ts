@@ -1,7 +1,7 @@
 "use server";
 
 import z from "zod";
-import { joinPartyReqBodySchema } from "libraries/api/schemas/parties";
+import { joinPartyReqBodySchema, joinPartyResBodySchema } from "libraries/api/schemas/parties";
 
 import { token } from "../../../../core/auth/service";
 
@@ -25,5 +25,8 @@ export const joinParty = async (body: z.infer<typeof joinPartyReqBodySchema>) =>
         );
     }
 
-    return null;
+    const json = await res.json();
+    const result = joinPartyResBodySchema.safeParse(json);
+
+    return result;
 }

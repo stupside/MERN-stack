@@ -8,19 +8,21 @@ const Page: NextPage = async () => {
 
     const parties = await getAllParties();
 
-    return <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    return <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <div className="w-full max-w-6xl space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h1 className="text-3xl font-medium text-gray-900">Parties</h1>
+                    <p className="text-gray-600 text-sm mt-1">Manage your party experiences</p>
+                </div>
+                <div className="mt-4 sm:mt-0">
+                    <CreateForm />
+                </div>
+            </div>
+            
             <div>
-                <h1 className="text-3xl font-medium text-gray-900">Parties</h1>
-                <p className="text-gray-600 text-sm mt-1">Manage your party experiences</p>
+                <Parties parties={parties ?? []} />
             </div>
-            <div className="mt-4 sm:mt-0">
-                <CreateForm />
-            </div>
-        </div>
-        
-        <div>
-            <Parties parties={parties ?? []} />
         </div>
     </div>;
 }

@@ -7,4 +7,4 @@ export const partiesRouter = Router();
 partiesRouter.post("/", createParty);
 partiesRouter.get("/", getAllParties);
 partiesRouter.get("/:id", getPartyById);
-partiesRouter.post("/:id/join", joinParty);
+partiesRouter.post("/join", joinParty);

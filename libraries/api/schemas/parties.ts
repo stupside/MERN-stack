@@ -55,6 +55,10 @@ export const joinPartyReqBodySchema = z.object({
     code: z.string(),
 });
 
+export const joinPartyResBodySchema = z.object({
+    id: z.string(),
+});
+
 export const leavePartyReqParamsSchema = z.object({
     id: z.string(),
 });
