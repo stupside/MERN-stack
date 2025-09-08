@@ -19,7 +19,7 @@ const Page: NextPage<{
     return <>
         <h1>Party's watchlist</h1>
         <p>Current party: {party.data.name}</p>
-        <Movies />
+        <Movies movies={party.data.movies} />
         <Users users={party.data.users} />
     </>
 }

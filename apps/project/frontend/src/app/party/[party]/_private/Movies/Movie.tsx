@@ -1,7 +1,9 @@
+import { getPartyByIdResBodySchema } from "api/schemas/parties";
 import type { FC } from "react";
+import z from "zod";
 
-export const Movies: FC = () => {
+export const Movie: FC<{ movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number] }> = ({ movie }) => {
     return <div>
-        <h1>Movies Component</h1>
+        <h2>{movie.title}</h2>
     </div>;
 }
