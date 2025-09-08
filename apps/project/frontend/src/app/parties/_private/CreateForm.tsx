@@ -15,7 +15,7 @@ export const CreateForm: FC = () => {
 
     useEffect(() => {
         if (state?.id) {
-            redirect(`/party/${state.id}`);
+            redirect(`/parties/${state.id}`);
         }
     }, [state]);
 
