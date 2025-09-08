@@ -9,9 +9,11 @@ const Page: NextPage<PropsWithChildren> = async ({
 }) => {
 
     if (await token()) {
-        return <>
-            {children}
-        </>
+        return <div className="min-h-screen bg-white flex items-center justify-center p-6">
+            <div className="w-full max-w-6xl">
+                {children}
+            </div>
+        </div>
     }
 
     return redirect("/auth/login");

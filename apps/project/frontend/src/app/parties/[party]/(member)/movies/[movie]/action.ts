@@ -1,3 +1,5 @@
+"use server";
+
 import { getMovieByIdParamsSchema, getMovieByIdResBodySchema } from "api/schemas/movies";
 import z from "zod";
 

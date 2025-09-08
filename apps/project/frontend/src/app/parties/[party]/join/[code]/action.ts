@@ -1,3 +1,5 @@
+"use server";
+
 import z from "zod";
 import { joinPartyReqBodySchema, joinPartyReqParamsSchema } from "libraries/api/schemas/parties";
 

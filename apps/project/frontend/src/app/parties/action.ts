@@ -1,3 +1,5 @@
+"use server";
+
 import { type createPartyReqBodySchema, createPartyResBodySchema, getAllPartiesResBodySchema } from "api";
 import type { z } from "zod";
 

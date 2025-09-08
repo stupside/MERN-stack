@@ -13,9 +13,18 @@ export const createParty = requestHandler({
     result: createPartyResBodySchema,
 }, async (req, res) => {
 
+    const user = await User.findById(req.jwt.user.id);
+    if (!user) {
+        throw new HttpError(404, "User not found");
+    }
+
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase()
+
     const party = new Party({
+        code,
         name: req.body.name,
-        users: [] // TODO: add owner user
+        users: [],
+        owner: user,
     });
     await party.save();
 
