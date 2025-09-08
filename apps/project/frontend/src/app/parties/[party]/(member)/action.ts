@@ -1,6 +1,6 @@
 import { getPartyByIdReqParamsSchema, getPartyByIdResBodySchema } from "libraries/api";
 import { type z } from "zod";
-import { token } from "../../../core/auth/service";
+import { token } from "../../../../core/auth/service";
 
 const PARTIES_URL = "/parties";
 
