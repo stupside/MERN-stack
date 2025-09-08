@@ -11,8 +11,14 @@ const partySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    users: [User.schema],
-    movies: [Movie.schema]
+    users: [{
+        type: User.schema,
+        default: []
+    }],
+    movies: [{
+        type: Movie.schema,
+        default: [],
+    }]
 });
 
 partySchema.index({ code: 1 }, { unique: true });

@@ -1,3 +1,3 @@
 export { searchMoviesReqBodySchema, searchMoviesResBodySchema } from "./schemas/movies";
-export { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema } from "./schemas/parties"
+export { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema, addMovieToPartyReqBodySchema, addMovieToPartyReqParamsSchema, removeMovieFromPartyReqBodySchema, removeMovieFromPartyReqParamsSchema } from "./schemas/parties"
 export { myUserInfoResBodySchema, loginUserReqBodySchema, loginUserResBodySchema, registerNewUserReqBodySchema, registerNewUserResBodySchema } from "./schemas/users";

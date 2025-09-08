@@ -29,3 +29,19 @@ export const getAllPartiesResBodySchema = z.array(z.object({
     id: z.string(),
     name: z.string(),
 }));
+
+export const addMovieToPartyReqBodySchema = z.object({
+    id: z.number(),
+});
+
+export const addMovieToPartyReqParamsSchema = z.object({
+    id: z.string(),
+});
+
+export const removeMovieFromPartyReqBodySchema = z.object({
+    id: z.number(),
+});
+
+export const removeMovieFromPartyReqParamsSchema = z.object({
+    id: z.string(),
+}); 
