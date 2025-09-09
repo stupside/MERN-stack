@@ -22,7 +22,6 @@ const Page: NextPage<{
               No movie found with id {params.movie}
             </p>
             <Link
-              replace
               href={`/parties/${params.party}/search`}
               className="block w-full px-4 py-2 text-center text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
             >

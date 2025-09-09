@@ -22,7 +22,6 @@ const Page: NextPage<{
               No movie found with id {params.movie}
             </p>
             <Link
-              replace
               href={`/parties/${params.party}/watchlist`}
               className="block w-full px-4 py-2 text-center text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
             >
@@ -40,9 +39,9 @@ const Page: NextPage<{
   return (
     <MovieModal
       movie={movie.data}
-      closeHref={`/parties/${params.party}/watchlist`}
-      playerHref={`/parties/${params.party}/player/${movie.data.ref}`}
       actions={<RemoveForm party={params.party} movie={movie.data.ref} />}
+      closeHref={`/parties/${params.party}/watchlist`}
+      playerHref={`/parties/${params.party}/watchlist/${movie.data.ref}/player`}
     />
   );
 };

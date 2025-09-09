@@ -29,7 +29,6 @@ export const MovieModal: FC<{
       <div className={`fixed inset-0 bg-black/25 flex items-center justify-center p-4 z-50`}>
         <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
           <Link
-            replace
             href={closeHref}
             className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
           >
