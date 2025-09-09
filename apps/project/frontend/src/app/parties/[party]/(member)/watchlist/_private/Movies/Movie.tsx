@@ -1,37 +1,12 @@
-"use client";
-
 import type { getPartyByIdResBodySchema } from "api/schemas/parties";
-import { useRouter } from "next/navigation";
 import type { FC } from "react";
-import { useActionState, useEffect } from "react";
 import type z from "zod";
-import {
-  MovieCard,
-  RemoveButton,
-} from "../../../../../../../core/components/movies";
-import { removeMovieFromWatchlist } from "../../../action";
+import { MovieCard } from "../../../../../../../core/components/movies";
 
 export const Movie: FC<{
   movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number];
   party: string;
 }> = ({ movie, party }) => {
-  const router = useRouter();
-
-  const [state, dispatch, isPending] = useActionState(
-    async (_: unknown, __: FormData) =>
-      removeMovieFromWatchlist({
-        id: party,
-        movie: movie.id,
-      }),
-    false,
-  );
-
-  useEffect(() => {
-    if (state) {
-      router.refresh();
-    }
-  }, [state, router]);
-
   return (
     <MovieCard
       movie={{
@@ -42,8 +17,7 @@ export const Movie: FC<{
         release: movie.release,
         language: movie.language,
       }}
-      // href={`/parties/${party}/movies/${movie.id}`}
-      actions={<RemoveButton onRemove={dispatch} isLoading={isPending} />}
+      href={`/parties/${party}/watchlist/${movie.id}`}
     />
   );
 };
