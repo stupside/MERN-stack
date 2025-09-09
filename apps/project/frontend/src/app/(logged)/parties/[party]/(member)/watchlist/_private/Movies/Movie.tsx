@@ -1,7 +1,7 @@
 import type { getPartyByIdResBodySchema } from "api/schemas/parties";
 import type { FC } from "react";
 import type z from "zod";
-import { MovieCard } from "../../../../../../../core/components/movies";
+import { MovieCard } from "../../../../../../../../core/components/movies";
 
 export const Movie: FC<{
   movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number];

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import { MovieModal } from "../../../../../../../../core/components/movies";
+import { MovieModal } from "../../../../../../../../../core/components/movies";
 import { getMovieById } from "./action";
 import { RemoveForm } from "./_private/RemoveForm";
 

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
 
 import { info as getUserInfo, token } from "../../core/auth/service";
-import Me from "./_private/Me";
+import Me from "./parties/_private/Me";
 
 const Page: NextPage<PropsWithChildren<{
   modals: React.ReactNode;

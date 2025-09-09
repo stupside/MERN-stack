@@ -6,7 +6,7 @@ import type { z } from "zod";
 import {
   MovieCard,
   MoviesGrid,
-} from "../../../../../../core/components/movies";
+} from "../../../../../../../core/components/movies";
 
 export const Movies: FC<{
   name?: string;

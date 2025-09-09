@@ -1,7 +1,7 @@
 import type { getPartyByIdResBodySchema } from "api/schemas/parties";
 import type { FC } from "react";
 import type z from "zod";
-import { MoviesGrid } from "../../../../../../../core/components/movies";
+import { MoviesGrid } from "../../../../../../../../core/components/movies";
 import { Movie } from "./Movie";
 
 export const Movies: FC<{
