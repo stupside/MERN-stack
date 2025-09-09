@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { getPartyById } from "./action";
 import { Users } from "./_private/Users";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
 const Page: NextPage<PropsWithChildren<{
     params: Promise<{ party: string }>;

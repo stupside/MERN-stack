@@ -1,7 +1,8 @@
-import { getAllPartiesResBodySchema } from "api";
+import type { getAllPartiesResBodySchema } from "api/schemas/parties";
+
 import Link from "next/link";
 import type { FC } from "react";
-import { type z } from "zod";
+import type { z } from "zod";
 
 export const Party: FC<{
     party: z.infer<typeof getAllPartiesResBodySchema>[number]

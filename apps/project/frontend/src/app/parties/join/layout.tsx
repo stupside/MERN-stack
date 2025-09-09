@@ -1,5 +1,5 @@
-import { NextPage } from "next";
-import { PropsWithChildren } from "react";
+import type { NextPage } from "next";
+import type { PropsWithChildren } from "react";
 
 const Layout: NextPage<PropsWithChildren> = ({ children }) => {
     return <div className="min-h-screen flex bg-white">

@@ -1,6 +1,6 @@
 "use server";
 
-import { type createPartyReqBodySchema, createPartyResBodySchema, getAllPartiesResBodySchema } from "api";
+import { type createPartyReqBodySchema, createPartyResBodySchema, getAllPartiesResBodySchema } from "api/schemas/parties";
 import type { z } from "zod";
 
 import { token } from "../../core/auth/service";

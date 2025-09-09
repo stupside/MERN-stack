@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import type { z } from "zod";
-import type { searchMoviesResBodySchema } from "libraries/api";
+import type { searchMoviesResBodySchema } from "api/schemas/movies";
 import Image from "next/image";
 import Link from "next/link";
 

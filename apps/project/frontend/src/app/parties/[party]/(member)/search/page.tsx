@@ -3,8 +3,8 @@
 import type { NextPage } from "next";
 import { Movies } from "./_private/Movies";
 import { useEffect, useState } from "react";
-import z from "zod";
-import { searchMoviesResBodySchema } from "libraries/api";
+import type z from "zod";
+import type { searchMoviesResBodySchema } from "api/schemas/movies";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { searchMovies } from "./action";

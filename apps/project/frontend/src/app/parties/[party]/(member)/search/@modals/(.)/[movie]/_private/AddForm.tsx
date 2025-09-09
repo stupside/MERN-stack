@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useActionState, useEffect } from "react";
+import { type FC, useActionState, useEffect } from "react";
 import { addMovieToWatchlist } from "../action";
 import { redirect } from "next/navigation";
 
@@ -10,8 +10,7 @@ export const AddForm: FC<{
 }> = ({ party, movie }) => {
     const [state, dispatch, isPending] = useActionState(async (_: unknown, __: FormData) => addMovieToWatchlist({
         id: party,
-    }, {
-        id: movie
+        movie,
     }), false);
 
     useEffect(() => {

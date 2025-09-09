@@ -1,8 +1,9 @@
 "use server";
 
-import { getPartyByIdReqParamsSchema, getPartyByIdResBodySchema } from "libraries/api";
-import { type z } from "zod";
+import type { z } from "zod";
 import { token } from "../../../../core/auth/service";
+
+import { type getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, type removeMovieFromWatchlistReqParamsSchema } from "libraries/api/schemas/parties";
 
 const PARTIES_URL = "/parties";
 
@@ -27,4 +28,24 @@ export const getPartyById = async (params: z.infer<typeof getPartyByIdReqParamsS
     const result = getPartyByIdResBodySchema.safeParse(json);
 
     return result;
+}
+
+export const removeMovieFromWatchlist = async (params: z.infer<typeof removeMovieFromWatchlistReqParamsSchema>) => {
+    const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/movies/${params.movie}`;
+    const res = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${await token()}`,
+        },
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        throw new Error(
+            `Failed to remove movie ${params.movie} from party ${params.id}: ${res.statusText}`,
+        );
+    }
+
+    return true;
 }

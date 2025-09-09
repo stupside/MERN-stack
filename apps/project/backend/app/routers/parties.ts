@@ -8,5 +8,5 @@ partiesRouter.post("/", createParty);
 partiesRouter.get("/", getAllParties);
 partiesRouter.get("/:id", getPartyById);
 partiesRouter.post("/join", joinParty);
-partiesRouter.post("/:id/watchlist", addMovieToWatchlist);
-partiesRouter.delete("/:id/watchlist", removeMovieFromWatchlist);
+partiesRouter.post("/:id/movies/:movie", addMovieToWatchlist);
+partiesRouter.delete("/:id/movies/:movie", removeMovieFromWatchlist);

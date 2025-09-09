@@ -24,7 +24,7 @@ const Page: NextPage<{
                     Search Movies
                 </Link>
             </div>
-            <Movies movies={party.data.movies} />
+            <Movies movies={party.data.movies} party={params.party} />
         </>
     );
 };

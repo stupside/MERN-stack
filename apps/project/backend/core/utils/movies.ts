@@ -1,5 +1,5 @@
 import { request } from "../clients/tmdb";
-import Movie, { _IMovie } from "../domain/movie";
+import Movie, { type _IMovie } from "../domain/movie";
 import { HttpError } from "../errors/http";
 
 export const getMovie = async (id: number) => {

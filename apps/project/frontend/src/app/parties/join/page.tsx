@@ -1,6 +1,6 @@
 "use client"
 
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
 import { useActionState, useEffect } from "react";
 import { joinParty } from "./[code]/action";

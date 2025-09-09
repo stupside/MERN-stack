@@ -1,9 +1,8 @@
-import { searchMoviesReqBodySchema, searchMoviesResBodySchema } from "api";
+import { getMovieByIdParamsSchema, getMovieByIdResBodySchema, searchMoviesReqBodySchema, searchMoviesResBodySchema } from "api/schemas/movies";
 
 import { request } from "../../core/clients/tmdb";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-import { getMovieByIdParamsSchema, getMovieByIdResBodySchema } from "libraries/api/schemas/movies";
 import { getMovie } from "../../core/utils/movies";
 
 export const searchMovies = requestHandler({

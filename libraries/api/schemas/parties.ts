@@ -25,8 +25,20 @@ export const getPartyByIdResBodySchema = z.object({
         name: z.string(),
     })),
     movies: z.array(z.object({
-        id: z.string(),
+        id: z.number(),
         title: z.string().nullable(),
+        rating: z.number().nullable(),
+        release: z.string().nullable(),
+        overview: z.string().nullable(),
+        language: z.string().nullable(),
+        genres: z.array(z.object({
+            id: z.number(),
+            name: z.string().nullable(),
+        })),
+        images: z.object({
+            poster: z.url().nullable(),
+            backdrop: z.url().nullable(),
+        }),
     })),
 });
 
@@ -39,20 +51,14 @@ export const getAllPartiesResBodySchema = z.array(z.object({
     }),
 }));
 
-export const addMovieToPartyReqBodySchema = z.object({
-    id: z.number(),
-});
-
-export const addMovieToPartyReqParamsSchema = z.object({
+export const addMovieToWatchlistReqParamsSchema = z.object({
     id: z.string(),
-});
-
-export const removeMovieFromWatchlistReqBodySchema = z.object({
-    id: z.number(),
+    movie: z.coerce.number(),
 });
 
 export const removeMovieFromWatchlistReqParamsSchema = z.object({
     id: z.string(),
+    movie: z.coerce.number(),
 });
 
 export const joinPartyReqBodySchema = z.object({

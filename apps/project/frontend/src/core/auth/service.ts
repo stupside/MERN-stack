@@ -1,7 +1,14 @@
 "use server";
 
-import { type loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, type registerNewUserReqBodySchema, registerNewUserResBodySchema } from "libraries/api";
 import { cookies } from "next/headers";
+
+import {
+    myUserInfoResBodySchema,
+    type loginUserReqBodySchema,
+    loginUserResBodySchema,
+    type registerNewUserReqBodySchema,
+    registerNewUserResBodySchema,
+} from "api/schemas/users";
 
 import type { z } from "zod";
 

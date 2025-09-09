@@ -1,12 +1,21 @@
-import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema, addMovieToPartyReqBodySchema as addMovieToWatchlistReqBodySchema, addMovieToPartyReqParamsSchema as addMovieToWatchlistReqParamsSchema, removeMovieFromPartyReqBodySchema, removeMovieFromPartyReqParamsSchema } from "api";
+import {
+    removeMovieFromWatchlistReqParamsSchema,
+    createPartyReqBodySchema,
+    createPartyResBodySchema,
+    getPartyByIdResBodySchema,
+    getPartyByIdReqParamsSchema,
+    getAllPartiesResBodySchema,
+    addMovieToWatchlistReqParamsSchema,
+    joinPartyResBodySchema,
+    joinPartyReqBodySchema,
+} from "api/schemas/parties";
 
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
 import { requestHandler } from "../../core/express/handler";
-import User, { IUser } from "../../core/domain/user";
-import { IMovie } from "../../core/domain/movie";
+import User, { type IUser } from "../../core/domain/user";
+import type { IMovie } from "../../core/domain/movie";
 import { getMovie } from "../../core/utils/movies";
-import { joinPartyReqBodySchema, joinPartyResBodySchema } from "libraries/api/schemas/parties";
 
 export const createParty = requestHandler({
     request: createPartyReqBodySchema,
@@ -60,10 +69,23 @@ export const getPartyById = requestHandler({
         users: party.users.map(user => {
             return { id: user.id, name: user.name };
         }),
-        movies: party.movies.map(movie => {
-            return { id: movie.id, title: movie.title || null };
-        }),
-        owner: { id: party.owner.id, name: party.owner.name }
+        owner: { id: party.owner.id, name: party.owner.name },
+        movies: party.movies.map(movie => ({
+            id: movie.ref,
+            title: movie.title || null,
+            rating: movie.rating || null,
+            release: movie.release || null,
+            overview: movie.overview || null,
+            language: movie.language || null,
+            genres: movie.genres.map(genre => ({
+                id: genre.id,
+                name: genre.name || null,
+            })),
+            images: {
+                poster: movie.images.poster ? `https://image.tmdb.org/t/p/w500${movie.images.poster}` : null,
+                backdrop: movie.images.backdrop ? `https://image.tmdb.org/t/p/w500${movie.images.backdrop}` : null,
+            },
+        })),
     });
 });
 
@@ -89,7 +111,6 @@ export const getAllParties = requestHandler({
 
 export const addMovieToWatchlist = requestHandler({
     params: addMovieToWatchlistReqParamsSchema,
-    request: addMovieToWatchlistReqBodySchema,
 }, async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
         movies: IMovie[]
@@ -102,11 +123,11 @@ export const addMovieToWatchlist = requestHandler({
     if (!party) {
         return next(new HttpError(404, "Party not found"));
     }
-    if (party.movies.find(movie => movie.ref === req.body.id)) {
+    if (party.movies.find(movie => movie.ref === req.params.movie)) {
         return next(new HttpError(400, "Movie already in party"));
     }
 
-    const movie = await getMovie(req.body.id);
+    const movie = await getMovie(req.params.movie);
     if (movie instanceof HttpError) {
         return next(movie);
     }
@@ -121,8 +142,7 @@ export const addMovieToWatchlist = requestHandler({
 });
 
 export const removeMovieFromWatchlist = requestHandler({
-    params: removeMovieFromPartyReqParamsSchema,
-    request: removeMovieFromPartyReqBodySchema,
+    params: removeMovieFromWatchlistReqParamsSchema,
 }, async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
         movies: IMovie[]
@@ -135,11 +155,11 @@ export const removeMovieFromWatchlist = requestHandler({
     if (!party) {
         return next(new HttpError(404, "Party not found"));
     }
-    if (!party.movies.find(movie => movie.ref === req.body.id)) {
+    if (!party.movies.find(movie => movie.ref === req.params.movie)) {
         return next(new HttpError(400, "Movie not in party"));
     }
 
-    party.movies = party.movies.filter(movie => movie.ref !== req.body.id);
+    party.movies = party.movies.filter(movie => movie.ref !== req.params.movie);
     await party.save();
 
     return res.json({});

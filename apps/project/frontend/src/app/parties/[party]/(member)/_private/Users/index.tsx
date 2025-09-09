@@ -1,8 +1,9 @@
 "use client"
 
-import { getPartyByIdResBodySchema } from "libraries/api";
-import { FC } from "react";
-import z from "zod";
+import type { getPartyByIdResBodySchema } from "api/schemas/parties";
+
+import type { FC } from "react";
+import type z from "zod";
 
 export const Users: FC<{
     code: z.infer<typeof getPartyByIdResBodySchema>["code"],

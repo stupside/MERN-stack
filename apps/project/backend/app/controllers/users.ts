@@ -1,6 +1,12 @@
 import argon2 from "argon2";
 
-import { loginUserReqBodySchema, loginUserResBodySchema, myUserInfoResBodySchema, registerNewUserReqBodySchema, registerNewUserResBodySchema } from "api";
+import {
+    myUserInfoResBodySchema,
+    loginUserReqBodySchema,
+    loginUserResBodySchema,
+    registerNewUserReqBodySchema,
+    registerNewUserResBodySchema,
+} from "api/schemas/users";
 
 import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";

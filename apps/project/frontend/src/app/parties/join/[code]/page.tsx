@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { joinParty } from "./action";
 import { redirect } from "next/navigation";
 

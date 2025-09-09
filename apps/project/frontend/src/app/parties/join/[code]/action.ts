@@ -1,7 +1,8 @@
 "use server";
 
-import z from "zod";
-import { joinPartyReqBodySchema, joinPartyResBodySchema } from "libraries/api/schemas/parties";
+import type z from "zod";
+
+import { type joinPartyReqBodySchema, joinPartyResBodySchema } from "api/schemas/parties";
 
 import { token } from "../../../../core/auth/service";
 
