@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 
 const Layout: NextPage<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-full flex bg-white">
       <div className="w-1/2 flex flex-col justify-center px-12 py-8 bg-white">
         {children}
       </div>
@@ -14,8 +14,8 @@ const Layout: NextPage<PropsWithChildren> = ({ children }) => {
           <div className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
             <div className="w-16 h-16 bg-white/40 rounded-full"></div>
           </div>
-          <h2 className="text-2xl font-light mb-2">Welcome</h2>
-          <p className="text-white/80 text-sm">Join our community</p>
+          <h2 className="text-2xl font-light mb-2">Welcome to MovieParty</h2>
+          <p className="text-white/80 text-sm">Create and join movie watching parties</p>
         </div>
       </div>
     </div>

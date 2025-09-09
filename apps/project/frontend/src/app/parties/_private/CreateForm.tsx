@@ -31,7 +31,7 @@ export const CreateForm: FC = () => {
         <button
           type="submit"
           disabled={isPending}
-          className="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 disabled:from-red-300 disabled:to-pink-400 text-white font-medium py-2 px-4 rounded-lg transition-all whitespace-nowrap"
+          className="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 disabled:from-red-300 disabled:to-pink-400 text-white font-medium py-2 px-4 rounded-lg transition-all whitespace-nowrap cursor-pointer"
         >
           {isPending ? "Creating..." : "Create party"}
         </button>

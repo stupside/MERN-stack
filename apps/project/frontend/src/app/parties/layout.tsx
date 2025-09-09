@@ -18,13 +18,17 @@ const Page: NextPage<PropsWithChildren<{
       throw new Error("User info is undefined");
     }
 
-    return <>
-      <header>
-        <Me user={info.data} />
-      </header>
-      {modals}
-      {children}
-    </>;
+    return (
+      <div className="min-h-full flex flex-col">
+        <header>
+          <Me user={info.data} />
+        </header>
+        <main className="flex-1">
+          {children}
+        </main>
+        {modals}
+      </div>
+    );
   }
 
   return redirect("/auth/login");

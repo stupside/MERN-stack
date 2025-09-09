@@ -36,7 +36,7 @@ export const Users: FC<{
           <button
             type="button"
             onClick={handleCopyCode}
-            className="px-3 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all text-sm font-medium"
+            className="px-3 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all text-sm font-medium cursor-pointer"
           >
             Copy
           </button>

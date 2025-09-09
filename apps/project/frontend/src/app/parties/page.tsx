@@ -8,8 +8,8 @@ const Page: NextPage = async () => {
   const parties = await getAllParties();
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-6xl space-y-8">
+    <div className="container mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-medium text-gray-900">Parties</h1>

@@ -7,7 +7,7 @@ const Me: FC<{
     user: z.infer<typeof myUserInfoResBodySchema>;
 }> = ({ user }) => {
     return (
-        <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-40">
+        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-100">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">

@@ -310,3 +310,24 @@
 {"level":"info","event":0,"connection":"ac4d533f-d287-4864-ae60-72820ad3c34e","connIndex":3,"location":"arn06","ip":"198.41.192.47","protocol":"quic","time":"2025-09-09T17:58:43Z","message":"Registered tunnel connection"}
 {"level":"info","event":0,"connection":"311a34ce-5231-40a2-b05c-616063524478","connIndex":1,"location":"hel01","ip":"198.41.200.23","protocol":"quic","time":"2025-09-09T17:58:43Z","message":"Registered tunnel connection"}
 {"level":"info","event":0,"connection":"a104b184-e474-4013-ae94-77bf3d829681","connIndex":2,"location":"hel01","ip":"198.41.200.43","protocol":"quic","time":"2025-09-09T17:58:43Z","message":"Registered tunnel connection"}
+{"level":"info","tunnelID":"06f46e90-d742-4c2b-a60e-b655355d4200","time":"2025-09-09T19:06:00Z","message":"Starting tunnel"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Version 2025.8.1 (Checksum f64d98a4d698e182b683247fc752ca503697bf7abba42bcbe91e0b7a921cda51)"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"GOOS: darwin, GOVersion: go1.25.0, GoArch: arm64"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Settings: map[config:/Users/kilianhoupeurt/.moley/tunnels/moley-ddea872e-a67d-4b36-b8b8-714891c31863.yml logfile:cloudflared.log loglevel:info]"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"cloudflared will not automatically update if installed by a package manager."}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Generated Connector ID: eaf5dbdc-0ee7-4a0c-a3a5-4d82b986f4fa"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Initial protocol quic"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"ICMP proxy will use 86.50.43.229 as source for IPv4"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"ICMP proxy will use fe80::1cd4:71d1:c9ad:d9b6 in zone en10 as source for IPv6"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Created ICMP proxy listening on 86.50.43.229:0"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"ICMP proxy will use 86.50.43.229 as source for IPv4"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"ICMP proxy will use fe80::1cd4:71d1:c9ad:d9b6 in zone en10 as source for IPv6"}
+{"level":"info","time":"2025-09-09T19:06:00Z","message":"Starting metrics server on 127.0.0.1:20241/metrics"}
+{"level":"info","event":0,"ip":"198.41.200.233","connIndex":0,"time":"2025-09-09T19:06:00Z","message":"Tunnel connection curve preferences: [X25519MLKEM768 CurveP256]"}
+{"level":"info","event":0,"connection":"23210c1f-3202-4770-b901-b9d00de3e8a2","connIndex":0,"location":"hel01","ip":"198.41.200.233","protocol":"quic","time":"2025-09-09T19:06:00Z","message":"Registered tunnel connection"}
+{"level":"info","event":0,"ip":"198.41.192.47","connIndex":1,"time":"2025-09-09T19:06:00Z","message":"Tunnel connection curve preferences: [X25519MLKEM768 CurveP256]"}
+{"level":"info","event":0,"connection":"d5628eef-5546-4e27-b1b7-594ea7dd963e","connIndex":1,"location":"arn07","ip":"198.41.192.47","protocol":"quic","time":"2025-09-09T19:06:00Z","message":"Registered tunnel connection"}
+{"level":"info","event":0,"ip":"198.41.200.53","connIndex":2,"time":"2025-09-09T19:06:01Z","message":"Tunnel connection curve preferences: [X25519MLKEM768 CurveP256]"}
+{"level":"info","event":0,"connection":"ac474fa8-1208-45c7-8935-aa1e6c4d4eda","connIndex":2,"location":"hel01","ip":"198.41.200.53","protocol":"quic","time":"2025-09-09T19:06:01Z","message":"Registered tunnel connection"}
+{"level":"info","event":0,"ip":"198.41.192.57","connIndex":3,"time":"2025-09-09T19:06:02Z","message":"Tunnel connection curve preferences: [X25519MLKEM768 CurveP256]"}
+{"level":"info","event":0,"connection":"b1f4d5c5-3fd2-4c8c-9545-9ebfc9766ac4","connIndex":3,"location":"arn06","ip":"198.41.192.57","protocol":"quic","time":"2025-09-09T19:06:02Z","message":"Registered tunnel connection"}

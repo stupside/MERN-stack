@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 
 const Page: NextPage<PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full bg-gray-50`}
       >
         {children}
       </body>
