@@ -48,9 +48,12 @@ const Page: NextPage = () => {
         <h2 className="text-xl font-semibold text-gray-900">Search Movies</h2>
         <Link
           href={`/parties/${params.party}/watchlist`}
-          className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
         >
-          Back to Watchlist
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Back">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Watchlist
         </Link>
       </div>
 

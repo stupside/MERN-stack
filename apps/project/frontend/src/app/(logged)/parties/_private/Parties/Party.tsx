@@ -10,21 +10,21 @@ export const Party: FC<{
   return (
     <Link
       href={`/parties/${party.id}`}
-      className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all cursor-pointer group hover:scale-[1.02]"
+      className="block bg-white rounded-lg border border-gray-200 hover:border-red-200 hover:shadow-md transition-all group p-6"
     >
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center mx-auto">
-          <span className="text-white text-xl font-bold">
+      <div className="flex items-center space-x-4">
+        <div className="w-12 h-12 bg-gradient-to-r from-red-400 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <span className="text-white text-lg font-bold">
             {party.name.charAt(0).toUpperCase()}
           </span>
         </div>
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800 group-hover:text-red-500 transition-colors mb-2">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-600 transition-colors truncate">
             {party.name}
           </h3>
           {party.owner && (
-            <div className="flex items-center justify-center gap-2 text-gray-600 text-sm">
-              <div className="w-5 h-5 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center">
+            <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
+              <div className="w-4 h-4 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-medium">
                   {party.owner.name.charAt(0).toUpperCase()}
                 </span>
@@ -32,6 +32,11 @@ export const Party: FC<{
               <span>Hosted by {party.owner.name}</span>
             </div>
           )}
+        </div>
+        <div className="text-gray-400 group-hover:text-red-500 transition-colors">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Enter party">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </Link>
