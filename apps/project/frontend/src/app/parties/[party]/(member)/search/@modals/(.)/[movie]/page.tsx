@@ -88,7 +88,7 @@ const Page: NextPage<{
                                         </h4>
                                         <div className="flex flex-wrap gap-1">
                                             {movie.data.production.map((company) => (
-                                                <span 
+                                                <span
                                                     key={company.id}
                                                     className="px-2 py-1 bg-gray-200 text-gray-800 text-xs rounded-full"
                                                 >
@@ -107,6 +107,7 @@ const Page: NextPage<{
                                     Add to Watchlist
                                 </button>
                                 <Link
+                                    replace
                                     href={`/parties/${params.party}/search`}
                                     className="block w-full px-4 py-2 text-center text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
                                 >
