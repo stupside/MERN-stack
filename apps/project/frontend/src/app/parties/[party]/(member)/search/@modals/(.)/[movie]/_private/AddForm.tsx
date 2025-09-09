@@ -23,7 +23,7 @@ export const AddForm: FC<{
         <button
             type="submit"
             disabled={isPending}
-            className="w-full px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all font-medium"
+            className="w-full px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all font-medium cursor-pointer"
         >
             {isPending ? "Adding..." : "Add to Watchlist"}
         </button>
