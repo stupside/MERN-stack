@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import type { PropsWithChildren } from "react";
 import { Users } from "./_private/Users";
-import { getPartyById } from "./action";
+import { getPartyById } from "../../../../../core/api";
 
 const Page: NextPage<
   PropsWithChildren<{

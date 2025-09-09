@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type z from "zod";
 import { Movies } from "./_private/Movies";
-import { searchMovies } from "./action";
+import { searchMovies } from "../../../../../../../core/api";
 
 const Page: NextPage = () => {
   const params = useParams() as { party: string };

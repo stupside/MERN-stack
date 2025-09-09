@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { redirect } from "next/navigation";
-import { addMovieToWatchlist } from "../../../../action";
+import { addMovieToWatchlist } from "../../../../../../../../../core/api";
 
 export const AddForm: React.FC<{ party: string; movie: number }> = ({ party, movie }) => {
 

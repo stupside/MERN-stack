@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { getMovieById } from "./action";
+import { getMovieById } from "../../../../../../../core/api";
 import { RemoveForm } from "./_private/RemoveForm";
 
 const Page: NextPage<{

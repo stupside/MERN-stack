@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { getMovieById } from "./action";
+import { getMovieById } from "../../../../../../../../core/api";
 import { AddForm } from "./_private/AddForm";
 
 const Page: NextPage<{
@@ -45,7 +45,7 @@ const Page: NextPage<{
             ← Back to Search
           </Link>
         </div>
-        
+
         <div className="flex flex-col md:flex-row gap-8">
           {movie.data.images?.poster && (
             <div className="flex-shrink-0">
@@ -63,7 +63,7 @@ const Page: NextPage<{
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
               {movie.data.title || "Untitled"}
             </h1>
-            
+
             <div className="space-y-4 mb-8">
               <div className="flex items-center space-x-6 text-lg text-gray-600">
                 {movie.data.release && (
@@ -78,7 +78,7 @@ const Page: NextPage<{
                   </span>
                 )}
               </div>
-              
+
               {movie.data.genres && movie.data.genres.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {movie.data.genres.map((genre: any, index: any) => (
@@ -91,7 +91,7 @@ const Page: NextPage<{
                   ))}
                 </div>
               )}
-              
+
               {movie.data.overview && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Overview</h3>
@@ -100,7 +100,7 @@ const Page: NextPage<{
                   </p>
                 </div>
               )}
-              
+
               {movie.data.production && movie.data.production.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">
@@ -119,7 +119,7 @@ const Page: NextPage<{
                 </div>
               )}
             </div>
-            
+
             <div className="pt-6 border-t border-gray-200">
               <AddForm party={params.party} movie={movie.data.ref} />
             </div>

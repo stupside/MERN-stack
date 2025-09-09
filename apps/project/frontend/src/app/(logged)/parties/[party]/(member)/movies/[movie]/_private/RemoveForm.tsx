@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { redirect } from "next/navigation";
-import { removeMovieFromWatchlist } from "../../../action";
+import { removeMovieFromWatchlist } from "../../../../../../../../core/api";
 
 export const RemoveForm: React.FC<{ party: string; movie: number }> = ({ party, movie }) => {
 

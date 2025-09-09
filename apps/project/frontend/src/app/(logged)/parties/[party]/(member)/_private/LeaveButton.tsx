@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { leaveParty } from "../action";
+import { leaveParty } from "../../../../../../core/api";
 
 export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
   const router = useRouter();

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { getPartyById } from "../action";
+import { getPartyById } from "../../../../../../core/api";
 import { Movies } from "./_private/Movies";
 
 const Page: NextPage<{

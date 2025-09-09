@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { joinParty } from "./action";
+import { joinParty } from "../../../../../../core/api";
 
 const Page: NextPage = () => {
   const [state, dispatch, isPending] = useActionState(

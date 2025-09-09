@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { type FC, useActionState, useEffect } from "react";
-import { createParty } from "../action";
+import { createParty } from "../../../../core/api";
 
 export const CreateForm: FC = () => {
   const [state, dispatch, isPending] = useActionState(

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { CreateForm } from "./_private/CreateForm";
 import { Parties } from "./_private/Parties";
-import { getAllParties } from "./action";
+import { getAllParties } from "../../../core/api";
 
 const Page: NextPage = async () => {
   const parties = await getAllParties();
