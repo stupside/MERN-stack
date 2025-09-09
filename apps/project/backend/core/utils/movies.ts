@@ -1,5 +1,5 @@
 import { request } from "../clients/tmdb";
-import Movie from "../domain/movie";
+import Movie, { _IMovie } from "../domain/movie";
 import { HttpError } from "../errors/http";
 
 export const getMovie = async (id: number) => {
@@ -22,9 +22,15 @@ export const getMovie = async (id: number) => {
     return new Movie({
         ref: movie.data.id,
         title: movie.data.title,
+        rating: movie.data.vote_average,
+        language: movie.data.original_language,
+        genres: movie.data.genres?.map(genre => ({ id: genre.id, name: genre.name })) || [],
+        release: movie.data.release_date,
+        overview: movie.data.overview,
+        production: movie.data.production_companies?.map(company => ({ id: company.id, company: company.name })) || [],
         images: {
-            poster: movie.data.poster_path ? `https://image.tmdb.org/t/p/w500${movie.data.poster_path}` : null,
-            backdrop: movie.data.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.data.backdrop_path}` : null,
+            poster: movie.data.poster_path,
+            backdrop: movie.data.backdrop_path,
         }
-    }).save();
+    } satisfies _IMovie).save();
 }

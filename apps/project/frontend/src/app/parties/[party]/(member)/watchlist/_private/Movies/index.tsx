@@ -7,7 +7,6 @@ export const Movies: FC<{
     movies: z.infer<typeof getPartyByIdResBodySchema>["movies"]
 }> = ({ movies }) => {
     return <div>
-        <h2 className="text-2xl font-light text-gray-800 mb-6">Movies</h2>
         {movies.length === 0 ? (
             <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">No movies yet</p>

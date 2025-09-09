@@ -1,8 +1,8 @@
 "use server";
 
+import { token } from "apps/project/frontend/src/core/auth/service";
 import { type searchMoviesReqBodySchema, searchMoviesResBodySchema } from "libraries/api";
-import type { z } from "zod";
-import { token } from "../../../../../../core/auth/service";
+import { type z } from "zod";
 
 const MOVIES_URL = '/movies';
 

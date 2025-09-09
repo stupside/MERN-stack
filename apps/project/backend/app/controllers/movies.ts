@@ -27,11 +27,16 @@ export const searchMovies = requestHandler({
 
     return res.json(movies.data.results.map(movie => ({
         ref: movie.id,
-        title: movie.title ?? "Untitled",
+        title: movie.title || null,
+        genres: movie.genre_ids?.map(id => ({ id })) || [],
+        rating: movie.vote_average || null,
+        release: movie.release_date || null,
+        overview: movie.overview || null,
         images: {
             poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
             backdrop: movie.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` : null,
-        }
+        },
+        language: movie.original_language || null,
     })));
 });
 
@@ -49,10 +54,16 @@ export const getMovieById = requestHandler({
 
     return res.json({
         ref: movie.ref,
-        title: movie.title,
+        title: movie.title || null,
+        rating: movie.rating || null,
+        genres: movie.genres.map(genre => ({ id: genre.id, name: genre.name || null })),
+        release: movie.release || null,
+        overview: movie.overview || null,
+        language: movie.language || null,
         images: {
-            poster: movie.images.poster,
-            backdrop: movie.images.backdrop,
-        }
+            poster: movie.images.poster ? `https://image.tmdb.org/t/p/w500${movie.images.poster}` : null,
+            backdrop: movie.images.backdrop ? `https://image.tmdb.org/t/p/w500${movie.images.backdrop}` : null,
+        },
+        production: movie.production.map(company => ({ id: company.id, company: company.company || null })),
     });
 });
