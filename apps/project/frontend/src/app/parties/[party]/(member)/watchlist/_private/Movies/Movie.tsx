@@ -42,6 +42,7 @@ export const Movie: FC<{
         release: movie.release,
         language: movie.language,
       }}
+      // href={`/parties/${party}/movies/${movie.id}`}
       actions={<RemoveButton onRemove={dispatch} isLoading={isPending} />}
     />
   );

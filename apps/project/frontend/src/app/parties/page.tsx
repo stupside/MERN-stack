@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { CreateForm } from "./_private/CreateForm";
 import { Parties } from "./_private/Parties";
 import { getAllParties } from "./action";
@@ -16,7 +17,13 @@ const Page: NextPage = async () => {
               Manage your party experiences
             </p>
           </div>
-          <div className="mt-4 sm:mt-0">
+          <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/parties/join"
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors text-center font-medium"
+            >
+              Join Party
+            </Link>
             <CreateForm />
           </div>
         </div>

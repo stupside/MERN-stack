@@ -4,9 +4,14 @@ import type { PropsWithChildren } from "react";
 
 import { token } from "../../core/auth/service";
 
-const Page: NextPage<PropsWithChildren> = async ({ children }) => {
+const Page: NextPage<PropsWithChildren<{
+  modals: React.ReactNode;
+}>> = async ({ children, modals }) => {
   if (await token()) {
-    return <>{children}</>;
+    return <>
+      {modals}
+      {children}
+    </>;
   }
 
   return redirect("/auth/login");
