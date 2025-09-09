@@ -6,6 +6,7 @@ import {
   getAllParties,
   getPartyById,
   joinParty,
+  leaveParty,
   removeMovieFromWatchlist,
 } from "../controllers/parties";
 
@@ -15,5 +16,6 @@ partiesRouter.post("/", createParty);
 partiesRouter.get("/", getAllParties);
 partiesRouter.get("/:id", getPartyById);
 partiesRouter.post("/join", joinParty);
+partiesRouter.delete("/:id/leave", leaveParty);
 partiesRouter.post("/:id/movies/:movie", addMovieToWatchlist);
 partiesRouter.delete("/:id/movies/:movie", removeMovieFromWatchlist);

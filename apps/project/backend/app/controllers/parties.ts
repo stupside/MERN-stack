@@ -7,6 +7,7 @@ import {
   getPartyByIdResBodySchema,
   joinPartyReqBodySchema,
   joinPartyResBodySchema,
+  leavePartyReqParamsSchema,
   removeMovieFromWatchlistReqParamsSchema,
 } from "api/schemas/parties";
 import type { IMovie } from "../../core/domain/movie";
@@ -224,5 +225,33 @@ export const joinParty = requestHandler(
     return res.json({
       id: party.id,
     });
+  },
+);
+
+export const leaveParty = requestHandler(
+  {
+    params: leavePartyReqParamsSchema,
+  },
+  async (req, res, next) => {
+    const party = await Party.findById(req.params.id).populate<{
+      owner: IUser;
+      users: IUser[];
+    }>([
+      { path: "users" },
+    ]);
+    if (!party) {
+      return next(new HttpError(404, "Party not found"));
+    }
+    if (party.owner.id === req.jwt.user.id) {
+      return next(new HttpError(400, "Owner cannot leave the party"));
+    }
+    if (!party.users.find((user) => user.id === req.jwt.user.id)) {
+      return next(new HttpError(400, "User not in party"));
+    }
+
+    party.users = party.users.filter((user) => user.id !== req.jwt.user.id);
+    await party.save();
+
+    return res.json({});
   },
 );
