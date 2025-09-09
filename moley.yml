@@ -1,0 +1,10 @@
+tunnel:
+    id: ddea872e-a67d-4b36-b8b8-714891c31863
+ingress:
+    zone: xonery.dev
+    apps:
+        - target:
+            port: 3001
+            hostname: localhost
+          expose:
+            subdomain: test
