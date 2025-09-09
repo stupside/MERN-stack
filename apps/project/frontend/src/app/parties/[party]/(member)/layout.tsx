@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import type { PropsWithChildren } from "react";
 import { Users } from "./_private/Users";
+import { LeaveButton } from "./_private/LeaveButton";
 import { getPartyById } from "./action";
 
 const Page: NextPage<
@@ -47,6 +48,9 @@ const Page: NextPage<
                 </span>
               </div>
             </div>
+          </div>
+          <div>
+            <LeaveButton partyId={resolvedParams.party} />
           </div>
         </div>
 

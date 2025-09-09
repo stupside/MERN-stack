@@ -4,6 +4,7 @@ import {
   type getPartyByIdReqParamsSchema,
   getPartyByIdResBodySchema,
   type removeMovieFromWatchlistReqParamsSchema,
+  type leavePartyReqParamsSchema,
 } from "libraries/api/schemas/parties";
 import type { z } from "zod";
 import { token } from "../../../../core/auth/service";
@@ -51,6 +52,28 @@ export const removeMovieFromWatchlist = async (
   if (!res.ok) {
     throw new Error(
       `Failed to remove movie ${params.movie} from party ${params.id}: ${res.statusText}`,
+    );
+  }
+
+  return true;
+};
+
+export const leaveParty = async (
+  params: z.infer<typeof leavePartyReqParamsSchema>,
+) => {
+  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/leave`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await token()}`,
+    },
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to leave party ${params.id}: ${res.statusText}`,
     );
   }
 
