@@ -1,12 +1,9 @@
 "use client";
 
 import type { searchMoviesResBodySchema } from "api/schemas/movies";
+import { MoviesGrid, MovieCard } from "apps/project/frontend/src/core/components";
 import type { FC } from "react";
 import type { z } from "zod";
-import {
-  MovieCard,
-  MoviesGrid,
-} from "../../../../../../../core/components/movies";
 
 export const Movies: FC<{
   name?: string;
@@ -30,7 +27,7 @@ export const Movies: FC<{
             release: movie.release,
             language: movie.language,
           }}
-          href={`/parties/${party}/search/${movie.ref}`}
+          href={`/parties/${party}/movies/search/${movie.ref}`}
         />
       )}
       emptyState={{

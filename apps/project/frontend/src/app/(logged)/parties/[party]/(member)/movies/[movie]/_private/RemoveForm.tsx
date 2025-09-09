@@ -1,11 +1,10 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { removeMovieFromWatchlist } from "../../../../../action";
+import { redirect } from "next/navigation";
+import { removeMovieFromWatchlist } from "../../../action";
 
 export const RemoveForm: React.FC<{ party: string; movie: number }> = ({ party, movie }) => {
-  const router = useRouter();
 
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, __: FormData) =>
@@ -18,11 +17,9 @@ export const RemoveForm: React.FC<{ party: string; movie: number }> = ({ party, 
 
   useEffect(() => {
     if (state) {
-      // Close modal and refresh watchlist
-      router.replace(`/parties/${party}/watchlist`);
-      router.refresh();
+      redirect(`/parties/${party}/movies`);
     }
-  }, [state, router, party]);
+  }, [state, party]);
 
   return (
     <form action={dispatch}>

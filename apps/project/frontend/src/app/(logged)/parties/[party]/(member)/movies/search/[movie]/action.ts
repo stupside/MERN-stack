@@ -1,13 +1,17 @@
 "use server";
 
-import { getMovieByIdParamsSchema, getMovieByIdResBodySchema } from "libraries/api/schemas/movies";
+import { token } from "apps/project/frontend/src/core/auth/service";
+import {
+  getMovieByIdParamsSchema,
+  getMovieByIdResBodySchema,
+} from "libraries/api/schemas/movies";
 import type { z } from "zod";
-
-import { token } from "../../../../../../../../../core/auth/service";
 
 const MOVIES_URL = "/movies";
 
-export const getMovieById = async (params: z.infer<typeof getMovieByIdParamsSchema>) => {
+export const getMovieById = async (
+  params: z.infer<typeof getMovieByIdParamsSchema>,
+) => {
   const url = `${process.env.BACKEND_URL}${MOVIES_URL}/${params.id}`;
   const res = await fetch(url, {
     method: "GET",

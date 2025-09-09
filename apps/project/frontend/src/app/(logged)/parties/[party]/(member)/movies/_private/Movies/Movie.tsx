@@ -10,14 +10,14 @@ export const Movie: FC<{
   return (
     <MovieCard
       movie={{
-        id: movie.id,
+        ref: movie.id,
         title: movie.title,
         rating: movie.rating,
         images: movie.images,
         release: movie.release,
         language: movie.language,
       }}
-      href={`/parties/${party}/watchlist/${movie.id}`}
+      href={`/parties/${party}/movies/${movie.id}`}
     />
   );
 };

@@ -5,7 +5,7 @@ const Page: NextPage<{
   params: Promise<{ party: string }>;
 }> = async (props) => {
   const params = await props.params;
-  return redirect(`/parties/${params.party}/watchlist`);
+  return redirect(`/parties/${params.party}/movies`);
 };
 
 export default Page;

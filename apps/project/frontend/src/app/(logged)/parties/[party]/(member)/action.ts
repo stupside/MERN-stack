@@ -4,6 +4,7 @@ import {
   type getPartyByIdReqParamsSchema,
   getPartyByIdResBodySchema,
   type removeMovieFromWatchlistReqParamsSchema,
+  type addMovieToWatchlistReqParamsSchema,
   type leavePartyReqParamsSchema,
 } from "libraries/api/schemas/parties";
 import type { z } from "zod";
@@ -34,6 +35,28 @@ export const getPartyById = async (
   const result = getPartyByIdResBodySchema.safeParse(json);
 
   return result;
+};
+
+export const addMovieToWatchlist = async (
+  params: z.infer<typeof addMovieToWatchlistReqParamsSchema>,
+) => {
+  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/movies/${params.movie}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await token()}`,
+    },
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to add movie ${params.movie} to party ${params.id}: ${res.statusText}`,
+    );
+  }
+
+  return true;
 };
 
 export const removeMovieFromWatchlist = async (
