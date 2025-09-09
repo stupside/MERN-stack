@@ -26,7 +26,7 @@ export const getPartyByIdResBodySchema = z.object({
     })),
     movies: z.array(z.object({
         id: z.string(),
-        title: z.string(),
+        title: z.string().nullable(),
     })),
 });
 
@@ -47,11 +47,11 @@ export const addMovieToPartyReqParamsSchema = z.object({
     id: z.string(),
 });
 
-export const removeMovieFromPartyReqBodySchema = z.object({
+export const removeMovieFromWatchlistReqBodySchema = z.object({
     id: z.number(),
 });
 
-export const removeMovieFromPartyReqParamsSchema = z.object({
+export const removeMovieFromWatchlistReqParamsSchema = z.object({
     id: z.string(),
 });
 

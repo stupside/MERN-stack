@@ -1,4 +1,4 @@
-import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema, addMovieToPartyReqBodySchema, addMovieToPartyReqParamsSchema, removeMovieFromPartyReqBodySchema, removeMovieFromPartyReqParamsSchema } from "api";
+import { createPartyReqBodySchema, createPartyResBodySchema, getPartyByIdReqParamsSchema, getPartyByIdResBodySchema, getAllPartiesResBodySchema, addMovieToPartyReqBodySchema as addMovieToWatchlistReqBodySchema, addMovieToPartyReqParamsSchema as addMovieToWatchlistReqParamsSchema, removeMovieFromPartyReqBodySchema, removeMovieFromPartyReqParamsSchema } from "api";
 
 import Party from "../../core/domain/party";
 import { HttpError } from "../../core/errors/http";
@@ -61,7 +61,7 @@ export const getPartyById = requestHandler({
             return { id: user.id, name: user.name };
         }),
         movies: party.movies.map(movie => {
-            return { id: movie.id, title: movie.title };
+            return { id: movie.id, title: movie.title || null };
         }),
         owner: { id: party.owner.id, name: party.owner.name }
     });
@@ -87,9 +87,9 @@ export const getAllParties = requestHandler({
     })));
 })
 
-export const addMovieToParty = requestHandler({
-    params: addMovieToPartyReqParamsSchema,
-    request: addMovieToPartyReqBodySchema,
+export const addMovieToWatchlist = requestHandler({
+    params: addMovieToWatchlistReqParamsSchema,
+    request: addMovieToWatchlistReqBodySchema,
 }, async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
         movies: IMovie[]
@@ -120,7 +120,7 @@ export const addMovieToParty = requestHandler({
     return res.json({});
 });
 
-export const removeMovieFromParty = requestHandler({
+export const removeMovieFromWatchlist = requestHandler({
     params: removeMovieFromPartyReqParamsSchema,
     request: removeMovieFromPartyReqBodySchema,
 }, async (req, res, next) => {

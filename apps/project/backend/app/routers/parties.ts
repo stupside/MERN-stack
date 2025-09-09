@@ -1,6 +1,6 @@
 import { Router } from "express"
 
-import { createParty, getAllParties, getPartyById, joinParty } from "../controllers/parties";
+import { addMovieToWatchlist, createParty, getAllParties, getPartyById, joinParty, removeMovieFromWatchlist } from "../controllers/parties";
 
 export const partiesRouter = Router();
 
@@ -8,3 +8,5 @@ partiesRouter.post("/", createParty);
 partiesRouter.get("/", getAllParties);
 partiesRouter.get("/:id", getPartyById);
 partiesRouter.post("/join", joinParty);
+partiesRouter.post("/:id/watchlist", addMovieToWatchlist);
+partiesRouter.delete("/:id/watchlist", removeMovieFromWatchlist);

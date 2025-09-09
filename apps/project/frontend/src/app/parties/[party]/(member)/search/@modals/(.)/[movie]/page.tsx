@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { getMovieById } from "./action";
+import { AddForm } from "./_private/AddForm";
 
 const Page: NextPage<{
     params: Promise<{ party: string; movie: string }>;
@@ -100,12 +101,7 @@ const Page: NextPage<{
                                 )}
                             </div>
                             <div className="space-y-3">
-                                <button
-                                    type="button"
-                                    className="w-full px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-lg transition-all font-medium"
-                                >
-                                    Add to Watchlist
-                                </button>
+                                <AddForm party={params.party} movie={movie.data.ref} />
                                 <Link
                                     replace
                                     href={`/parties/${params.party}/search`}
