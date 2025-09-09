@@ -1,15 +1,15 @@
 {
-    "type": "module",
-    "name": "03-express",
-    "packageManager": "yarn@4.9.4",
-    "scripts": {
-        "dev": "yarn dlx tsx watch main.ts",
-        "build": "yarn dlx tsc",
-        "start": "node dist/main.js"
-    },
-    "dependencies": {
-        "colors": "1.4.0",
-        "dotenv": "^17.2.2",
-        "express": "^5.1.0"
-    }
+  "type": "module",
+  "name": "03-express",
+  "packageManager": "yarn@4.9.4",
+  "scripts": {
+    "dev": "yarn dlx tsx watch main.ts",
+    "build": "yarn dlx tsc",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "colors": "1.4.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  }
 }

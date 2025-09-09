@@ -1,50 +1,48 @@
 "use client";
 
 import type { getPartyByIdResBodySchema } from "api/schemas/parties";
-import type { FC } from "react";
-import type z from "zod";
-import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MovieCard, RemoveButton } from "../../../../../../../core/components/movies";
+import type { FC } from "react";
+import { useActionState, useEffect } from "react";
+import type z from "zod";
+import {
+  MovieCard,
+  RemoveButton,
+} from "../../../../../../../core/components/movies";
 import { removeMovieFromWatchlist } from "../../../action";
 
 export const Movie: FC<{
-    movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number];
-    party: string;
+  movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number];
+  party: string;
 }> = ({ movie, party }) => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const [state, dispatch, isPending] = useActionState(
-        async (_: unknown, __: FormData) =>
-            removeMovieFromWatchlist({
-                id: party,
-                movie: movie.id,
-            }),
-        false
-    );
+  const [state, dispatch, isPending] = useActionState(
+    async (_: unknown, __: FormData) =>
+      removeMovieFromWatchlist({
+        id: party,
+        movie: movie.id,
+      }),
+    false,
+  );
 
-    useEffect(() => {
-        if (state) {
-            router.refresh();
-        }
-    }, [state, router]);
+  useEffect(() => {
+    if (state) {
+      router.refresh();
+    }
+  }, [state, router]);
 
-    return (
-        <MovieCard
-            movie={{
-                id: movie.id,
-                title: movie.title,
-                rating: movie.rating,
-                images: movie.images,
-                release: movie.release,
-                language: movie.language,
-            }}
-            actions={
-                <RemoveButton
-                    onRemove={dispatch}
-                    isLoading={isPending}
-                />
-            }
-        />
-    );
+  return (
+    <MovieCard
+      movie={{
+        id: movie.id,
+        title: movie.title,
+        rating: movie.rating,
+        images: movie.images,
+        release: movie.release,
+        language: movie.language,
+      }}
+      actions={<RemoveButton onRemove={dispatch} isLoading={isPending} />}
+    />
+  );
 };

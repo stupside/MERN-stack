@@ -1,24 +1,24 @@
 import { z } from "zod";
 
 export const myUserInfoResBodySchema = z.object({
-    id: z.string(),
-    name: z.string(),
+  id: z.string(),
+  name: z.string(),
 });
 
 export const loginUserReqBodySchema = z.object({
-    name: z.string().min(2).max(100),
-    password: z.string().min(6).max(100),
+  name: z.string().min(2).max(100),
+  password: z.string().min(6).max(100),
 });
 
 export const loginUserResBodySchema = z.object({
-    token: z.string(),
+  token: z.string(),
 });
 
 export const registerNewUserReqBodySchema = z.object({
-    name: z.string().min(2).max(100),
-    password: z.string().min(6).max(100),
+  name: z.string().min(2).max(100),
+  password: z.string().min(6).max(100),
 });
 
 export const registerNewUserResBodySchema = z.object({
-    id: z.string(),
+  id: z.string(),
 });

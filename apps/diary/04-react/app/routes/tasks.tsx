@@ -1,23 +1,23 @@
+import { type FC, useState } from "react";
+import Tasks from "~/components/Tasks";
+import type { TaskType } from "~/components/Tasks/Task";
 import type { Route } from "./+types/tasks";
 
-import { useState, type FC } from "react";
-import type { TaskType } from "~/components/Tasks/Task";
-import Tasks from "~/components/Tasks";
-
 export const loader = async (_: Route.LoaderArgs) => {
-  const tasks = await fetch("http://localhost:5000/tasks").then((res) => res.json());
+  const tasks = await fetch("http://localhost:5000/tasks").then((res) =>
+    res.json(),
+  );
   return { tasks: tasks as TaskType[] };
-}
+};
 
 export const meta = (_: Route.MetaArgs) => {
   return [
     { title: "Task List" },
     { name: "description", content: "A list of tasks" },
   ];
-}
+};
 
 const Page: FC<Route.ComponentProps> = ({ loaderData }) => {
-
   const [tasks, setTasks] = useState<TaskType[]>(loaderData.tasks);
 
   const deleteTask = async (id: string) => {
@@ -32,7 +32,6 @@ const Page: FC<Route.ComponentProps> = ({ loaderData }) => {
   };
 
   const remindTask = async (id: string) => {
-
     const task = await getTask(id);
     if (!task) return;
 
@@ -46,8 +45,8 @@ const Page: FC<Route.ComponentProps> = ({ loaderData }) => {
 
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, remind: !task.remind } : task
-      )
+        task.id === id ? { ...task, remind: !task.remind } : task,
+      ),
     );
   };
 
@@ -63,10 +62,17 @@ const Page: FC<Route.ComponentProps> = ({ loaderData }) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
-  return <>
-    <h1>Welcome to the Home Page</h1>
-    <Tasks tasks={tasks} onDelete={deleteTask} onRemind={remindTask} onAdd={addTask} />
-  </>;
-}
+  return (
+    <>
+      <h1>Welcome to the Home Page</h1>
+      <Tasks
+        tasks={tasks}
+        onDelete={deleteTask}
+        onRemind={remindTask}
+        onAdd={addTask}
+      />
+    </>
+  );
+};
 
 export default Page;

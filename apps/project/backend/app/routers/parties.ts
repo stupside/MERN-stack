@@ -1,6 +1,13 @@
-import { Router } from "express"
+import { Router } from "express";
 
-import { addMovieToWatchlist, createParty, getAllParties, getPartyById, joinParty, removeMovieFromWatchlist } from "../controllers/parties";
+import {
+  addMovieToWatchlist,
+  createParty,
+  getAllParties,
+  getPartyById,
+  joinParty,
+  removeMovieFromWatchlist,
+} from "../controllers/parties";
 
 export const partiesRouter = Router();
 
