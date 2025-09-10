@@ -17,7 +17,7 @@ export const AddForm: React.FC<{ party: string; movie: number }> = ({ party, mov
 
   useEffect(() => {
     if (state) {
-      redirect(`/parties/${party}/watchlist`);
+      redirect(`/parties/${party}/movies/search`);
     }
   }, [state, party]);
 
