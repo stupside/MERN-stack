@@ -1,5 +1,6 @@
-import type { NextPage } from "next";
 import type { PropsWithChildren } from "react";
+import type { NextPage } from "next";
+
 import { Users } from "./_private/Users";
 import { getPartyById } from "../../../../../core/api";
 
@@ -51,7 +52,11 @@ const Page: NextPage<
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">{children}</div>
           <div className="lg:col-span-1">
-            <Users users={party.data.users} code={party.data.code} partyId={resolvedParams.party} />
+            <Users
+              users={party.data.users}
+              code={party.data.code}
+              partyId={resolvedParams.party}
+            />
           </div>
         </div>
       </div>

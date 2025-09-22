@@ -24,7 +24,9 @@ export const Users: FC<{
       <div className="bg-white rounded-lg border border-gray-200 p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-900">Invite Code</span>
+            <span className="text-sm font-medium text-gray-900">
+              Invite Code
+            </span>
             <button
               type="button"
               onClick={handleCopyCode}
@@ -46,7 +48,7 @@ export const Users: FC<{
           </h3>
           <LeaveButton partyId={partyId} />
         </div>
-        
+
         {users.length === 0 ? (
           <p className="text-xs text-gray-500 bg-gray-50 rounded-lg p-3">
             Share the invite code to add members
@@ -63,7 +65,9 @@ export const Users: FC<{
                     {user.name.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <span className="text-sm text-gray-800 leading-none">{user.name}</span>
+                <span className="text-sm text-gray-800 leading-none">
+                  {user.name}
+                </span>
               </div>
             ))}
           </div>

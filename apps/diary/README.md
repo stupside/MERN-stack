@@ -89,8 +89,22 @@ I also added some validations using zod library.
 
 This crash cours is about calling the backend we made during the EP-2. I used this course to help me build my project using React. I will bootstrap the projet with NextJS.
 
-One of the first steps was to know what page i would like to have in my application, and get a better idea of what the UX would looks like. Basicily the project will allow users to select a movie from a movie list, and then start a party. The party is shared to another user. The video player is in sync between every users. This allows people to watch movies together, in sync.
+One of the first steps was to know what page i would like to have in my application, and get a better idea of what the UX would looks like. Basicily the project will allow users to select a movie from a movie list, and then start a party. The party is shared to another user. The video player is in sync between every users. This allows people to watch movies together.
 
-This crash course will help me understand how React works. I wont be using Redux but might use something like Zustand instead or not. To store the auth token, instead of storing it in the localstorage, i will use NextJS actions, and use the token on server side only and store it secruly in an encrypted cookie.
+This crash course helped me understand how React works but also the popular library Redux. To store the auth token, instead of storing it in the localstorage, i will use NextJS actions, and use the token on server side only and store it secruly in an encrypted cookie.
 
-I also had to prepare the frontend to be able to call my api. I wanted the body schemas and responses to be accessible from the frontend for better input validation and type safety. To do so, i used yarn's workspace to make a shared package in libraries/api. I will use this package in both my frontend and my backend.
+I also had to prepare the frontend to be able to call my api. I wanted the body schemas and responses to be accessible from the frontend for better input validation and type safety. To do so, i used yarn's workspace to make a shared package in libraries/api. I will use this package in both my frontend and my backend. After that i was able to call my backend and started implementing the frontend.
+
+To have a better idea of how the frontned could look like, i decided to draw a little mockup on Excalidraw.
+
+# Course EP-4 5 September
+
+This video is highly focused on using redux toolkit to interact with our backend. I did not use Redux in the project but i used the fetch API and learned Next's server side rendering. This allowed me to make the page loading a little bit more efficient by doing the requests on server side, and let nextjs construct the html page and send it to the client directly. This allows a smaller footprint.
+
+# From 5 september to 11 september
+
+I worked on the project fulltime to make it work as intended. I played a lot with React and Nextjs and i loved it. I also had to make some adjustments to the backend for exemple adding routes, connecting the backend to TMDB to get movie informations for exemple. The commit history follows the real progress of my work.
+
+# Usage of AI
+
+I used claude code for the frontend. I don't like doing css and styling, i'm really bad at designing stuff. So for every pages, i wrote the business logic, and wrote the pages, without any style. Once i implemented the communication with the backend to get the data i need for every pages, i prompted to make the UI better looking.

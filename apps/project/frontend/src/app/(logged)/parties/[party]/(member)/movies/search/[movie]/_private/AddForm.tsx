@@ -4,15 +4,17 @@ import { useActionState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { addMovieToWatchlist } from "../../../../../../../../../core/api";
 
-export const AddForm: React.FC<{ party: string; movie: number }> = ({ party, movie }) => {
-
+export const AddForm: React.FC<{ party: string; movie: number }> = ({
+  party,
+  movie,
+}) => {
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, __: FormData) =>
       addMovieToWatchlist({
         id: party,
-        movie: movie
+        movie: movie,
       }),
-    false
+    false,
   );
 
   useEffect(() => {

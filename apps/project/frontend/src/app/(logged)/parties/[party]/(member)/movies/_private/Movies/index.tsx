@@ -17,8 +17,19 @@ export const Movies: FC<{
     >
       <div className="w-full h-full flex items-center justify-center text-gray-500 group-hover:text-red-500 transition-colors">
         {/** biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Add movie">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-label="Add movie"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
         </svg>
       </div>
     </Link>
@@ -36,8 +47,8 @@ export const Movies: FC<{
           subtitle: "Add some movies to your watchlist",
           action: {
             href: searchHref,
-            label: "Search Movies"
-          }
+            label: "Search Movies",
+          },
         }}
       />
     );
@@ -45,16 +56,16 @@ export const Movies: FC<{
 
   return (
     <MoviesGrid
-      movies={[...movies, { id: 'add-movie', isAddCard: true }]}
+      movies={[...movies, { id: "add-movie", isAddCard: true }]}
       renderMovie={(movie) => {
-        if ('isAddCard' in movie) {
+        if ("isAddCard" in movie) {
           return <AddMovieCard key="add-movie" />;
         }
         return <Movie key={movie.id} movie={movie} party={party} />;
       }}
       emptyState={{
         title: "No movies yet",
-        subtitle: "Add some movies to your watchlist"
+        subtitle: "Add some movies to your watchlist",
       }}
     />
   );

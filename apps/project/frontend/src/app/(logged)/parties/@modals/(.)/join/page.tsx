@@ -29,7 +29,9 @@ const Page: NextPage = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Join a party
             </h2>
-            <p className="text-gray-600 text-sm">Enter the party code to join</p>
+            <p className="text-gray-600 text-sm">
+              Enter the party code to join
+            </p>
           </div>
           <form action={dispatch} className="space-y-5">
             <div>
@@ -53,7 +55,9 @@ const Page: NextPage = () => {
               <p className="text-red-500 text-sm">Joining party...</p>
             )}
             {state?.error && (
-              <p className="text-red-500 text-sm">Error: {state.error.message}</p>
+              <p className="text-red-500 text-sm">
+                Error: {state.error.message}
+              </p>
             )}
           </div>
           <div className="mt-6">

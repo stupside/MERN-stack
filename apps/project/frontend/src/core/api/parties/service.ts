@@ -164,9 +164,7 @@ export const leaveParty = async (
   });
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to leave party ${params.id}: ${res.statusText}`,
-    );
+    throw new Error(`Failed to leave party ${params.id}: ${res.statusText}`);
   }
 
   return true;

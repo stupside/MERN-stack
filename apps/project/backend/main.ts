@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+
 import authMiddleware from "./app/middlewares/auth";
 import errorMiddleware from "./app/middlewares/error";
 import loggerMiddleware from "./app/middlewares/logger";

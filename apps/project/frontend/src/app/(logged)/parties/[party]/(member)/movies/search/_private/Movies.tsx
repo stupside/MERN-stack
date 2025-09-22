@@ -1,7 +1,10 @@
 "use client";
 
 import type { searchMoviesResBodySchema } from "api/schemas/movies";
-import { MoviesGrid, MovieCard } from "apps/project/frontend/src/core/components";
+import {
+  MoviesGrid,
+  MovieCard,
+} from "apps/project/frontend/src/core/components";
 import type { FC } from "react";
 import type { z } from "zod";
 

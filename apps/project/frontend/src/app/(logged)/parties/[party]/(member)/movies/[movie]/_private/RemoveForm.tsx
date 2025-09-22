@@ -4,15 +4,17 @@ import { useActionState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { removeMovieFromWatchlist } from "../../../../../../../../core/api";
 
-export const RemoveForm: React.FC<{ party: string; movie: number }> = ({ party, movie }) => {
-
+export const RemoveForm: React.FC<{ party: string; movie: number }> = ({
+  party,
+  movie,
+}) => {
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, __: FormData) =>
       removeMovieFromWatchlist({
         id: party,
-        movie: movie
+        movie: movie,
       }),
-    false
+    false,
   );
 
   useEffect(() => {

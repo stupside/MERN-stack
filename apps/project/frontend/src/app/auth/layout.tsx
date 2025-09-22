@@ -15,7 +15,9 @@ const Layout: NextPage<PropsWithChildren> = ({ children }) => {
             <div className="w-16 h-16 bg-white/40 rounded-full"></div>
           </div>
           <h2 className="text-2xl font-light mb-2">Welcome to MovieParty</h2>
-          <p className="text-white/80 text-sm">Create and join movie watching parties</p>
+          <p className="text-white/80 text-sm">
+            Create and join movie watching parties
+          </p>
         </div>
       </div>
     </div>

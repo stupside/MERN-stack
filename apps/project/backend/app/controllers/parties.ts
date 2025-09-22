@@ -236,9 +236,7 @@ export const leaveParty = requestHandler(
     const party = await Party.findById(req.params.id).populate<{
       owner: IUser;
       users: IUser[];
-    }>([
-      { path: "users" },
-    ]);
+    }>([{ path: "users" }]);
     if (!party) {
       return next(new HttpError(404, "Party not found"));
     }

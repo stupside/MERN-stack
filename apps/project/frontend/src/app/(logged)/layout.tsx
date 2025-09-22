@@ -5,11 +5,12 @@ import type { PropsWithChildren } from "react";
 import { info as getUserInfo, token } from "../../core/auth/service";
 import Me from "./parties/_private/Me";
 
-const Page: NextPage<PropsWithChildren<{
-  modals: React.ReactNode;
-}>> = async ({ children, modals }) => {
+const Page: NextPage<
+  PropsWithChildren<{
+    modals: React.ReactNode;
+  }>
+> = async ({ children, modals }) => {
   if (await token()) {
-
     const info = await getUserInfo();
     if (info.error) {
       throw new Error(`Failed to fetch user info: ${info.error}`);
@@ -23,9 +24,7 @@ const Page: NextPage<PropsWithChildren<{
         <header>
           <Me user={info.data} />
         </header>
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
         {modals}
       </div>
     );

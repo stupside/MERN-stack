@@ -89,10 +89,12 @@ const Page: NextPage<{
                 <div className="flex flex-wrap gap-2">
                   {movie.data.genres.map((genre, index) => (
                     <span
-                      key={typeof genre === 'string' ? genre : genre.id || index}
+                      key={
+                        typeof genre === "string" ? genre : genre.id || index
+                      }
                       className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
                     >
-                      {typeof genre === 'string' ? genre : genre.name}
+                      {typeof genre === "string" ? genre : genre.name}
                     </span>
                   ))}
                 </div>
@@ -100,7 +102,9 @@ const Page: NextPage<{
 
               {movie.data.overview && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Overview</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Overview
+                  </h3>
                   <p className="text-gray-600 leading-relaxed">
                     {movie.data.overview}
                   </p>
