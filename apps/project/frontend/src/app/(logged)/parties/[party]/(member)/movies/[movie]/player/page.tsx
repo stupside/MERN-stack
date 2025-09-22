@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { Player } from "./_private/Player";
 
 const Page: NextPage<{
@@ -7,7 +7,7 @@ const Page: NextPage<{
   return (
     <Player
       manifest={
-        "https://live-hls-abr-cdn.livepush.io/live/bigbuckbunnyclip/index.m3u8"
+        "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
       }
     />
   );

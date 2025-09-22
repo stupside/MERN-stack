@@ -1,37 +1,58 @@
 "use client";
 
-import Hls from "hls.js";
-import { type FC, useEffect, useRef } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
+
+import videojs from "video.js";
+
+import type { default as VideoJS } from "video.js/dist/types/player";
+import "video.js/dist/video-js.min.css";
 
 export const Player: FC<{
   manifest: string;
 }> = ({ manifest }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const [videoJS, setVideoJS] = useState<VideoJS>();
+
   useEffect(() => {
     if (!videoRef.current) {
       return;
     }
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(manifest);
-      hls.attachMedia(videoRef.current);
-      return () => {
-        hls.destroy();
-      };
+    const player = videojs(videoRef.current, {
+      controls: true,
+      preload: "auto",
+      fluid: true,
+      responsive: true,
+    });
+
+    setVideoJS(player);
+  }, []);
+
+  useEffect(() => {
+    if (!videoJS) {
+      return;
     }
-  }, [manifest]);
+
+    videoJS.src({
+      src: manifest,
+      type: "application/x-mpegURL",
+    });
+
+    return () => {
+      videoJS.dispose();
+      setVideoJS(undefined);
+    }
+  }, [manifest, videoJS]);
 
   return (
-    <video
-      title="Movie Player"
-      ref={videoRef}
-      controls
-      className="w-full h-full bg-black"
-      autoPlay
-      playsInline
-    >
-      <track kind="captions" />
-    </video>
+    <>
+      {/** biome-ignore lint/a11y/useMediaCaption: ignore */}
+      <video
+        ref={videoRef}
+        className="video-js vjs-default-skin"
+        playsInline
+      />
+
+    </>
   );
 };
