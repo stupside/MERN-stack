@@ -9,9 +9,9 @@ import argon2 from "argon2";
 import { generateToken } from "../../core/auth/payload";
 import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
-import { requestHandler } from "../../core/express/handler";
+import { createHandler } from "../../core/express/handler";
 
-export const myUserInfo = requestHandler(
+export const myUserInfo = createHandler(
   {
     result: myUserInfoResBodySchema,
   },
@@ -25,9 +25,9 @@ export const myUserInfo = requestHandler(
   },
 );
 
-export const loginUser = requestHandler(
+export const loginUser = createHandler(
   {
-    request: loginUserReqBodySchema,
+    body: loginUserReqBodySchema,
     result: loginUserResBodySchema,
   },
   async (req, res, next) => {
@@ -46,9 +46,9 @@ export const loginUser = requestHandler(
   },
 );
 
-export const registerUser = requestHandler(
+export const registerUser = createHandler(
   {
-    request: registerNewUserReqBodySchema,
+    body: registerNewUserReqBodySchema,
     result: registerNewUserResBodySchema,
   },
   async (req, res) => {

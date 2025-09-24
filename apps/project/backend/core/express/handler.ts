@@ -1,56 +1,36 @@
 import type { RequestHandler } from "express";
-import z from "zod";
+import type { z } from "zod";
 
-import { HttpError } from "../errors/http";
+export interface Schema {
+    body?: z.ZodTypeAny;
+    query?: z.ZodTypeAny;
+    result?: z.ZodTypeAny;
+    params?: z.ZodTypeAny;
+}
 
-export const requestHandler = <
-  TQuery extends z.ZodTypeAny,
-  TParams extends z.ZodTypeAny,
-  TResBody extends z.ZodTypeAny,
-  TReqBody extends z.ZodTypeAny,
->(
-  params: {
-    query?: TQuery;
-    params?: TParams;
-    result?: TResBody;
-    request?: TReqBody;
-  },
-  handler: RequestHandler<
-    z.infer<TParams>,
-    z.infer<TResBody>,
-    z.infer<TReqBody>,
-    z.infer<TQuery>
-  >,
-) => {
-  const handle: RequestHandler<
-    z.infer<TParams>,
-    z.infer<TResBody>,
-    z.infer<TReqBody>,
-    z.infer<TQuery>
-  > = async (req, res, next) => {
-    try {
-      if (params.query) {
-        req.query = params.query.parse(req.query);
-      }
-      if (params.request) {
-        req.body = params.request.parse(req.body);
-      }
-      if (params.params) {
-        req.params = params.params.parse(req.params);
-      }
-      return handler(req, res, next);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        return next(
-          new HttpError(
-            400,
-            JSON.stringify({ cause: err.cause, issues: err.issues }),
-          ),
-        );
-      }
-      return next(err);
-    }
-  };
+export type SchemaHandler<TSchema extends Schema> = RequestHandler<
+    TSchema['params'] extends z.ZodTypeAny ? z.infer<TSchema['params']> : undefined,
+    TSchema['result'] extends z.ZodTypeAny ? z.infer<TSchema['result']> : undefined,
+    TSchema['body'] extends z.ZodTypeAny ? z.infer<TSchema['body']> : undefined,
+    TSchema['query'] extends z.ZodTypeAny ? z.infer<TSchema['query']> : undefined
+>;
 
-  return handle;
-};
+// Just validate, don't infer
+function validate<TSchema extends Schema>(schema: TSchema): SchemaHandler<TSchema> {
+    return async (req, _, next) => {
+        try {
+            if (schema.body) await schema.body.parseAsync(req.body);
+            if (schema.query) await schema.query.parseAsync(req.query);
+            if (schema.params) await schema.params.parseAsync(req.params);
+            return next();
+        } catch (error) {
+            return next(error);
+        }
+    };
+}
+
+// Helper type for manual typing
+export const createHandler = <TSchema extends Schema>(
+    schema: TSchema,
+    handler: SchemaHandler<TSchema>,
+): [SchemaHandler<TSchema>, SchemaHandler<TSchema>] => [validate(schema), handler];

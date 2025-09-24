@@ -1,6 +1,7 @@
 import type { ErrorRequestHandler } from "express";
 
 import { HttpError } from "../../core/errors/http";
+import { ZodError } from "zod";
 
 const errorMiddleware: ErrorRequestHandler = (err, req, res, __) => {
   console.error(
@@ -11,6 +12,13 @@ const errorMiddleware: ErrorRequestHandler = (err, req, res, __) => {
   if (err instanceof HttpError) {
     return res.status(err.status).send({
       error: err.message,
+    });
+  }
+
+  if (err instanceof ZodError) {
+    return res.status(400).send({
+      error: "Validation error",
+      details: err.issues,
     });
   }
 

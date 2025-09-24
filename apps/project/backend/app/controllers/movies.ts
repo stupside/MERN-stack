@@ -7,56 +7,51 @@ import {
 
 import { request } from "../../core/clients/tmdb";
 import { HttpError } from "../../core/errors/http";
-import { requestHandler } from "../../core/express/handler";
+import { createHandler } from "../../core/express/handler";
 import { getMovie } from "../../core/utils/movies";
 
-export const searchMovies = requestHandler(
-  {
-    request: searchMoviesReqBodySchema,
-    result: searchMoviesResBodySchema,
-  },
-  async (req, res, next) => {
-    const movies = await request((client) =>
-      client.GET("/3/search/movie", {
-        params: {
-          query: {
-            query: req.body.name,
-          },
+export const searchMovies = createHandler({ body: searchMoviesReqBodySchema, result: searchMoviesResBodySchema }, async (req, res, next) => {
+  const movies = await request((client) =>
+    client.GET("/3/search/movie", {
+      params: {
+        query: {
+          query: req.body.name,
         },
-      }),
+      },
+    }),
+  );
+  if (movies.error) {
+    return next(
+      new HttpError(502, `Failed to fetch movies: ${JSON.stringify(movies)}`),
     );
-    if (movies.error) {
-      return next(
-        new HttpError(502, `Failed to fetch movies: ${JSON.stringify(movies)}`),
-      );
-    }
-    if (!movies.data.results) {
-      return next(new HttpError(500, "Malformed response from TMDB"));
-    }
+  }
+  if (!movies.data.results) {
+    return next(new HttpError(500, "Malformed response from TMDB"));
+  }
 
-    return res.json(
-      movies.data.results.map((movie) => ({
-        ref: movie.id,
-        title: movie.title || null,
-        genres: movie.genre_ids?.map((id) => ({ id })) || [],
-        rating: movie.vote_average || null,
-        release: movie.release_date || null,
-        overview: movie.overview || null,
-        images: {
-          poster: movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : null,
-          backdrop: movie.backdrop_path
-            ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-            : null,
-        },
-        language: movie.original_language || null,
-      })),
-    );
-  },
-);
+  return res.json(
+    movies.data.results.map((movie) => ({
+      ref: movie.id,
+      title: movie.title || null,
+      genres: movie.genre_ids?.map((id) => ({ id })) || [],
+      rating: movie.vote_average || null,
+      release: movie.release_date || null,
+      overview: movie.overview || null,
+      images: {
+        poster: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : null,
+        backdrop: movie.backdrop_path
+          ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+          : null,
+      },
+      language: movie.original_language || null,
+    })),
+  );
+});
 
-export const getMovieById = requestHandler(
+
+export const getMovieById = createHandler(
   {
     params: getMovieByIdParamsSchema,
     result: getMovieByIdResBodySchema,

@@ -7,6 +7,7 @@ import {
   getMovieByIdResBodySchema,
 } from "libraries/api/schemas/movies";
 import { token } from "../../auth/service";
+
 import type { z } from "zod";
 
 const MOVIES_URL = "/movies";

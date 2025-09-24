@@ -14,12 +14,12 @@ import type { IMovie } from "../../core/domain/movie";
 import Party from "../../core/domain/party";
 import User, { type IUser } from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
-import { requestHandler } from "../../core/express/handler";
+import { createHandler } from "../../core/express/handler";
 import { getMovie } from "../../core/utils/movies";
 
-export const createParty = requestHandler(
+export const createParty = createHandler(
   {
-    request: createPartyReqBodySchema,
+    body: createPartyReqBodySchema,
     result: createPartyResBodySchema,
   },
   async (req, res) => {
@@ -42,10 +42,10 @@ export const createParty = requestHandler(
   },
 );
 
-export const getPartyById = requestHandler(
+export const getPartyById = createHandler(
   {
-    params: getPartyByIdReqParamsSchema,
     result: getPartyByIdResBodySchema,
+    params: getPartyByIdReqParamsSchema,
   },
   async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
@@ -98,7 +98,7 @@ export const getPartyById = requestHandler(
   },
 );
 
-export const getAllParties = requestHandler(
+export const getAllParties = createHandler(
   {
     result: getAllPartiesResBodySchema,
   },
@@ -123,7 +123,7 @@ export const getAllParties = requestHandler(
   },
 );
 
-export const addMovieToWatchlist = requestHandler(
+export const addMovieToWatchlist = createHandler(
   {
     params: addMovieToWatchlistReqParamsSchema,
   },
@@ -154,11 +154,11 @@ export const addMovieToWatchlist = requestHandler(
     party.movies.push(movie);
     await party.save();
 
-    return res.json({});
+    return res.json();
   },
 );
 
-export const removeMovieFromWatchlist = requestHandler(
+export const removeMovieFromWatchlist = createHandler(
   {
     params: removeMovieFromWatchlistReqParamsSchema,
   },
@@ -183,14 +183,14 @@ export const removeMovieFromWatchlist = requestHandler(
     );
     await party.save();
 
-    return res.json({});
+    return res.json();
   },
 );
 
-export const joinParty = requestHandler(
+export const joinParty = createHandler(
   {
+    body: joinPartyReqBodySchema,
     result: joinPartyResBodySchema,
-    request: joinPartyReqBodySchema,
   },
   async (req, res, next) => {
     const party = await Party.findOne({ code: req.body.code }).populate<{
@@ -228,7 +228,7 @@ export const joinParty = requestHandler(
   },
 );
 
-export const leaveParty = requestHandler(
+export const leaveParty = createHandler(
   {
     params: leavePartyReqParamsSchema,
   },
@@ -250,6 +250,6 @@ export const leaveParty = requestHandler(
     party.users = party.users.filter((user) => user.id !== req.jwt.user.id);
     await party.save();
 
-    return res.json({});
+    return res.json();
   },
 );
