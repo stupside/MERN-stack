@@ -13,22 +13,36 @@ declare global {
 }
 
 const authMiddleware: RequestHandler = async (req, _, next) => {
-  const authorization = req.headers.authorization;
+  const authorization = req.headers.authorization || req.query.token;
   if (!authorization) {
     return next(new HttpError(401, "Unauthorized"));
   }
 
-  const [kind, token] = authorization.split(" ");
+  if (typeof authorization !== "string") {
+    return next(new HttpError(401, "Unauthorized"));
+  }
 
-  if (kind === "Bearer" && token) {
+  if (authorization.startsWith("Bearer")) {
+    const [_, token] = authorization.split(" ");
+
+    if (!token) {
+      return next(new HttpError(401, "Unauthorized"));
+    }
+
     try {
-      const payload = await verifyToken(token);
-      req.jwt = payload;
-      return next();
+      req.jwt = await verifyToken(token);
     } catch {
       return next(new HttpError(401, "Unauthorized"));
     }
+    return next();
   }
+
+  try {
+    req.jwt = await verifyToken(authorization);
+  } catch {
+    return next(new HttpError(401, "Unauthorized"));
+  }
+  return next();
 };
 
 export default authMiddleware;
