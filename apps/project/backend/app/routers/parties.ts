@@ -9,8 +9,10 @@ import {
   leaveParty,
   removeMovieFromWatchlist,
 } from "../controllers/parties";
+import authMiddleware from "../middlewares/auth";
 
 export const partiesRouter = Router();
+partiesRouter.use(authMiddleware);
 
 partiesRouter.post("/", ...createParty);
 partiesRouter.get("/", ...getAllParties);

@@ -14,3 +14,9 @@ export {
   searchMovies,
   getMovieById,
 } from "./movies/service";
+
+// Players API
+export {
+  controlPlayer,
+  dispatchEvent,
+} from "./players/service";

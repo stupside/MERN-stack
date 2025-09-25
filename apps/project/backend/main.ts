@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import express from "express";
 
-import authMiddleware from "./app/middlewares/auth";
 import errorMiddleware from "./app/middlewares/error";
 import loggerMiddleware from "./app/middlewares/logger";
 import { moviesRouter } from "./app/routers/movies";
 import { partiesRouter } from "./app/routers/parties";
+import { playersRouter } from "./app/routers/players";
 import { usersRouter } from "./app/routers/users";
 import { connect } from "./core/database/connect";
 
@@ -22,8 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 const api = express.Router();
 
 api.use("/users", usersRouter);
-api.use("/movies", authMiddleware, moviesRouter);
-api.use("/parties", authMiddleware, partiesRouter);
+api.use("/movies", moviesRouter);
+api.use("/parties", partiesRouter);
+api.use("/players", playersRouter);
 
 api.get("/health", (_, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
