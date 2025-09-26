@@ -16,6 +16,4 @@ export {
 } from "./movies/service";
 
 // Players API
-export {
-  dispatchEvent,
-} from "./players/service";
+export { dispatchEvent } from "./players/service";

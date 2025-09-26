@@ -1,172 +1,122 @@
 "use server";
 
 import {
-  type createPartyReqBodySchema,
-  createPartyResBodySchema,
-  getAllPartiesResBodySchema,
-  type getPartyByIdReqParamsSchema,
-  getPartyByIdResBodySchema,
-  type addMovieToWatchlistReqParamsSchema,
-  type removeMovieFromWatchlistReqParamsSchema,
-  type joinPartyReqBodySchema,
-  joinPartyResBodySchema,
-  type leavePartyReqParamsSchema,
+  createPartySchema,
+  getAllPartiesSchema,
+  getPartyByIdSchema,
+  addMovieToWatchlistSchema,
+  removeMovieFromWatchlistSchema,
+  joinPartySchema,
+  leavePartySchema,
 } from "libraries/api/schemas/parties";
-
-import type { z } from "zod";
+import { makeRequest } from "libraries/api/request";
 import { token } from "../../auth/service";
 
-const PARTIES_URL = "/parties";
+import type { z } from "zod";
 
 export const createParty = async (
-  body: z.infer<typeof createPartyReqBodySchema>,
+  body: z.infer<typeof createPartySchema.body>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties`,
+    "POST",
+    createPartySchema,
+    {
+      body,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error("Failed to create party");
-  }
-
-  const json = await res.json();
-  const result = createPartyResBodySchema.safeParse(json);
-
-  return result.data;
+  );
 };
 
 export const getAllParties = async () => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}`;
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties`,
+    "GET",
+    getAllPartiesSchema,
+    {
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch parties");
-  }
-
-  const json = await res.json();
-  const result = getAllPartiesResBodySchema.safeParse(json);
-
-  return result.data;
+  );
 };
 
 export const getPartyById = async (
-  params: z.infer<typeof getPartyByIdReqParamsSchema>,
+  params: z.infer<typeof getPartyByIdSchema.params>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}`;
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/:id`,
+    "GET",
+    getPartyByIdSchema,
+    {
+      params,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch party with id ${params.id}: ${res.statusText}`,
-    );
-  }
-
-  const json = await res.json();
-  const result = getPartyByIdResBodySchema.safeParse(json);
-
-  return result;
+  );
 };
 
 export const addMovieToWatchlist = async (
-  params: z.infer<typeof addMovieToWatchlistReqParamsSchema>,
+  params: z.infer<typeof addMovieToWatchlistSchema.params>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/movies/${params.movie}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/:id/movies/:movie`,
+    "POST",
+    addMovieToWatchlistSchema,
+    {
+      params,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to add movie ${params.movie} to party ${params.id}: ${res.statusText}`,
-    );
-  }
-
-  return true;
+  );
 };
 
 export const removeMovieFromWatchlist = async (
-  params: z.infer<typeof removeMovieFromWatchlistReqParamsSchema>,
+  params: z.infer<typeof removeMovieFromWatchlistSchema.params>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/movies/${params.movie}`;
-  const res = await fetch(url, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/:id/movies/:movie`,
+    "DELETE",
+    removeMovieFromWatchlistSchema,
+    {
+      params,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to remove movie ${params.movie} from party ${params.id}: ${res.statusText}`,
-    );
-  }
-
-  return true;
+  );
 };
 
-export const joinParty = async (
-  body: z.infer<typeof joinPartyReqBodySchema>,
-) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/join`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+export const joinParty = async (body: z.infer<typeof joinPartySchema.body>) => {
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/join`,
+    "POST",
+    joinPartySchema,
+    {
+      body,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    body: JSON.stringify(body),
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to join party: ${res.statusText}`);
-  }
-
-  const json = await res.json();
-  const result = joinPartyResBodySchema.safeParse(json);
-
-  return result;
+  );
 };
 
 export const leaveParty = async (
-  params: z.infer<typeof leavePartyReqParamsSchema>,
+  params: z.infer<typeof leavePartySchema.params>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${PARTIES_URL}/${params.id}/leave`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/:id/leave`,
+    "POST",
+    leavePartySchema,
+    {
+      params,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to leave party ${params.id}: ${res.statusText}`);
-  }
-
-  return true;
+  );
 };

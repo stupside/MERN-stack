@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { useSSEContext } from "./useSSEContext";
-import { listenPlayerResBodySchema } from "libraries/api/schemas/players";
+import { listenPlayerSchema } from "libraries/api/schemas/players";
 import type { z } from "zod";
 
-export type SSEEvent = z.infer<typeof listenPlayerResBodySchema>;
+export type SSEEvent = z.infer<typeof listenPlayerSchema.result>;
 
 type EventHandlerMap = {
   [K in SSEEvent["type"]]: (detail: Extract<SSEEvent, { type: K }>) => void;
@@ -20,7 +20,7 @@ export function useSSEEvents(handlers: Partial<EventHandlerMap>): void {
     const handleMessage = (event: MessageEvent) => {
       try {
         const json = JSON.parse(event.data);
-        const result = listenPlayerResBodySchema.safeParse(json);
+        const result = listenPlayerSchema.result.safeParse(json);
 
         if (result.success) {
           const handler = handlers[result.data.type];

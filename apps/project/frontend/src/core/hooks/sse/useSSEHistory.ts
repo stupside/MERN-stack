@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { useSSEEvents, type SSEEvent } from "./useSSEEvents";
 
 type SSEEventHistory = SSEEvent & { id: string; time: number };

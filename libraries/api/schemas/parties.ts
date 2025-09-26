@@ -1,82 +1,94 @@
 import z from "zod/v4";
+import type { Schema } from ".";
 
-export const createPartyResBodySchema = z.object({
-  id: z.string(),
-});
-
-export const createPartyReqBodySchema = z.object({
-  name: z.string().min(2).max(100),
-});
-
-export const getPartyByIdReqParamsSchema = z.object({
-  id: z.string(),
-});
-
-export const getPartyByIdResBodySchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  code: z.string(),
-  owner: z.object({
-    id: z.string(),
-    name: z.string(),
+export const createPartySchema = {
+  body: z.object({
+    name: z.string().min(2).max(100),
   }),
-  users: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-    }),
-  ),
-  movies: z.array(
-    z.object({
-      id: z.number(),
-      title: z.string().nullable(),
-      rating: z.number().nullable(),
-      release: z.string().nullable(),
-      overview: z.string().nullable(),
-      language: z.string().nullable(),
-      genres: z.array(
-        z.object({
-          id: z.number(),
-          name: z.string().nullable(),
-        }),
-      ),
-      images: z.object({
-        poster: z.url().nullable(),
-        backdrop: z.url().nullable(),
-      }),
-    }),
-  ),
-});
+  result: z.object({
+    id: z.string(),
+  }),
+} satisfies Schema;
 
-export const getAllPartiesResBodySchema = z.array(
-  z.object({
+export const getPartyByIdSchema = {
+  params: z.object({
+    id: z.string(),
+  }),
+  result: z.object({
     id: z.string(),
     name: z.string(),
+    code: z.string(),
     owner: z.object({
       id: z.string(),
       name: z.string(),
     }),
+    users: z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      }),
+    ),
+    movies: z.array(
+      z.object({
+        id: z.number(),
+        title: z.string().nullable(),
+        rating: z.number().nullable(),
+        release: z.string().nullable(),
+        overview: z.string().nullable(),
+        language: z.string().nullable(),
+        genres: z.array(
+          z.object({
+            id: z.number(),
+            name: z.string().nullable(),
+          }),
+        ),
+        images: z.object({
+          poster: z.url().nullable(),
+          backdrop: z.url().nullable(),
+        }),
+      }),
+    ),
   }),
-);
+} satisfies Schema;
 
-export const addMovieToWatchlistReqParamsSchema = z.object({
-  id: z.string(),
-  movie: z.coerce.number(),
-});
+export const getAllPartiesSchema = {
+  result: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      owner: z.object({
+        id: z.string(),
+        name: z.string(),
+      }),
+    }),
+  ),
+};
 
-export const removeMovieFromWatchlistReqParamsSchema = z.object({
-  id: z.string(),
-  movie: z.coerce.number(),
-});
+export const addMovieToWatchlistSchema = {
+  params: z.object({
+    id: z.string(),
+    movie: z.coerce.number(),
+  }),
+} satisfies Schema;
 
-export const joinPartyReqBodySchema = z.object({
-  code: z.string(),
-});
+export const removeMovieFromWatchlistSchema = {
+  params: z.object({
+    id: z.string(),
+    movie: z.coerce.number(),
+  }),
+} satisfies Schema;
 
-export const joinPartyResBodySchema = z.object({
-  id: z.string(),
-});
+export const joinPartySchema = {
+  body: z.object({
+    code: z.string(),
+  }),
+  result: z.object({
+    id: z.string(),
+  }),
+} satisfies Schema;
 
-export const leavePartyReqParamsSchema = z.object({
-  id: z.string(),
-});
+export const leavePartySchema = {
+  params: z.object({
+    id: z.string(),
+  }),
+} satisfies Schema;

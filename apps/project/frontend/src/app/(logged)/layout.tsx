@@ -12,17 +12,11 @@ const Page: NextPage<
 > = async ({ children, modals }) => {
   if (await token()) {
     const info = await getUserInfo();
-    if (info.error) {
-      throw new Error(`Failed to fetch user info: ${info.error}`);
-    }
-    if (!info.data) {
-      throw new Error("User info is undefined");
-    }
 
     return (
       <div className="min-h-full flex flex-col">
         <header>
-          <Me user={info.data} />
+          <Me user={info} />
         </header>
         <main className="flex-1">{children}</main>
         {modals}

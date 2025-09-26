@@ -16,10 +16,10 @@ const Page: NextPage = () => {
   );
 
   useEffect(() => {
-    if (state?.data) {
-      redirect(`/parties/${state.data.id}`);
+    if (state) {
+      redirect(`/parties/${state.id}`);
     }
-  }, [state?.data]);
+  }, [state]);
 
   return (
     <div className="fixed inset-0 bg-black/25 flex items-center justify-center p-4 z-50">
@@ -53,11 +53,6 @@ const Page: NextPage = () => {
           <div className="mt-6 text-center">
             {isPending && (
               <p className="text-red-500 text-sm">Joining party...</p>
-            )}
-            {state?.error && (
-              <p className="text-red-500 text-sm">
-                Error: {state.error.message}
-              </p>
             )}
           </div>
           <div className="mt-6">

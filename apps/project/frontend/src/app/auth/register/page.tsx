@@ -17,10 +17,10 @@ const Page: NextPage = () => {
   );
 
   useEffect(() => {
-    if (state?.data) {
+    if (state) {
       redirect("/auth/login");
     }
-  }, [state?.data]);
+  }, [state]);
 
   return (
     <div className="max-w-lg w-full mx-auto">

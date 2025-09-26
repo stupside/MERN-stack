@@ -1,14 +1,11 @@
 import {
-  addMovieToWatchlistReqParamsSchema,
-  createPartyReqBodySchema,
-  createPartyResBodySchema,
-  getAllPartiesResBodySchema,
-  getPartyByIdReqParamsSchema,
-  getPartyByIdResBodySchema,
-  joinPartyReqBodySchema,
-  joinPartyResBodySchema,
-  leavePartyReqParamsSchema,
-  removeMovieFromWatchlistReqParamsSchema,
+  addMovieToWatchlistSchema,
+  createPartySchema,
+  getAllPartiesSchema,
+  getPartyByIdSchema,
+  joinPartySchema,
+  leavePartySchema,
+  removeMovieFromWatchlistSchema,
 } from "api/schemas/parties";
 import type { IMovie } from "../../core/domain/movie";
 import Party from "../../core/domain/party";
@@ -18,10 +15,7 @@ import { createHandler } from "../../core/express/handler";
 import { getMovie } from "../../core/utils/movies";
 
 export const createParty = createHandler(
-  {
-    body: createPartyReqBodySchema,
-    result: createPartyResBodySchema,
-  },
+  createPartySchema,
   async (req, res) => {
     const user = await User.findById(req.jwt.user.id);
     if (!user) {
@@ -43,10 +37,7 @@ export const createParty = createHandler(
 );
 
 export const getPartyById = createHandler(
-  {
-    result: getPartyByIdResBodySchema,
-    params: getPartyByIdReqParamsSchema,
-  },
+  getPartyByIdSchema,
   async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
       owner: IUser;
@@ -99,9 +90,7 @@ export const getPartyById = createHandler(
 );
 
 export const getAllParties = createHandler(
-  {
-    result: getAllPartiesResBodySchema,
-  },
+  getAllPartiesSchema,
   async (req, res) => {
     const parties = await Party.find({
       $or: [
@@ -124,9 +113,7 @@ export const getAllParties = createHandler(
 );
 
 export const addMovieToWatchlist = createHandler(
-  {
-    params: addMovieToWatchlistReqParamsSchema,
-  },
+  addMovieToWatchlistSchema,
   async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
       movies: IMovie[];
@@ -159,9 +146,7 @@ export const addMovieToWatchlist = createHandler(
 );
 
 export const removeMovieFromWatchlist = createHandler(
-  {
-    params: removeMovieFromWatchlistReqParamsSchema,
-  },
+  removeMovieFromWatchlistSchema,
   async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
       movies: IMovie[];
@@ -188,10 +173,7 @@ export const removeMovieFromWatchlist = createHandler(
 );
 
 export const joinParty = createHandler(
-  {
-    body: joinPartyReqBodySchema,
-    result: joinPartyResBodySchema,
-  },
+  joinPartySchema,
   async (req, res, next) => {
     const party = await Party.findOne({ code: req.body.code }).populate<{
       owner: IUser;
@@ -229,9 +211,7 @@ export const joinParty = createHandler(
 );
 
 export const leaveParty = createHandler(
-  {
-    params: leavePartyReqParamsSchema,
-  },
+  leavePartySchema,
   async (req, res, next) => {
     const party = await Party.findById(req.params.id).populate<{
       owner: IUser;

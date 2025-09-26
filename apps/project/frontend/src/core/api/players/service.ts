@@ -1,53 +1,44 @@
 "use server";
 
-import type {
-  dispatchEventReqBodySchema,
-  dispatchEventReqParamsSchema,
-  getListenersReqParamsSchema,
-  getListenersResBodySchema,
-} from "api/schemas/players";
-import type { z } from "zod";
+import {
+  dispatchEventSchema,
+  getListenersSchema,
+} from "libraries/api/schemas/players";
+import { makeRequest } from "libraries/api/request";
 import { token } from "../../auth/service";
 
+import type { z } from "zod";
+
 export const dispatchEvent = async (
-  params: z.infer<typeof dispatchEventReqParamsSchema>,
-  body: z.infer<typeof dispatchEventReqBodySchema>,
+  params: z.infer<typeof dispatchEventSchema.params>,
+  body: z.infer<typeof dispatchEventSchema.body>,
 ) => {
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/players/${params.id}/dispatch`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}/players/:id/dispatch`,
+    "POST",
+    dispatchEventSchema,
     {
-      method: "POST",
+      params,
+      body,
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${await token()}`,
       },
-      body: JSON.stringify(body),
-      credentials: "include",
     },
   );
-
-  if (!res.ok) {
-    throw new Error(`Failed to dispatch event: ${res.statusText}`);
-  }
 };
 
 export const getListeners = async (
-  params: z.infer<typeof getListenersReqParamsSchema>,
-): Promise<z.infer<typeof getListenersResBodySchema>> => {
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/players/${params.id}/listeners`,
+  params: z.infer<typeof getListenersSchema.params>,
+) => {
+  return makeRequest(
+    `${process.env.BACKEND_URL}/players/:id/listeners`,
+    "GET",
+    getListenersSchema,
     {
-      method: "GET",
+      params,
       headers: {
         Authorization: `Bearer ${await token()}`,
       },
-      credentials: "include",
     },
   );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get listeners: ${res.statusText}`);
-  }
-
-  return res.json();
 };

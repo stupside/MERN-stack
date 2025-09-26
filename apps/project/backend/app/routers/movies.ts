@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getMovieById, searchMovies } from "../controllers/movies";
+import { searchMovies, getMovieById } from "../controllers/movies";
 import authMiddleware from "../middlewares/auth";
 
 export const moviesRouter = Router();

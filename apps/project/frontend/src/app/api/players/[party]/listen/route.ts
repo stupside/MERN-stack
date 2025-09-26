@@ -4,7 +4,7 @@ import { token } from "../../../../../core/auth/service";
 
 export async function GET(
   request: NextRequest,
-  ctx: RouteContext<"/api/players/[party]/listen">
+  ctx: RouteContext<"/api/players/[party]/listen">,
 ) {
   const { party } = await ctx.params;
 

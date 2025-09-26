@@ -10,29 +10,6 @@ const Page: NextPage<{
   const params = await props.params;
 
   const movie = await getMovieById({ id: Number.parseInt(params.movie, 10) });
-  if (!movie.success || !movie.data) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Movie not found
-          </h2>
-          <p className="text-gray-600 mb-6">
-            No movie found with id {params.movie}
-          </p>
-          <Link
-            href={`/parties/${params.party}/movies/search`}
-            className="inline-flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
-          >
-            ← Back to Search
-          </Link>
-        </div>
-      </div>
-    );
-  }
-  if (!movie.data) {
-    return <div>Unexpected error</div>;
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -47,12 +24,12 @@ const Page: NextPage<{
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {movie.data.images?.poster && (
+          {movie.images?.poster && (
             <div className="flex-shrink-0">
               <div className="w-64 h-96 overflow-hidden rounded-lg relative mb-4">
                 <Image
-                  src={movie.data.images.poster}
-                  alt={`${movie.data.title || "Movie"} poster`}
+                  src={movie.images.poster}
+                  alt={`${movie.title || "Movie"} poster`}
                   fill
                   className="object-cover"
                 />
@@ -61,27 +38,25 @@ const Page: NextPage<{
           )}
           <div className="flex-1">
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
-              {movie.data.title || "Untitled"}
+              {movie.title || "Untitled"}
             </h1>
 
             <div className="space-y-4 mb-8">
               <div className="flex items-center space-x-6 text-lg text-gray-600">
-                {movie.data.release && (
-                  <span>{new Date(movie.data.release).getFullYear()}</span>
+                {movie.release && (
+                  <span>{new Date(movie.release).getFullYear()}</span>
                 )}
-                {movie.data.rating && (
-                  <span>★ {movie.data.rating.toFixed(1)}</span>
-                )}
-                {movie.data.language && (
+                {movie.rating && <span>★ {movie.rating.toFixed(1)}</span>}
+                {movie.language && (
                   <span className="px-3 py-1 bg-gray-800 text-white text-sm rounded uppercase font-medium">
-                    {movie.data.language}
+                    {movie.language}
                   </span>
                 )}
               </div>
 
-              {movie.data.genres && movie.data.genres.length > 0 && (
+              {movie.genres && movie.genres.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {movie.data.genres.map((genre: any, index: any) => (
+                  {movie.genres.map((genre, index) => (
                     <span
                       key={
                         typeof genre === "string" ? genre : genre.id || index
@@ -94,24 +69,24 @@ const Page: NextPage<{
                 </div>
               )}
 
-              {movie.data.overview && (
+              {movie.overview && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     Overview
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    {movie.data.overview}
+                    {movie.overview}
                   </p>
                 </div>
               )}
 
-              {movie.data.production && movie.data.production.length > 0 && (
+              {movie.production && movie.production.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">
                     Production Companies
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {movie.data.production.map((company: any) => (
+                    {movie.production.map((company) => (
                       <span
                         key={company.id}
                         className="px-3 py-1 bg-gray-200 text-gray-800 text-sm rounded-full"
@@ -125,7 +100,7 @@ const Page: NextPage<{
             </div>
 
             <div className="pt-6 border-t border-gray-200">
-              <AddForm party={params.party} movie={movie.data.ref} />
+              <AddForm party={params.party} movie={movie.ref} />
             </div>
           </div>
         </div>

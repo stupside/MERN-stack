@@ -1,6 +1,6 @@
 "use client";
 
-import type { searchMoviesResBodySchema } from "api/schemas/movies";
+import type { searchMoviesSchema } from "api/schemas/movies";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -14,25 +14,16 @@ const Page: NextPage = () => {
 
   const [name, setName] = useState<string>();
   const [movies, setMovies] = useState<
-    z.infer<typeof searchMoviesResBodySchema>
+    z.infer<typeof searchMoviesSchema.result>
   >([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       const fetchMovies = async () => {
-        try {
-          if (!name?.trim()) {
-            setMovies([]);
-          } else {
-            const result = await searchMovies({ name });
-            if (result.success) {
-              setMovies(result.data);
-            } else {
-              console.error("Failed to parse movies response", result.error);
-            }
-          }
-        } catch (error) {
-          console.error("Failed to fetch movies", error);
+        if (!name?.trim()) {
+          setMovies([]);
+        } else {
+          setMovies(await searchMovies({ name }));
         }
       };
 
@@ -50,7 +41,7 @@ const Page: NextPage = () => {
           href={`/parties/${params.party}/movies`}
           className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
         >
-          {/** biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+          {/** biome-ignore lint/a11y/noSvgWithoutTitle: ignore */}
           <svg
             className="w-4 h-4"
             fill="none"

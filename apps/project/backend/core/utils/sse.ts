@@ -36,7 +36,7 @@ class SSEManager {
     // Broadcast user connected
     this.broadcast(roomId, {
       type: "user:connected",
-      user
+      user,
     });
 
     let cleaned = false;
@@ -47,7 +47,7 @@ class SSEManager {
       // Broadcast user disconnected before removing
       this.broadcast(roomId, {
         type: "user:disconnected",
-        user
+        user,
       });
 
       this.removeConnection(roomId, connection);
@@ -71,16 +71,23 @@ class SSEManager {
 
     room.forEach((connection) => {
       try {
-        console.log(`Broadcasting to user ${connection.user.id} in room ${roomId}:`, event);
+        console.log(
+          `Broadcasting to user ${connection.user.id} in room ${roomId}:`,
+          event,
+        );
         connection.response.write(`data: ${JSON.stringify(event)}\n\n`);
       } catch {
-        console.log(`Failed to send event to user ${connection.user.id} in room ${roomId}`);
+        console.log(
+          `Failed to send event to user ${connection.user.id} in room ${roomId}`,
+        );
         failedConnections.push(connection);
       }
     });
 
     failedConnections.forEach((connection) => {
-      console.log(`Removing failed connection for user ${connection.user.id} in room ${roomId}`);
+      console.log(
+        `Removing failed connection for user ${connection.user.id} in room ${roomId}`,
+      );
       this.removeConnection(roomId, connection);
     });
   }
@@ -89,7 +96,7 @@ class SSEManager {
     const room = this.connections.get(roomId) || [];
     const uniqueUsers = new Map<string, User>();
 
-    room.forEach(conn => {
+    room.forEach((conn) => {
       uniqueUsers.set(conn.user.id, conn.user);
     });
 

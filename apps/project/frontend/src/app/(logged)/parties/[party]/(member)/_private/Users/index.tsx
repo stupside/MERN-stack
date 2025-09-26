@@ -1,13 +1,13 @@
 "use client";
 
-import type { getPartyByIdResBodySchema } from "api/schemas/parties";
+import type { getPartyByIdSchema } from "api/schemas/parties";
 import type { FC } from "react";
 import type z from "zod";
 import { LeaveButton } from "../LeaveButton";
 
 export const Users: FC<{
-  code: z.infer<typeof getPartyByIdResBodySchema>["code"];
-  users: z.infer<typeof getPartyByIdResBodySchema>["users"];
+  code: z.infer<typeof getPartyByIdSchema.result>["code"];
+  users: z.infer<typeof getPartyByIdSchema.result>["users"];
   partyId: string;
 }> = ({ users, code, partyId }) => {
   const handleCopyCode = async () => {

@@ -1,9 +1,7 @@
 import {
-  loginUserReqBodySchema,
-  loginUserResBodySchema,
-  myUserInfoResBodySchema,
-  registerNewUserReqBodySchema,
-  registerNewUserResBodySchema,
+  loginUserSchema,
+  myUserInfoSchema,
+  registerUserSchema,
 } from "api/schemas/users";
 import argon2 from "argon2";
 import { generateToken } from "../../core/auth/payload";
@@ -12,9 +10,7 @@ import { HttpError } from "../../core/errors/http";
 import { createHandler } from "../../core/express/handler";
 
 export const myUserInfo = createHandler(
-  {
-    result: myUserInfoResBodySchema,
-  },
+  myUserInfoSchema,
   async (req, res, next) => {
     const user = await User.findById(req.jwt.user.id);
     if (!user) {
@@ -26,10 +22,7 @@ export const myUserInfo = createHandler(
 );
 
 export const loginUser = createHandler(
-  {
-    body: loginUserReqBodySchema,
-    result: loginUserResBodySchema,
-  },
+  loginUserSchema,
   async (req, res, next) => {
     const user = await User.findOne({ name: req.body.name });
     if (!user) {
@@ -47,10 +40,7 @@ export const loginUser = createHandler(
 );
 
 export const registerUser = createHandler(
-  {
-    body: registerNewUserReqBodySchema,
-    result: registerNewUserResBodySchema,
-  },
+  registerUserSchema,
   async (req, res) => {
     const user = new User({
       name: req.body.name,

@@ -1,9 +1,4 @@
-import {
-  getMovieByIdParamsSchema,
-  getMovieByIdResBodySchema,
-  searchMoviesReqBodySchema,
-  searchMoviesResBodySchema,
-} from "api/schemas/movies";
+import { getMovieByIdSchema, searchMoviesSchema } from "api/schemas/movies";
 
 import { request } from "../../core/clients/tmdb";
 import { HttpError } from "../../core/errors/http";
@@ -11,7 +6,7 @@ import { createHandler } from "../../core/express/handler";
 import { getMovie } from "../../core/utils/movies";
 
 export const searchMovies = createHandler(
-  { body: searchMoviesReqBodySchema, result: searchMoviesResBodySchema },
+  searchMoviesSchema,
   async (req, res, next) => {
     const movies = await request((client) =>
       client.GET("/3/search/movie", {
@@ -54,10 +49,7 @@ export const searchMovies = createHandler(
 );
 
 export const getMovieById = createHandler(
-  {
-    params: getMovieByIdParamsSchema,
-    result: getMovieByIdResBodySchema,
-  },
+  getMovieByIdSchema,
   async (req, res, next) => {
     const movie = await getMovie(req.params.id);
     if (movie instanceof HttpError) {

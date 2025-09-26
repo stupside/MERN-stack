@@ -1,12 +1,11 @@
 "use server";
 
 import {
-  type loginUserReqBodySchema,
-  loginUserResBodySchema,
-  myUserInfoResBodySchema,
-  type registerNewUserReqBodySchema,
-  registerNewUserResBodySchema,
-} from "api/schemas/users";
+  loginUserSchema,
+  myUserInfoSchema,
+  registerUserSchema,
+} from "libraries/api/schemas/users";
+import { makeRequest } from "libraries/api/request";
 import { cookies } from "next/headers";
 
 import type { z } from "zod";
@@ -26,64 +25,40 @@ export const logout = async () => {
 };
 
 export const info = async () => {
-  const url = `${process.env.BACKEND_URL}${INFO_URL}`;
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
+  return makeRequest(
+    `${process.env.BACKEND_URL}${INFO_URL}`,
+    "GET",
+    myUserInfoSchema,
+    {
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
     },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch user info");
-  }
-
-  const json = await res.json();
-  const result = await myUserInfoResBodySchema.safeParseAsync(json);
-
-  return result;
+  );
 };
 
-export const login = async (body: z.infer<typeof loginUserReqBodySchema>) => {
-  const url = `${process.env.BACKEND_URL}${LOGIN_URL}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+export const login = async (body: z.infer<typeof loginUserSchema.body>) => {
+  const result = await makeRequest(
+    `${process.env.BACKEND_URL}${LOGIN_URL}`,
+    "POST",
+    loginUserSchema,
+    {
+      body,
     },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error("Failed to login");
-  }
-
-  const json = await res.json();
-  const result = await loginUserResBodySchema.safeParseAsync(json);
-
-  if (result.success) {
-    (await cookies()).set(USER_TOKEN_KEY, result.data.token);
-  }
+  );
 
   return result;
 };
 
 export const register = async (
-  body: z.infer<typeof registerNewUserReqBodySchema>,
+  body: z.infer<typeof registerUserSchema.body>,
 ) => {
-  const url = `${process.env.BACKEND_URL}${REGISTER_URL}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  return makeRequest(
+    `${process.env.BACKEND_URL}${REGISTER_URL}`,
+    "POST",
+    registerUserSchema,
+    {
+      body,
     },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error("Failed to register");
-  }
-
-  const json = await res.json();
-  const result = await registerNewUserResBodySchema.safeParseAsync(json);
-
-  return result;
+  );
 };

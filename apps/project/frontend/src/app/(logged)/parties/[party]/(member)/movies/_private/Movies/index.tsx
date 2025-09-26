@@ -16,7 +16,7 @@ export const Movies: FC<{
       className="group cursor-pointer relative overflow-hidden rounded-lg aspect-[2/3] block bg-gray-100 hover:bg-gray-200 transition-all"
     >
       <div className="w-full h-full flex items-center justify-center text-gray-500 group-hover:text-red-500 transition-colors">
-        {/** biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+        {/** biome-ignore lint/a11y/noSvgWithoutTitle: decorative icon */}
         <svg
           className="w-8 h-8"
           fill="none"

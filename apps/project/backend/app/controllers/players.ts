@@ -1,12 +1,8 @@
 import type { z } from "zod";
 import {
-  dispatchEventReqBodySchema,
-  dispatchEventReqParamsSchema,
-  getListenersReqParamsSchema,
-  getListenersResBodySchema,
-  listenPlayerReqParamsSchema,
-  listenPlayerReqQuerySchema,
-  listenPlayerResBodySchema,
+  dispatchEventSchema,
+  getListenersSchema,
+  listenPlayerSchema,
 } from "api/schemas/players";
 
 import { createHandler } from "../../core/express/handler";
@@ -32,11 +28,7 @@ async function validatePartyMembership(partyId: string, userId: string) {
 }
 
 export const listenPlayer = createHandler(
-  {
-    result: listenPlayerResBodySchema,
-    params: listenPlayerReqParamsSchema,
-    query: listenPlayerReqQuerySchema,
-  },
+  listenPlayerSchema,
   async (req, res) => {
     const partyId = req.params.id;
 
@@ -47,7 +39,7 @@ export const listenPlayer = createHandler(
     const cleanup = sseManager.addConnection(
       partyId,
       { id: req.jwt.user.id, name: req.jwt.user.name },
-      res
+      res,
     );
 
     req.on("close", cleanup);
@@ -55,17 +47,14 @@ export const listenPlayer = createHandler(
 );
 
 export const dispatchEvent = createHandler(
-  {
-    body: dispatchEventReqBodySchema,
-    params: dispatchEventReqParamsSchema,
-  },
+  dispatchEventSchema,
   async (req, res) => {
     const partyId = req.params.id;
     const userId = req.jwt.user.id;
 
     await validatePartyMembership(partyId, userId);
 
-    let event: z.infer<typeof listenPlayerResBodySchema>;
+    let event: z.infer<typeof listenPlayerSchema.result>;
     switch (req.body.type) {
       case "movie:seek":
         event = {
@@ -89,10 +78,7 @@ export const dispatchEvent = createHandler(
 );
 
 export const getListeners = createHandler(
-  {
-    params: getListenersReqParamsSchema,
-    result: getListenersResBodySchema,
-  },
+  getListenersSchema,
   async (req, res) => {
     const partyId = req.params.id;
 
