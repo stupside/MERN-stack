@@ -1,21 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
 import type { listenPlayerResBodySchema } from "libraries/api/schemas/players";
+import { useEffect } from "react";
 import type { z } from "zod";
 
-type EventDetail = z.infer<typeof listenPlayerResBodySchema>;
+export type SSEEvent = z.infer<typeof listenPlayerResBodySchema>;
 
 type EventHandlerMap = {
-  [K in EventDetail["type"]]: (
-    detail: Extract<EventDetail, { type: K }>,
-  ) => void;
+  [K in SSEEvent["type"]]: (detail: Extract<SSEEvent, { type: K }>) => void;
 };
 
 class TypeSafeEventBus {
-  private listeners = new Map<string, Set<(detail: EventDetail) => void>>();
+  private listeners = new Map<string, Set<(detail: SSEEvent) => void>>();
 
-  emit(detail: EventDetail): void {
+  emit(detail: SSEEvent): void {
     const eventListeners = this.listeners.get(detail.type);
     if (eventListeners) {
       for (const handler of eventListeners) {
@@ -33,10 +31,10 @@ class TypeSafeEventBus {
       this.listeners.set(eventType, listeners);
     }
 
-    listeners.add(handler as (detail: EventDetail) => void);
+    listeners.add(handler as (detail: SSEEvent) => void);
 
     return () => {
-      listeners.delete(handler as (detail: EventDetail) => void);
+      listeners.delete(handler as (detail: SSEEvent) => void);
       if (listeners.size === 0) {
         this.listeners.delete(eventType);
       }

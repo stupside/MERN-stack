@@ -17,6 +17,5 @@ export {
 
 // Players API
 export {
-  controlPlayer,
   dispatchEvent,
 } from "./players/service";

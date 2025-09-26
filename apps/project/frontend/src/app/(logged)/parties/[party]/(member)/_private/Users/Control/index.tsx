@@ -1,11 +1,8 @@
 "use client";
 
-import { type FC, useCallback, useState, useTransition } from "react";
-import type { z } from "zod";
-
-import { usePlayerContext } from "apps/project/frontend/src/core/contexts";
-import { useEventListeners } from "apps/project/frontend/src/core/lib";
-import type { getListenersResBodySchema } from "libraries/api/schemas/players";
+import { useSSEListeners } from "apps/project/frontend/src/core/hooks/sse/useSSEListeners";
+import { useSSEStatus } from "apps/project/frontend/src/core/hooks/sse/useSSEStatus";
+import type { FC } from "react";
 
 const UserAvatar: FC<{
   readonly user: {
@@ -34,7 +31,7 @@ const UserAvatar: FC<{
 };
 
 const ConnectionIndicator: FC = () => {
-  const { isConnected } = usePlayerContext();
+  const { isConnected } = useSSEStatus();
 
   const title = isConnected ? "Live" : ("Connecting..." as const);
   const statusClass = isConnected
@@ -52,38 +49,11 @@ const ConnectionIndicator: FC = () => {
 const MAX_VISIBLE_USERS = 10 as const;
 
 export const Control: FC<{
-  readonly ownerId: string;
-  readonly listeners: z.infer<typeof getListenersResBodySchema>;
-}> = ({ ownerId, listeners }) => {
-  const [users, setUsers] =
-    useState<z.infer<typeof getListenersResBodySchema>>(listeners);
-
-  const [isPending, startTransition] = useTransition();
-
-  const handleUserConnected = useCallback(
-    (user: z.infer<typeof getListenersResBodySchema>[number]) => {
-      startTransition(() => {
-        setUsers((old) => {
-          const userExists = old.some(
-            (existingUser) => existingUser.id === user.id,
-          );
-          return userExists ? old : [...old, user];
-        });
-      });
-    },
-    [],
-  );
-
-  const handleUserDisconnected = useCallback((userId: string) => {
-    startTransition(() => {
-      setUsers((old) => old.filter((user) => user.id !== userId));
-    });
-  }, []);
-
-  // Handle user connection events using the event library
-  useEventListeners({
-    "user:connected": (detail) => handleUserConnected(detail.user),
-    "user:disconnected": (detail) => handleUserDisconnected(detail.user.id),
+  readonly owner: string;
+  readonly listeners: Array<{ id: string; name: string }>;
+}> = ({ owner, listeners }) => {
+  const { users } = useSSEListeners({
+    listeners,
   });
 
   const visibleUsers = users.slice(0, MAX_VISIBLE_USERS);
@@ -92,9 +62,7 @@ export const Control: FC<{
   const hasHiddenUsers = hiddenUsers > 0;
 
   return (
-    <div
-      className={`bg-white border border-gray-200 rounded-lg shadow-sm flex items-center gap-3 px-3 py-2 transition-opacity ${isPending ? "opacity-70" : "opacity-100"}`}
-    >
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex items-center gap-3 px-3 py-2 transition-opacity opacity-100">
       <ConnectionIndicator />
       {users.length > 0 && (
         <>
@@ -104,7 +72,7 @@ export const Control: FC<{
               <UserAvatar
                 key={user.id}
                 user={user}
-                isOwner={ownerId === user.id}
+                isOwner={owner === user.id}
               />
             ))}
             {hasHiddenUsers && (

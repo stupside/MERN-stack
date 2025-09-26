@@ -4,7 +4,7 @@ import { token } from "../../../../../core/auth/service";
 
 export async function GET(
   _: NextRequest,
-  { params }: { params: Promise<{ partyId: string }> }
+  { params }: { params: Promise<{ partyId: string }> },
 ) {
   const { partyId } = await params;
 

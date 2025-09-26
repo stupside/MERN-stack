@@ -1,8 +1,6 @@
 "use server";
 
 import type {
-  controlPlayerReqBodySchema,
-  controlPlayerReqParamsSchema,
   dispatchEventReqBodySchema,
   dispatchEventReqParamsSchema,
   getListenersReqParamsSchema,
@@ -10,28 +8,6 @@ import type {
 } from "api/schemas/players";
 import type { z } from "zod";
 import { token } from "../../auth/service";
-
-export const controlPlayer = async (
-  params: z.infer<typeof controlPlayerReqParamsSchema>,
-  body: z.infer<typeof controlPlayerReqBodySchema>,
-) => {
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/players/${params.id}/control`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await token()}`,
-      },
-      body: JSON.stringify(body),
-      credentials: "include",
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to control player: ${res.statusText}`);
-  }
-};
 
 export const dispatchEvent = async (
   params: z.infer<typeof dispatchEventReqParamsSchema>,

@@ -1,7 +1,5 @@
 import type { z } from "zod";
 import {
-  controlPlayerReqBodySchema,
-  controlPlayerReqParamsSchema,
   dispatchEventReqBodySchema,
   dispatchEventReqParamsSchema,
   getListenersReqParamsSchema,
@@ -73,37 +71,7 @@ export const listenPlayer = createHandler(
       },
     );
 
-    const ok: z.infer<typeof listenPlayerResBodySchema> = { type: "user:ok" };
-
-    res.write(`data: ${JSON.stringify(ok)}\n\n`);
-
     req.on("close", cleanup);
-  },
-);
-
-export const controlPlayer = createHandler(
-  {
-    body: controlPlayerReqBodySchema,
-    params: controlPlayerReqParamsSchema,
-  },
-  async (req, res) => {
-    const partyId = req.params.id;
-    const userId = req.jwt.user.id;
-
-    await validatePartyMembership(partyId, userId);
-
-    let event: z.infer<typeof listenPlayerResBodySchema>;
-    switch (req.body.action) {
-      case "movie:seek":
-        event = { type: req.body.action, time: req.body.time };
-        break;
-      default:
-        event = { type: req.body.action };
-        break;
-    }
-
-    sseManager.broadcast(partyId, event);
-    return res.json();
   },
 );
 
@@ -120,11 +88,18 @@ export const dispatchEvent = createHandler(
 
     let event: z.infer<typeof listenPlayerResBodySchema>;
     switch (req.body.type) {
-      case "seek":
-        event = { action: req.body.type, time: req.body.time };
+      case "movie:seek":
+        event = {
+          type: req.body.type,
+          time: req.body.time,
+          user: { id: req.jwt.user.id, name: req.jwt.user.name },
+        };
         break;
       default:
-        event = { action: req.body.type };
+        event = {
+          type: req.body.type,
+          user: { id: req.jwt.user.id, name: req.jwt.user.name },
+        };
         break;
     }
 

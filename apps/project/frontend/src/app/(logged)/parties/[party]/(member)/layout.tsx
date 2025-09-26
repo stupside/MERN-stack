@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import type { PropsWithChildren } from "react";
 
 import { getPartyById } from "../../../../../core/api";
-import { PlayerProvider } from "../../../../../core/contexts";
 import { Users } from "./_private/Users";
 import { Control } from "./_private/Users/Control";
+import { SSEProvider } from "../../../../../core/providers/SSEProvider";
 import { getListeners } from "apps/project/frontend/src/core/api/players/service";
 
 const Page: NextPage<
@@ -29,10 +29,8 @@ const Page: NextPage<
 
   const listeners = await getListeners({ id: params.party });
 
-  const url = `/api/players/${params.party}/listen`;
-
   return (
-    <PlayerProvider partyId={params.party} sse={url}>
+    <SSEProvider party={params.party}>
       <div className="container mx-auto px-6 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="flex items-center justify-between">
@@ -55,7 +53,7 @@ const Page: NextPage<
               </div>
             </div>
             <div className="flex-shrink-0 ml-4">
-              <Control ownerId={party.data.owner.id} listeners={listeners} />
+              <Control owner={party.data.owner.id} listeners={listeners} />
             </div>
           </div>
 
@@ -71,7 +69,7 @@ const Page: NextPage<
           </div>
         </div>
       </div>
-    </PlayerProvider>
+    </SSEProvider>
   );
 };
 
