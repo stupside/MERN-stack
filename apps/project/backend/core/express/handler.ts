@@ -10,11 +10,11 @@ export interface Schema {
 
 export type SchemaHandler<TSchema extends Schema> = RequestHandler<
   TSchema["params"] extends z.ZodTypeAny
-    ? z.infer<TSchema["params"]>
-    : undefined,
+  ? z.infer<TSchema["params"]>
+  : undefined,
   TSchema["result"] extends z.ZodTypeAny
-    ? z.infer<TSchema["result"]>
-    : undefined,
+  ? z.infer<TSchema["result"]>
+  : undefined,
   TSchema["body"] extends z.ZodTypeAny ? z.infer<TSchema["body"]> : undefined,
   TSchema["query"] extends z.ZodTypeAny ? z.infer<TSchema["query"]> : undefined
 >;
@@ -25,9 +25,33 @@ function validate<TSchema extends Schema>(
 ): SchemaHandler<TSchema> {
   return async (req, _, next) => {
     try {
-      if (schema.body) await schema.body.parseAsync(req.body);
-      if (schema.query) await schema.query.parseAsync(req.query);
-      if (schema.params) await schema.params.parseAsync(req.params);
+      if (schema.body) {
+        const parsedBody = await schema.body.parseAsync(req.body);
+        Object.defineProperty(req, 'body', {
+          value: parsedBody,
+          writable: true,
+          enumerable: true,
+          configurable: true
+        });
+      }
+      if (schema.query) {
+        const parsedQuery = await schema.query.parseAsync(req.query);
+        Object.defineProperty(req, 'query', {
+          value: parsedQuery,
+          writable: true,
+          enumerable: true,
+          configurable: true
+        });
+      }
+      if (schema.params) {
+        const parsedParams = await schema.params.parseAsync(req.params);
+        Object.defineProperty(req, 'params', {
+          value: parsedParams,
+          writable: true,
+          enumerable: true,
+          configurable: true
+        });
+      }
       return next();
     } catch (error) {
       return next(error);
@@ -40,6 +64,6 @@ export const createHandler = <TSchema extends Schema>(
   schema: TSchema,
   handler: SchemaHandler<TSchema>,
 ): [SchemaHandler<TSchema>, SchemaHandler<TSchema>] => [
-  validate(schema),
-  handler,
-];
+    validate(schema),
+    handler,
+  ];
