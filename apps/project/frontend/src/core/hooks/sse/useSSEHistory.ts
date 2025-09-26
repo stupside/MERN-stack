@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useEventListeners } from "../../lib";
-
-import type { SSEEvent } from "../../lib/events";
+import { useSSEEvents, type SSEEvent } from "./useSSEEvents";
 
 type SSEEventHistory = SSEEvent & { id: string; time: number };
 
@@ -23,7 +21,7 @@ export const useSSEHistory = () => {
     );
   };
 
-  useEventListeners({
+  useSSEEvents({
     "movie:play": addEvent,
     "movie:seek": addEvent,
     "movie:pause": addEvent,

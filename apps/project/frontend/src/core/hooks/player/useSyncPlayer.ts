@@ -1,9 +1,9 @@
 "use client";
 
-import { RefObject, useEffect, useTransition } from "react";
+import { type RefObject, useEffect, useTransition } from "react";
 import type { default as VideoJS } from "video.js/dist/types/player";
-import { useEventListeners } from "../../lib";
-import { z } from "zod/v4";
+import { useSSEEvents } from "../sse/useSSEEvents";
+import type { z } from "zod/v4";
 import type { dispatchEventReqBodySchema } from "libraries/api/schemas/players";
 
 interface UseSyncPlayerOpts {
@@ -63,8 +63,8 @@ export const useSyncPlayer = ({
     };
   }, [videoJS, isReceiving, dispatchAction]);
 
-  // Handle incoming SSE events using the event library
-  useEventListeners({
+  // Handle incoming SSE events
+  useSSEEvents({
     "movie:play": async () => {
       // Prevent triggering our own event handlers when receiving remote events
       if (videoJS.current?.paused()) {

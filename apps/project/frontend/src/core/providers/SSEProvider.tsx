@@ -1,65 +1,29 @@
 "use client";
 
-import {
-  type FC,
-  type PropsWithChildren,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 
-import { listenPlayerResBodySchema } from "libraries/api/schemas/players";
-import { eventBus } from "../lib/events";
 import { SSEContext } from "../contexts/SSEContext";
 
 export const SSEProvider: FC<
   PropsWithChildren<{
-    party: string;
+    url: string;
   }>
-> = ({ party, children }) => {
-  const esRef = useRef<EventSource>(null);
-
-  const connect = useCallback(() => {
-    const url = `/api/players/${party}/listen`;
-
-    const es = new EventSource(url, { withCredentials: true });
-
-    es.onmessage = (event) => {
-      const json = JSON.parse(event.data);
-      const result = listenPlayerResBodySchema.safeParse(json);
-
-      if (result.success) {
-        eventBus.emit(result.data);
-      }
-    };
-
-    es.onerror = () => {
-      // Auto-reconnect after 2 seconds
-      setTimeout(() => {
-        if (esRef.current === es) {
-          connect();
-        }
-      }, 2000);
-    };
-
-    esRef.current = es;
-  }, [party]);
+> = ({ url, children }) => {
+  const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
   useEffect(() => {
-    connect();
+    const es = new EventSource(url, { withCredentials: true });
+
+    setEventSource(es);
+
     return () => {
-      if (esRef.current) {
-        esRef.current.close();
-      }
+      es.close();
+      setEventSource(null);
     };
-  }, [connect]);
+  }, [url]);
 
   return (
-    <SSEContext.Provider
-      value={{
-        sse: esRef,
-      }}
-    >
+    <SSEContext.Provider value={{ eventSource }}>
       {children}
     </SSEContext.Provider>
   );

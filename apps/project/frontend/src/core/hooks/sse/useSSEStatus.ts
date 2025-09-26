@@ -1,27 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSSEContext } from "./useSSEContext";
 
-// Simple hook to track if we're connected to SSE
 export const useSSEStatus = () => {
+  const { eventSource } = useSSEContext();
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // Listen for browser online/offline events
-    const handleOnline = () => setIsConnected(true);
-    const handleOffline = () => setIsConnected(false);
+    if (!eventSource) {
+      setIsConnected(false);
+      return;
+    }
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    const handleOpen = () => setIsConnected(true);
+    const handleError = () => setIsConnected(false);
 
-    // Initial state
-    setIsConnected(navigator.onLine);
+    eventSource.addEventListener("open", handleOpen);
+    eventSource.addEventListener("error", handleError);
+
+    // Set initial state based on current readyState
+    setIsConnected(eventSource.readyState === EventSource.OPEN);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      eventSource.removeEventListener("open", handleOpen);
+      eventSource.removeEventListener("error", handleError);
     };
-  }, []);
+  }, [eventSource]);
 
   return { isConnected };
 };

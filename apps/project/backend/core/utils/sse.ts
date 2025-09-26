@@ -1,34 +1,56 @@
 import type { Request, Response } from "express";
 
+interface User {
+  id: string;
+  name: string;
+}
+
 interface SSEConnection {
-  user: string;
+  user: User;
   response: Response;
 }
 
 class SSEManager {
   private connections = new Map<string, SSEConnection[]>();
 
-  addConnection(
-    roomId: string,
-    connection: SSEConnection,
-    on?: Partial<{
-      connect: () => void;
-      disconnect: () => void;
-    }>,
-  ): () => void {
-    const room = this.connections.get(roomId) || [];
-    room.push(connection);
+  setupSSEResponse(request: Request, response: Response): void {
+    response.setHeader("Connection", "keep-alive");
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Content-Type", "text/event-stream");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Headers", "Cache-Control");
 
+    const origin = request.headers.origin;
+    if (origin) {
+      response.setHeader("Access-Control-Allow-Origin", origin);
+    }
+  }
+
+  addConnection(roomId: string, user: User, response: Response): () => void {
+    const connection: SSEConnection = { user, response };
+    const room = this.connections.get(roomId) || [];
+
+    room.push(connection);
     this.connections.set(roomId, room);
 
-    // Broadcast user connected event to other users in the room
-    on?.connect?.();
+    // Broadcast user connected
+    this.broadcast(roomId, {
+      type: "user:connected",
+      user
+    });
 
-    // Return cleanup function
+    let cleaned = false;
     return () => {
+      if (cleaned) return;
+      cleaned = true;
+
+      // Broadcast user disconnected before removing
+      this.broadcast(roomId, {
+        type: "user:disconnected",
+        user
+      });
+
       this.removeConnection(roomId, connection);
-      // Broadcast user disconnected event
-      on?.disconnect?.();
     };
   }
 
@@ -45,33 +67,33 @@ class SSEManager {
 
   broadcast<T>(roomId: string, event: T): void {
     const room = this.connections.get(roomId) || [];
+    const failedConnections: SSEConnection[] = [];
 
     room.forEach((connection) => {
       try {
+        console.log(`Broadcasting to user ${connection.user.id} in room ${roomId}:`, event);
         connection.response.write(`data: ${JSON.stringify(event)}\n\n`);
       } catch {
-        this.removeConnection(roomId, connection);
+        console.log(`Failed to send event to user ${connection.user.id} in room ${roomId}`);
+        failedConnections.push(connection);
       }
+    });
+
+    failedConnections.forEach((connection) => {
+      console.log(`Removing failed connection for user ${connection.user.id} in room ${roomId}`);
+      this.removeConnection(roomId, connection);
     });
   }
 
-  getConnectedUsers(roomId: string): string[] {
+  getConnectedUsers(roomId: string): User[] {
     const room = this.connections.get(roomId) || [];
-    return [...new Set(room.map((conn) => conn.user))];
-  }
+    const uniqueUsers = new Map<string, User>();
 
-  setupSSEResponse(request: Request, response: Response): void {
-    response.setHeader("Connection", "keep-alive");
-    response.setHeader("Cache-Control", "no-cache");
-    response.setHeader("Content-Type", "text/event-stream");
-    response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader("Access-Control-Allow-Headers", "Cache-Control");
+    room.forEach(conn => {
+      uniqueUsers.set(conn.user.id, conn.user);
+    });
 
-    // Allow any origin when credentials are used
-    const origin = request.headers.origin;
-    if (origin) {
-      response.setHeader("Access-Control-Allow-Origin", origin);
-    }
+    return Array.from(uniqueUsers.values());
   }
 }
 

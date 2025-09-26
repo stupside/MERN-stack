@@ -1,3 +1,5 @@
+"use server"
+
 import type { NextPage } from "next";
 import type { PropsWithChildren } from "react";
 
@@ -30,7 +32,7 @@ const Page: NextPage<
   const listeners = await getListeners({ id: params.party });
 
   return (
-    <SSEProvider party={params.party}>
+    <SSEProvider url={`/api/players/${params.party}/listen`}>
       <div className="container mx-auto px-6 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="flex items-center justify-between">

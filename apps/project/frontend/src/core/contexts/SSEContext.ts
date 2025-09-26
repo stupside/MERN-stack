@@ -1,7 +1,11 @@
-import { createContext, RefObject } from "react";
+"use client";
 
-export interface SSEContext {
-  sse: RefObject<EventSource | null>;
+import { createContext } from "react";
+
+interface SSEContextValue {
+  eventSource: EventSource | null;
 }
 
-export const SSEContext = createContext<SSEContext | undefined>(undefined);
+export const SSEContext = createContext<SSEContextValue>({
+  eventSource: null,
+});

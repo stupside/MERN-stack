@@ -11,7 +11,6 @@ import {
 
 import { createHandler } from "../../core/express/handler";
 import Party from "../../core/domain/party";
-import User from "../../core/domain/user";
 import { HttpError } from "../../core/errors/http";
 import { sseManager } from "../../core/utils/sse";
 
@@ -40,35 +39,15 @@ export const listenPlayer = createHandler(
   },
   async (req, res) => {
     const partyId = req.params.id;
-    const userId = req.jwt.user.id;
 
-    await validatePartyMembership(partyId, userId);
+    await validatePartyMembership(partyId, req.jwt.user.id);
 
     sseManager.setupSSEResponse(req, res);
 
-    // Get user info for the connection event
     const cleanup = sseManager.addConnection(
       partyId,
-      {
-        user: userId,
-        response: res,
-      },
-      {
-        connect: () => {
-          const connected: z.infer<typeof listenPlayerResBodySchema> = {
-            type: "user:connected",
-            user: { id: req.jwt.user.id, name: req.jwt.user.name },
-          };
-          sseManager.broadcast(partyId, connected);
-        },
-        disconnect: () => {
-          const disconnected: z.infer<typeof listenPlayerResBodySchema> = {
-            type: "user:disconnected",
-            user: { id: req.jwt.user.id, name: req.jwt.user.name },
-          };
-          sseManager.broadcast(partyId, disconnected);
-        },
-      },
+      { id: req.jwt.user.id, name: req.jwt.user.name },
+      res
     );
 
     req.on("close", cleanup);
@@ -116,19 +95,11 @@ export const getListeners = createHandler(
   },
   async (req, res) => {
     const partyId = req.params.id;
-    const userId = req.jwt.user.id;
 
-    await validatePartyMembership(partyId, userId);
+    await validatePartyMembership(partyId, req.jwt.user.id);
 
     const users = sseManager.getConnectedUsers(partyId);
 
-    const listeners = await User.find({ _id: { $in: users } });
-
-    return res.json(
-      listeners.map((user) => ({
-        id: user.id,
-        name: user.name,
-      })),
-    );
+    return res.json(users);
   },
 );
