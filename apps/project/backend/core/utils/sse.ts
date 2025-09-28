@@ -104,6 +104,11 @@ class Room {
   private readonly connectionManager = new ConnectionManager();
   private readonly broadcaster = new EventBroadcaster(this.connectionManager);
   private cleanupInterval?: NodeJS.Timeout;
+  private watching: {
+    movie: { id: number; title: string | null; poster: string | null };
+    initiator: User;
+    timestamp: number;
+  } | null = null;
 
   constructor(
     private readonly id: string,
@@ -119,6 +124,7 @@ class Room {
     this.broadcaster.sendToConnection(connection, {
       type: "room:state",
       users: this.connectionManager.getAllUsers(),
+      watching: this.watching,
       timestamp: Date.now(),
     });
 
@@ -137,6 +143,11 @@ class Room {
   leave(connection: Connection): void {
     this.connectionManager.remove(connection);
 
+    // Clear watching state if the initiator is leaving
+    if (this.watching && this.watching.initiator.id === connection.user.id) {
+      this.clearWatching();
+    }
+
     // Notify remaining users
     const failedConnections = this.broadcaster.broadcastToAll({
       type: "room:leave",
@@ -154,6 +165,45 @@ class Room {
   broadcast(event: SSEEvent): void {
     const failedConnections = this.broadcaster.broadcastToAll(event);
     this.handleFailedConnections(failedConnections);
+  }
+
+  broadcastToOthers(excludeUserId: string, event: SSEEvent): void {
+    const excludeConnection = this.connectionManager.getAll().find(conn => conn.user.id === excludeUserId);
+    if (excludeConnection) {
+      const failedConnections = this.broadcaster.broadcastToOthers(excludeConnection, event);
+      this.handleFailedConnections(failedConnections);
+    } else {
+      // If the excluded user is not found, broadcast to all
+      this.broadcast(event);
+    }
+  }
+
+  setWatching(movie: { id: number; title: string | null; poster: string | null }, initiator: User): void {
+    this.watching = {
+      movie,
+      initiator,
+      timestamp: Date.now(),
+    };
+
+    // Broadcast updated state to all users
+    this.broadcast({
+      type: "room:state",
+      users: this.connectionManager.getAllUsers(),
+      watching: this.watching,
+      timestamp: Date.now(),
+    });
+  }
+
+  clearWatching(): void {
+    this.watching = null;
+
+    // Broadcast updated state to all users
+    this.broadcast({
+      type: "room:state",
+      users: this.connectionManager.getAllUsers(),
+      watching: this.watching,
+      timestamp: Date.now(),
+    });
   }
 
   private startCleanupIfNeeded(): void {
@@ -222,6 +272,31 @@ class SSEManager {
         timestamp: Date.now(),
       };
       room.broadcast(completeEvent);
+    }
+  }
+
+  broadcastToOthers(roomId: string, excludeUserId: string, event: { type: string;[key: string]: unknown }): void {
+    const room = this.rooms.get(roomId);
+    if (room) {
+      const completeEvent: SSEEvent = {
+        ...event,
+        timestamp: Date.now(),
+      };
+      room.broadcastToOthers(excludeUserId, completeEvent);
+    }
+  }
+
+  setWatching(roomId: string, movie: { id: number; title: string | null; poster: string | null }, initiator: { id: string; name: string }): void {
+    const room = this.rooms.get(roomId);
+    if (room) {
+      room.setWatching(movie, initiator);
+    }
+  }
+
+  clearWatching(roomId: string): void {
+    const room = this.rooms.get(roomId);
+    if (room) {
+      room.clearWatching();
     }
   }
 

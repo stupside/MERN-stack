@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { getPartyById } from "../../../../../../core/api";
 import { Movies } from "./_private/Movies";
+import { WatchingStatus } from "./_private/WatchingStatus";
 
 const Page: NextPage<{
   params: Promise<{ party: string }>;
@@ -10,6 +11,7 @@ const Page: NextPage<{
 
   return (
     <>
+      <WatchingStatus partyId={params.party} />
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-900">Watchlist</h2>
       </div>

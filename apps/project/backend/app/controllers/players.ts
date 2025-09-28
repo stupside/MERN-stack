@@ -69,6 +69,11 @@ interface HandlerRequest {
     time?: number;
     playing?: boolean;
     state?: string;
+    movie?: {
+      id: number;
+      title: string | null;
+      poster: string | null;
+    };
     type: string;
   };
 }
@@ -119,6 +124,22 @@ const handlers = {
       user,
       timestamp,
     });
+  },
+  watch: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
+    await validatePartyOwnership(req.params.id, user.id);
+
+    if (req.body.type === "watch" && req.body.movie) {
+      // Set the room watching state
+      sseManager.setWatching(req.params.id, req.body.movie, user);
+
+      // Send notification to other users
+      sseManager.broadcastToOthers(req.params.id, user.id, {
+        type: "movie:watch",
+        movie: req.body.movie,
+        user,
+        timestamp,
+      });
+    }
   },
 };
 

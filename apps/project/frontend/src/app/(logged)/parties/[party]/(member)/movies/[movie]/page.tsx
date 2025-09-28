@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getMovieById } from "../../../../../../../core/api";
 import { RemoveForm } from "./_private/RemoveForm";
+import { WatchButton } from "./_private/WatchButton";
 
 const Page: NextPage<{
   params: Promise<{ party: string; movie: string }>;
@@ -34,12 +35,14 @@ const Page: NextPage<{
                   className="object-cover"
                 />
               </div>
-              <Link
-                href={`/parties/${params.party}/movies/${movie.ref}/player`}
-                className="w-full px-4 py-3 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white text-center font-medium rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] block"
-              >
-                ▶ Watch Now
-              </Link>
+              <WatchButton
+                party={params.party}
+                movie={{
+                  id: movie.ref,
+                  title: movie.title,
+                  poster: movie.images?.poster || null,
+                }}
+              />
             </div>
           )}
           <div className="flex-1">

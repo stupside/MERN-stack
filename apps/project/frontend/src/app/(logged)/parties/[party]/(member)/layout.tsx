@@ -6,6 +6,7 @@ import { getPartyById } from "../../../../../core/api";
 import { Users } from "./_private/Users";
 import { Control } from "./_private/Users/Control";
 import { SSEProvider } from "../../../../../core/hooks/useSSE";
+import { WatchNotificationHandler } from "./_private/WatchNotificationHandler";
 
 const Layout: FC<
   PropsWithChildren<{
@@ -56,6 +57,7 @@ const Layout: FC<
           </div>
         </div>
       </div>
+      <WatchNotificationHandler partyId={params.party} />
     </SSEProvider>
   );
 };

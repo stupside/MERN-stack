@@ -38,10 +38,13 @@ export const Movies: FC<{
   if (movies.length === 0) {
     return (
       <MoviesGrid
-        movies={movies}
-        renderMovie={(movie) => (
-          <Movie key={movie.id} movie={movie} party={party} />
-        )}
+        movies={[{ id: "add-movie", isAddCard: true }]}
+        renderMovie={(movie) => {
+          if ("isAddCard" in movie) {
+            return <AddMovieCard key="add-movie" />;
+          }
+          return <Movie key={movie.id} movie={movie} party={party} />;
+        }}
         emptyState={{
           title: "No movies yet",
           subtitle: "Add some movies to your watchlist",

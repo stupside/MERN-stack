@@ -52,6 +52,24 @@ export const listenPlayerSchema = {
     baseEvent.extend({
       type: z.literal("room:state"),
       users: z.array(user),
+      watching: z.object({
+        movie: z.object({
+          id: z.number(),
+          title: z.string().nullable(),
+          poster: z.string().nullable(),
+        }),
+        initiator: user,
+        timestamp: z.number(),
+      }).nullable(),
+    }),
+    baseEvent.extend({
+      type: z.literal("movie:watch"),
+      movie: z.object({
+        id: z.number(),
+        title: z.string().nullable(),
+        poster: z.string().nullable(),
+      }),
+      user,
     }),
   ]),
   params: z.object({ id: z.string() }),
@@ -81,6 +99,14 @@ export const dispatchEventSchema = {
     z.object({
       type: z.literal("buffer"),
       state: z.enum(["wait", "ready"]),
+    }),
+    z.object({
+      type: z.literal("watch"),
+      movie: z.object({
+        id: z.number(),
+        title: z.string().nullable(),
+        poster: z.string().nullable(),
+      }),
     }),
   ]),
   params: z.object({ id: z.string() }),

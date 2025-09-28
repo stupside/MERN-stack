@@ -34,6 +34,11 @@ export const useSSE = (handlers: EventHandlers) => {
   const eventSource = useContext(SSEContext);
   const [isConnected, setIsConnected] = useState(false);
   const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
+  const [watching, setWatching] = useState<{
+    movie: { id: number; title: string | null; poster: string | null };
+    initiator: { id: string; name: string };
+    timestamp: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!eventSource) {
@@ -62,6 +67,7 @@ export const useSSE = (handlers: EventHandlers) => {
               break;
             case "room:state":
               setUsers(eventData.users);
+              setWatching(eventData.watching);
               break;
           }
         }
@@ -83,5 +89,5 @@ export const useSSE = (handlers: EventHandlers) => {
     };
   }, [eventSource, handlers]);
 
-  return { isConnected, users };
+  return { isConnected, users, watching };
 };
