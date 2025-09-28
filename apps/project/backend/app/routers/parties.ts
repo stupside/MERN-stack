@@ -7,6 +7,7 @@ import {
   getPartyById,
   joinParty,
   leaveParty,
+  deleteParty,
   removeMovieFromWatchlist,
 } from "../controllers/parties";
 import authMiddleware from "../middlewares/auth";
@@ -19,5 +20,6 @@ partiesRouter.get("/", ...getAllParties);
 partiesRouter.get("/:id", ...getPartyById);
 partiesRouter.post("/join", ...joinParty);
 partiesRouter.post("/:id/leave", ...leaveParty);
+partiesRouter.delete("/:id", ...deleteParty);
 partiesRouter.post("/:id/movies/:movie", ...addMovieToWatchlist);
 partiesRouter.delete("/:id/movies/:movie", ...removeMovieFromWatchlist);

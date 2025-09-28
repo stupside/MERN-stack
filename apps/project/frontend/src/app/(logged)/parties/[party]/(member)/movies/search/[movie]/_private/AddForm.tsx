@@ -1,27 +1,30 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { addMovieToWatchlist } from "../../../../../../../../../core/api";
 
 export const AddForm: React.FC<{ party: string; movie: number }> = ({
   party,
   movie,
 }) => {
+  const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
-    async () =>
-      addMovieToWatchlist({
+    async () => {
+      await addMovieToWatchlist({
         id: party,
         movie: movie,
-      }),
+      });
+      return true;
+    },
     false,
   );
 
   useEffect(() => {
     if (state) {
-      redirect(`/parties/${party}/movies/search`);
+      router.push(`/parties/${party}/movies/search`);
     }
-  }, [state, party]);
+  }, [state, party, router]);
 
   return (
     <form action={dispatch}>

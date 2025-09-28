@@ -2,11 +2,12 @@
 
 import type { NextPage } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { joinParty } from "../../../../../../core/api";
 
 const Page: NextPage = () => {
+  const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
     (_: unknown, formData: FormData) =>
       joinParty({
@@ -17,9 +18,9 @@ const Page: NextPage = () => {
 
   useEffect(() => {
     if (state) {
-      redirect(`/parties/${state.id}`);
+      router.push(`/parties/${state.id}`);
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="fixed inset-0 bg-black/25 flex items-center justify-center p-4 z-50">

@@ -92,3 +92,9 @@ export const leavePartySchema = {
     id: z.string(),
   }),
 } satisfies Schema;
+
+export const deletePartySchema = {
+  params: z.object({
+    id: z.string(),
+  }),
+} satisfies Schema;

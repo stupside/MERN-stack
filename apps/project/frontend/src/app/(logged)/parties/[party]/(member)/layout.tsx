@@ -3,6 +3,7 @@
 import type { FC, PropsWithChildren } from "react";
 
 import { getPartyById } from "../../../../../core/api";
+import { info as getUserInfo } from "../../../../../core/auth/service";
 import { Users } from "./_private/Users";
 import { Control } from "./_private/Users/Control";
 import { SSEProvider } from "../../../../../core/hooks/useSSE";
@@ -15,7 +16,10 @@ const Layout: FC<
 > = async (props) => {
   const params = await props.params;
 
-  const party = await getPartyById({ id: params.party });
+  const [party, currentUser] = await Promise.all([
+    getPartyById({ id: params.party }),
+    getUserInfo(),
+  ]);
 
   return (
     <SSEProvider url={`/api/players/${params.party}/listen`}>
@@ -52,6 +56,8 @@ const Layout: FC<
                 users={party.users}
                 code={party.code}
                 partyId={params.party}
+                ownerId={party.owner.id}
+                currentUserId={currentUser.id}
               />
             </div>
           </div>

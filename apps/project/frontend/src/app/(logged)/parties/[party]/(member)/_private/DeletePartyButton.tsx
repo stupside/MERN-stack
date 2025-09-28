@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { leaveParty } from "../../../../../../core/api";
+import { deleteParty } from "../../../../../../core/api";
 
-export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
+export const DeletePartyButton: React.FC<{ partyId: string }> = ({ partyId }) => {
   const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
     async () => {
-      await leaveParty({ id: partyId });
+      await deleteParty({ id: partyId });
       return true;
     },
     false,
@@ -27,7 +27,7 @@ export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
         disabled={isPending}
         className="text-xs text-gray-500 hover:text-red-500 transition-colors disabled:opacity-50 font-medium"
       >
-        {isPending ? "Leaving..." : "Leave"}
+        {isPending ? "Deleting..." : "Delete Party"}
       </button>
     </form>
   );

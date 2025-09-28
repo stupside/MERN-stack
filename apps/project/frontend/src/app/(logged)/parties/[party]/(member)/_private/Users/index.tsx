@@ -4,12 +4,15 @@ import type { getPartyByIdSchema } from "api/schemas/parties";
 import type { FC } from "react";
 import type z from "zod";
 import { LeaveButton } from "../LeaveButton";
+import { DeletePartyButton } from "../DeletePartyButton";
 
 export const Users: FC<{
   readonly code: z.infer<typeof getPartyByIdSchema.result>["code"];
   readonly users: z.infer<typeof getPartyByIdSchema.result>["users"];
   readonly partyId: string;
-}> = ({ users, code, partyId }) => {
+  readonly ownerId: string;
+  readonly currentUserId: string;
+}> = ({ users, code, partyId, ownerId, currentUserId }) => {
   const handleCopyCode = async () => {
     await navigator.clipboard.writeText(code);
   };
@@ -41,7 +44,8 @@ export const Users: FC<{
           <h3 className="text-sm font-medium text-gray-900">
             Members ({users.length})
           </h3>
-          <LeaveButton partyId={partyId} />
+          {currentUserId !== ownerId && <LeaveButton partyId={partyId} />}
+          {currentUserId === ownerId && <DeletePartyButton partyId={partyId} />}
         </div>
 
         {users.length === 0 ? (

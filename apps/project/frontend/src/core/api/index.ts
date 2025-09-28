@@ -7,6 +7,7 @@ export {
   removeMovieFromWatchlist,
   joinParty,
   leaveParty,
+  deleteParty,
 } from "./parties/service";
 
 // Movies API

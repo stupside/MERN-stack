@@ -1,10 +1,11 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { type FC, useActionState, useEffect } from "react";
 import { createParty } from "../../../../core/api";
 
 export const CreateForm: FC = () => {
+  const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, formData: FormData) =>
       createParty({
@@ -15,9 +16,9 @@ export const CreateForm: FC = () => {
 
   useEffect(() => {
     if (state?.id) {
-      redirect(`/parties/${state.id}`);
+      router.push(`/parties/${state.id}`);
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="flex items-center gap-3">

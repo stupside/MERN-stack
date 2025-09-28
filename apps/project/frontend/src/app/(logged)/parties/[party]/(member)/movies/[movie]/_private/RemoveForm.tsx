@@ -1,27 +1,30 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { removeMovieFromWatchlist } from "../../../../../../../../core/api";
 
 export const RemoveForm: React.FC<{ party: string; movie: number }> = ({
   party,
   movie,
 }) => {
+  const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
-    async () =>
-      removeMovieFromWatchlist({
+    async () => {
+      await removeMovieFromWatchlist({
         id: party,
         movie: movie,
-      }),
+      });
+      return true;
+    },
     false,
   );
 
   useEffect(() => {
     if (state) {
-      redirect(`/parties/${party}/movies`);
+      router.push(`/parties/${party}/movies`);
     }
-  }, [state, party]);
+  }, [state, party, router]);
 
   return (
     <form action={dispatch}>

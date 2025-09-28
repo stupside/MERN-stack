@@ -2,11 +2,12 @@
 
 import type { NextPage } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { register } from "../../../core/auth/service";
 
 const Page: NextPage = () => {
+  const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, formData: FormData) =>
       register({
@@ -18,9 +19,9 @@ const Page: NextPage = () => {
 
   useEffect(() => {
     if (state) {
-      redirect("/auth/login");
+      router.push("/auth/login");
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="max-w-lg w-full mx-auto">

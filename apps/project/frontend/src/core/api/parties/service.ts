@@ -8,6 +8,7 @@ import {
   removeMovieFromWatchlistSchema,
   joinPartySchema,
   leavePartySchema,
+  deletePartySchema,
 } from "libraries/api/schemas/parties";
 import { makeRequest } from "libraries/api/request";
 import { token } from "../../auth/service";
@@ -112,6 +113,22 @@ export const leaveParty = async (
     `${process.env.BACKEND_URL}/parties/:id/leave`,
     "POST",
     leavePartySchema,
+    {
+      params,
+      headers: {
+        Authorization: `Bearer ${await token()}`,
+      },
+    },
+  );
+};
+
+export const deleteParty = async (
+  params: z.infer<typeof deletePartySchema.params>,
+) => {
+  return makeRequest(
+    `${process.env.BACKEND_URL}/parties/:id`,
+    "DELETE",
+    deletePartySchema,
     {
       params,
       headers: {

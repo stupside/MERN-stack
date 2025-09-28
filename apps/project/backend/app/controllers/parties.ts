@@ -5,6 +5,7 @@ import {
   getPartyByIdSchema,
   joinPartySchema,
   leavePartySchema,
+  deletePartySchema,
   removeMovieFromWatchlistSchema,
 } from "api/schemas/parties";
 import type { IMovie } from "../../core/domain/movie";
@@ -229,6 +230,23 @@ export const leaveParty = createHandler(
 
     party.users = party.users.filter((user) => user.id !== req.jwt.user.id);
     await party.save();
+
+    return res.json();
+  },
+);
+
+export const deleteParty = createHandler(
+  deletePartySchema,
+  async (req, res, next) => {
+    const party = await Party.findById(req.params.id);
+    if (!party) {
+      return next(new HttpError(404, "Party not found"));
+    }
+    if (party.owner.toString() !== req.jwt.user.id) {
+      return next(new HttpError(403, "Only the owner can delete the party"));
+    }
+
+    await Party.findByIdAndDelete(req.params.id);
 
     return res.json();
   },
