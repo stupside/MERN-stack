@@ -1,15 +1,17 @@
-# 3 September 2025
+# September 3, 2025
 
 **02-mongo is based on the crash course at https://www.youtube.com/watch?v=2QQGWYe7IDU**
 
-```sh
-# Show the db
+## MongoDB Shell Commands Reference
+
+```bash
+# Show the current database
 db
 
-# List the dbs
+# List all databases
 show dbs
 
-# Use a defined db
+# Use a specific database
 use blog
 
 # Create a collection in blog
@@ -18,44 +20,43 @@ db.createCollection("posts")
 # Create an index in the collection
 db.posts.createIndex({ title: 'text' })
 
-# Insert a post in the posts collection
+# Insert a single post in the posts collection
 db.posts.insertOne({
     title: "test1"
 })
 
-# Insert many posts in the posts collection
-db.posts.inserMany([{
+# Insert multiple posts in the posts collection
+db.posts.insertMany([{
     title: "test2"
 }, {
-    title: "test2"
+    title: "test3"
 }])
 
-# Find a post by title (returns a list of match)
+# Find posts by title (returns a list of matches)
 db.posts.find({
     title: "test2"
 })
 
-# .sort({
-#    title: -1 # sort in ASC
-#})
-
-# .count() # Count the number of elements in the collection 
-# .limit(2) # Only return 2 elements from the collection and subqueries
+# Additional query methods:
+# .sort({ title: -1 })  # Sort in descending order (1 for ascending)
+# .count()              # Count the number of elements in the collection
+# .limit(2)             # Only return 2 elements from the collection and subqueries
 
 # Conditional finds
 db.posts.findOne({
-    likes: {$gt: 3} # Only return posts with more than 3 likes (gte, lt, lte)
+    likes: {$gt: 3}  # Only return posts with more than 3 likes
+    # Other operators: $gte (>=), $lt (<), $lte (<=)
 })
 
-# Update an element of the collection
+# Update a single element of the collection
 db.posts.updateOne(
-    # First argument tells what elements must be updated
+    # First argument: filter to specify which elements to update
     {
         title: "test"
-    }, 
-    # Second argument tells what should be updated to what
+    },
+    # Second argument: specify what should be updated
     {
-        # We use set because write is atomic otherwise it will fail
+        # We use $set because write operations are atomic
         $set: {
             likes: 1000
         }
@@ -64,9 +65,9 @@ db.posts.updateOne(
 
 # Update multiple elements in the collection
 db.posts.updateMany(
-    {},
+    {},  # Empty filter means all documents
     {
-        # Increment every single post likes
+        # Increment every single post's likes by 1
         $inc: {
             likes: 1
         }

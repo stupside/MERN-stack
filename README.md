@@ -1,13 +1,98 @@
 # MERN Stack Course Project
 
-This repository contains my learning journey and project development for the
-MERN Stack course at LUT University.
+This repository contains my learning journey and project development for the MERN Stack course at LUT University.
 
-## Installation Steps
+## Project Structure
 
-1. Clone the repository
-2. Install dependencies: `yarn install`
-3. Follow setup instructions for each component
+The code for both the frontend and the backend can be found at `apps/project`. My learning diary can be found at `apps/diary`.
+
+## Installation & Setup
+
+### Prerequisites
+
+Before getting started, ensure you have the following installed:
+- **Node.js** (version 18 or higher)
+- **npm** (comes with Node.js)
+- **Docker** (for local MongoDB database)
+
+### Step 1: Clone and Install Dependencies
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd MERN-stack
+
+# Install Yarn globally
+npm install -g yarn
+
+# Install all project dependencies
+yarn install
+```
+
+### Step 2: Database Setup
+
+Set up MongoDB using Docker:
+
+```bash
+# Navigate to backend directory
+cd apps/project/backend
+
+# Start MongoDB container
+docker-compose up -d
+```
+
+This will start a MongoDB instance on `localhost:27017`.
+
+### Step 3: Environment Configuration
+
+Create environment file for the backend:
+
+```bash
+# Copy the template
+cp apps/project/backend/.env.local apps/project/backend/.env
+
+# Edit the .env file and add your TMDB API token
+# Get your token from: https://www.themoviedb.org/settings/api
+```
+
+Required environment variables:
+- `TMDB_API_TOKEN` - Your TMDB API token for movie information
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - Secret key for JWT token generation
+- `PORT` - Backend server port
+
+### Step 4: Start the Application
+
+Run both frontend and backend in development mode:
+
+```bash
+# Start backend (from project root)
+yarn workspace backend run dev
+
+# Start frontend (in a new terminal, from project root)
+yarn workspace frontend run dev
+```
+
+### Step 5: Access the Application
+
+Once everything is running:
+- **Frontend**: http://localhost:3001
+- **Backend API**: http://localhost:3000
+- **MongoDB**: localhost:27017 (if using local Docker setup)
+
+## Quick Start Commands
+
+```bash
+# Install everything
+yarn install
+
+# Start database
+cd apps/project/backend && docker-compose up -d
+
+# Start development servers (in separate terminals)
+yarn workspace backend run dev
+yarn workspace frontend run dev
+```
 
 ## Development Log
 
@@ -51,31 +136,6 @@ MERN Stack course at LUT University.
 - Created React.js frontend project with TypeScript configuration
 - I added NextJS because i wanted to learn it and is welcomed in portfolios.
 
-### September 3, 2025
+### Until September 28, 2025
 
-#### Project ideation
-
-- Make a simple TODO app [Wont take]
-- Something about Karaoke [Wont take]
-  - People love Karaoke, it can be funny
-- Something about learing Finnish [Wont take]
-  - Help me get vocabulary ? Some kind of Duolingo ?
-- Something so i can watch movies with my girlfriend and sharing video cam
-  - I cannot see my girlfriend during ERASMUS
-  - Make a watching party with girlfriend
-    - FaceCam + Microphone
-    - QR Code / Unique Code
-    - Websocket (time sync, action sync)
-
-#### Project brainstorming
-
-Communication client to server using REST-API + Websocket.
-
-- SSE - Live notification (party join, leave).
-- Websocket - Time sync and command sync for video. (listen player events,
-  broadcast events).
-- RestAPI - List movies (imdb), play, shuffle movies, create party.
-  https://www.reddit.com/r/learnprogramming/comments/1esy7m7/is_there_an_apisome_kind_of_site_where_i_can/
-
-- Backend: Mongoose, Zod for validation and specifications
-- Frontend: I will use tailwindcss, and might use headless ui
+Watched the course materials and worked on the project. More details can be found in the README in `apps/diary`.

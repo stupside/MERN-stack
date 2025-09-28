@@ -1,17 +1,19 @@
-# 3 September 2025
+# September 3, 2025
 
 **04-react is based on the crash course at https://www.youtube.com/watch?v=w7ejDZ8SWv8**
 
-1. Create the react app using create-react-router cf. https://react.dev/learn/creating-a-react-app
-2. Add header and footer with props.
-3. Add task list
-4. Add delete task
-5. Add remind task
-6. Implement add task
-7. Toggle add task form
-8. Add json server for json db
-9. Fetch tasks from json db
-10. Delete task from db
-11. Add task to db
-12. Add update task in db
-13. Add task details page
+## Learning Steps
+
+1. Created the React app using create-react-router (see https://react.dev/learn/creating-a-react-app)
+2. Added header and footer components with props
+3. Added task list component
+4. Added delete task functionality
+5. Added remind task feature
+6. Implemented add task functionality
+7. Added toggle for add task form
+8. Added JSON Server for JSON database
+9. Implemented fetch tasks from JSON database
+10. Added delete task from database
+11. Added add task to database
+12. Added update task in database
+13. Added task details page with routing

@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movie Watch Party Frontend
+
+A Next.js frontend application for synchronized movie watching with friends.
+
+## Overview
+
+This is the frontend for a movie watch party application that allows users to:
+- Create and join movie watching parties
+- Search for movies using TMDB API
+- Watch movies in sync with other party members
+- Real-time synchronization of play/pause/seek actions
+
+## Technology Stack
+
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Server Actions** - Form handling and API calls
+- **WebSockets/SSE** - Real-time synchronization
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+
+- Yarn package manager
+- Backend server running on port 3000
+
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Start the development server:
+```bash
+yarn dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # Reusable UI components
+├── lib/                 # Utility functions and configurations
+└── types/              # TypeScript type definitions
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Authentication
+- User registration and login
+- Secure session management with encrypted cookies
+- JWT token handling on server-side
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Party Management
+- Create new movie watching parties
+- Join existing parties with invitation codes
+- Leave or delete parties
+- Real-time party member updates
 
-## Deploy on Vercel
+### Movie Integration
+- Search movies via TMDB API
+- Add movies to party watchlist
+- Remove movies from watchlist
+- Movie details and metadata display
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Synchronized Playback
+- Real-time video synchronization between party members
+- Play/pause controls (owner only)
+- Visual indicators showing who's currently watching
+- Automatic sync for new members joining mid-playback
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Development Notes
+
+This project uses Next.js App Router and Server Actions for a modern, server-side rendered experience. The application communicates with the backend API for user management, party operations, and real-time synchronization.
+
+## Related
+
+- Backend: `../backend/` - Express.js API server
+- Shared Types: `../../libraries/api/` - Shared type definitions and schemas
