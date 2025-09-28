@@ -1,12 +1,13 @@
-import type { Response } from "express";
 import {
   dispatchEventSchema,
   listenPlayerSchema,
 } from "api/schemas/players";
+import type { Response } from "express";
+
 import Party from "../../core/domain/party";
 import { createHandler } from "../../core/express/handler";
 import { HttpError } from "../../core/errors/http";
-import { manager } from "../../core/utils/sse";
+import { sseManager } from "../../core/utils/sse";
 
 async function validatePartyMembership(partyId: string, userId: string) {
   const party = await Party.findById(partyId);
@@ -44,9 +45,9 @@ export const listenPlayer = createHandler(
     const party = await validatePartyMembership(partyId, req.jwt.user.id);
     const isOwner = party.owner.toString() === req.jwt.user.id;
 
-    manager.headers(req, res);
+    sseManager.setupHeaders(req, res);
 
-    const cleanup = manager.connect(
+    const cleanup = sseManager.connect(
       partyId,
       { id: req.jwt.user.id, name: req.jwt.user.name },
       res,
@@ -75,7 +76,7 @@ interface HandlerRequest {
 const handlers = {
   buffer: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
     await validatePartyOwnership(req.params.id, user.id);
-    manager.broadcast(req.params.id, {
+    sseManager.broadcast(req.params.id, {
       type: "player:buffer",
       state: req.body.state,
       timestamp,
@@ -83,7 +84,7 @@ const handlers = {
   },
   seek: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
     await validatePartyOwnership(req.params.id, user.id);
-    manager.broadcast(req.params.id, {
+    sseManager.broadcast(req.params.id, {
       type: "player:seek",
       time: req.body.time,
       playing: req.body.playing,
@@ -93,7 +94,7 @@ const handlers = {
   },
   play: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
     await validatePartyOwnership(req.params.id, user.id);
-    manager.broadcast(req.params.id, {
+    sseManager.broadcast(req.params.id, {
       type: "player:play",
       time: req.body.time,
       user,
@@ -102,7 +103,7 @@ const handlers = {
   },
   pause: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
     await validatePartyMembership(req.params.id, user.id);
-    manager.broadcast(req.params.id, {
+    sseManager.broadcast(req.params.id, {
       type: "player:pause",
       time: req.body.time,
       user,
@@ -111,7 +112,7 @@ const handlers = {
   },
   sync: async (req: HandlerRequest, _res: Response, user: User, timestamp: number) => {
     await validatePartyOwnership(req.params.id, user.id);
-    manager.broadcast(req.params.id, {
+    sseManager.broadcast(req.params.id, {
       type: "player:sync",
       time: req.body.time,
       playing: req.body.playing,

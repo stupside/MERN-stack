@@ -1,12 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { leaveParty } from "../../../../../../core/api";
 
 export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
-  const router = useRouter();
-
   const [state, dispatch, isPending] = useActionState(
     async () => leaveParty({ id: partyId }),
     false,
@@ -14,10 +12,9 @@ export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
 
   useEffect(() => {
     if (state) {
-      // Redirect to parties page after leaving
-      router.push("/parties");
+      redirect("/parties");
     }
-  }, [state, router]);
+  }, [state]);
 
   return (
     <form action={dispatch}>

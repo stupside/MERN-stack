@@ -6,91 +6,67 @@ interface User {
 }
 
 interface Connection {
-  user: User;
-  response: Response;
-  owner: boolean;
+  readonly user: User;
+  readonly owner: boolean;
+  readonly response: Response;
   activity: number;
 }
 
-
-interface Config {
-  heartbeat: number;
-  timeout: number;
+interface SSEEvent {
+  type: string;
+  timestamp: number;
+  [key: string]: unknown;
 }
 
-class Room {
+interface RoomConfig {
+  readonly heartbeat: number;
+  readonly timeout: number;
+}
+
+class ConnectionManager {
   private connections: Connection[] = [];
-  private interval?: NodeJS.Timeout;
 
-  constructor(
-    private readonly id: string,
-    private readonly config: Config
-  ) { }
-
-  join(user: User, response: Response, owner = false): () => void {
-    const connection = { user, response, owner, activity: Date.now() };
+  add(user: User, response: Response, owner: boolean): Connection {
+    const connection: Connection = {
+      user,
+      response,
+      owner,
+      activity: Date.now(),
+    };
     this.connections.push(connection);
-    this.start();
-
-    this.emit("room:join", { user, timestamp: Date.now() });
-    return () => this.leave(connection);
+    return connection;
   }
 
-  leave(target: Connection): void {
+  remove(target: Connection): void {
     this.connections = this.connections.filter(conn => conn !== target);
-    this.emit("room:leave", { user: target.user, timestamp: Date.now() });
-
-    if (this.connections.length === 0) {
-      this.destroy();
-    }
   }
 
-  broadcast<T>(event: T): void {
-    const failed: Connection[] = [];
-
-    for (const conn of this.connections) {
-      if (!this.write(conn, event)) {
-        failed.push(conn);
-      }
-    }
-
-    for (const conn of failed) {
-      this.leave(conn);
-    }
+  getAll(): readonly Connection[] {
+    return this.connections;
   }
 
-
-  private start(): void {
-    if (!this.interval) {
-      this.interval = setInterval(() => this.tick(), this.config.heartbeat);
-    }
+  getAllUsers(): User[] {
+    return this.connections.map(conn => conn.user);
   }
 
-  private tick(): void {
-    this.cleanup(Date.now());
+  getStaleConnections(timeout: number): Connection[] {
+    const now = Date.now();
+    return this.connections.filter(conn => now - conn.activity > timeout);
   }
 
-  private cleanup(now: number): void {
-    const stale = this.connections.filter(
-      conn => now - conn.activity > this.config.timeout
-    );
-
-    for (const conn of stale) {
-      console.log(`Stale connection: ${conn.user.id} in room ${this.id}`);
-      this.leave(conn);
-    }
+  isEmpty(): boolean {
+    return this.connections.length === 0;
   }
+}
 
-  private emit<T>(type: string, data: T): void {
-    this.broadcast({ type, ...data });
-  }
+class EventBroadcaster {
+  constructor(private connectionManager: ConnectionManager) { }
 
-  private write<T>(connection: Connection, event: T): boolean {
+  sendToConnection(connection: Connection, event: SSEEvent): boolean {
     try {
       if (connection.response.destroyed || connection.response.writableEnded) {
         return false;
       }
-
       connection.response.write(`data: ${JSON.stringify(event)}\n\n`);
       connection.activity = Date.now();
       return true;
@@ -99,22 +75,128 @@ class Room {
     }
   }
 
-  private destroy(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
+  broadcastToAll(event: SSEEvent): Connection[] {
+    const failedConnections: Connection[] = [];
+
+    for (const connection of this.connectionManager.getAll()) {
+      if (!this.sendToConnection(connection, event)) {
+        failedConnections.push(connection);
+      }
     }
-    console.log(`Room destroyed: ${this.id}`);
+
+    return failedConnections;
+  }
+
+  broadcastToOthers(excludeConnection: Connection, event: SSEEvent): Connection[] {
+    const failedConnections: Connection[] = [];
+
+    for (const connection of this.connectionManager.getAll()) {
+      if (connection !== excludeConnection && !this.sendToConnection(connection, event)) {
+        failedConnections.push(connection);
+      }
+    }
+
+    return failedConnections;
   }
 }
 
-class Manager {
-  private rooms = new Map<string, Room>();
-  private readonly config: Config = {
+class Room {
+  private readonly connectionManager = new ConnectionManager();
+  private readonly broadcaster = new EventBroadcaster(this.connectionManager);
+  private cleanupInterval?: NodeJS.Timeout;
+
+  constructor(
+    private readonly id: string,
+    private readonly config: RoomConfig,
+    private readonly onDestroy: (roomId: string) => void
+  ) { }
+
+  join(user: User, response: Response, owner = false): () => void {
+    const connection = this.connectionManager.add(user, response, owner);
+    this.startCleanupIfNeeded();
+
+    // Send current room state to new connection
+    this.broadcaster.sendToConnection(connection, {
+      type: "room:state",
+      users: this.connectionManager.getAllUsers(),
+      timestamp: Date.now(),
+    });
+
+    // Notify others about new user
+    const failedConnections = this.broadcaster.broadcastToOthers(connection, {
+      type: "room:join",
+      user,
+      timestamp: Date.now(),
+    });
+
+    this.handleFailedConnections(failedConnections);
+
+    return () => this.leave(connection);
+  }
+
+  leave(connection: Connection): void {
+    this.connectionManager.remove(connection);
+
+    // Notify remaining users
+    const failedConnections = this.broadcaster.broadcastToAll({
+      type: "room:leave",
+      user: connection.user,
+      timestamp: Date.now(),
+    });
+
+    this.handleFailedConnections(failedConnections);
+
+    if (this.connectionManager.isEmpty()) {
+      this.destroy();
+    }
+  }
+
+  broadcast(event: SSEEvent): void {
+    const failedConnections = this.broadcaster.broadcastToAll(event);
+    this.handleFailedConnections(failedConnections);
+  }
+
+  private startCleanupIfNeeded(): void {
+    if (!this.cleanupInterval) {
+      this.cleanupInterval = setInterval(() => {
+        this.cleanupStaleConnections();
+      }, this.config.heartbeat);
+    }
+  }
+
+  private cleanupStaleConnections(): void {
+    const staleConnections = this.connectionManager.getStaleConnections(this.config.timeout);
+
+    for (const connection of staleConnections) {
+      console.log(`Removing stale connection: ${connection.user.id} in room ${this.id}`);
+      this.leave(connection);
+    }
+  }
+
+  private handleFailedConnections(failedConnections: Connection[]): void {
+    for (const connection of failedConnections) {
+      this.leave(connection);
+    }
+  }
+
+  private destroy(): void {
+    if (this.cleanupInterval) {
+      clearInterval(this.cleanupInterval);
+      this.cleanupInterval = undefined;
+    }
+    console.log(`Room destroyed: ${this.id}`);
+    this.onDestroy(this.id);
+  }
+}
+
+class SSEManager {
+  private readonly rooms = new Map<string, Room>();
+  private readonly config: RoomConfig = {
     timeout: 30000,
     heartbeat: 3000,
   };
 
-  headers(request: Request, response: Response): void {
+  setupHeaders(request: Request, response: Response): void {
     response.setHeader("Connection", "keep-alive");
     response.setHeader("Cache-Control", "no-cache");
     response.setHeader("Content-Type", "text/event-stream");
@@ -128,31 +210,31 @@ class Manager {
   }
 
   connect(roomId: string, user: User, response: Response, owner = false): () => void {
-    const room = this.room(roomId);
-    const cleanup = room.join(user, response, owner);
-
-    return () => {
-      cleanup();
-    };
+    const room = this.getOrCreateRoom(roomId);
+    return room.join(user, response, owner);
   }
 
-
-
-
-
-
-  broadcast<T>(roomId: string, event: T): void {
-    this.rooms.get(roomId)?.broadcast(event);
+  broadcast(roomId: string, event: { type: string;[key: string]: unknown }): void {
+    const room = this.rooms.get(roomId);
+    if (room) {
+      const completeEvent: SSEEvent = {
+        ...event,
+        timestamp: Date.now(),
+      };
+      room.broadcast(completeEvent);
+    }
   }
 
-  private room(id: string): Room {
+  private getOrCreateRoom(id: string): Room {
     let room = this.rooms.get(id);
     if (!room) {
-      room = new Room(id, this.config);
+      room = new Room(id, this.config, (roomId) => {
+        this.rooms.delete(roomId);
+      });
       this.rooms.set(id, room);
     }
     return room;
   }
 }
 
-export const manager = new Manager();
+export const sseManager = new SSEManager();

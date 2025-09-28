@@ -49,6 +49,10 @@ export const listenPlayerSchema = {
     userEvent.extend({
       type: z.literal("room:leave"),
     }),
+    baseEvent.extend({
+      type: z.literal("room:state"),
+      users: z.array(user),
+    }),
   ]),
   params: z.object({ id: z.string() }),
   query: z.object({ token: z.string() }),

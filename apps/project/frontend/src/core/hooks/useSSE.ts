@@ -60,6 +60,9 @@ export const useSSE = (handlers: EventHandlers) => {
             case "room:leave":
               setUsers(prev => prev.filter(u => u.id !== eventData.user.id));
               break;
+            case "room:state":
+              setUsers(eventData.users);
+              break;
           }
         }
       } catch (error) {
