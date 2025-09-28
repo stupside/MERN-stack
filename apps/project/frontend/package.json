@@ -9,20 +9,20 @@
   },
   "dependencies": {
     "api": "workspace:^",
-    "next": "15.5.3",
+    "next": "15.5.4",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "video.js": "^8.23.4",
     "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
-    "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9",
-    "@types/video.js": "^7.3.58",
-    "eslint": "^9.36.0",
-    "eslint-config-next": "15.5.3",
-    "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2"
+    "@tailwindcss/postcss": "4.1.13",
+    "@types/react": "19.1.1",
+    "@types/react-dom": "19.1.1",
+    "@types/video.js": "7.3.58",
+    "eslint": "9.36.0",
+    "eslint-config-next": "15.5.4",
+    "tailwindcss": "4.1.13",
+    "typescript": "5.9.2"
   }
 }

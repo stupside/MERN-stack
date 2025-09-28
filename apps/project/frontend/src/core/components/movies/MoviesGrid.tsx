@@ -5,9 +5,9 @@ export const MoviesGrid = <TMovie,>({
   emptyState,
   renderMovie,
 }: {
-  movies: readonly TMovie[];
-  renderMovie: (movie: TMovie) => ReactNode;
-  emptyState: {
+  readonly movies: readonly TMovie[];
+  readonly renderMovie: (movie: TMovie) => ReactNode;
+  readonly emptyState: {
     title: string;
     subtitle: string;
   };

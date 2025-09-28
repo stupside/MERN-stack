@@ -1,15 +1,13 @@
 "use server";
 
-import type { NextPage } from "next";
-import type { PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { getPartyById } from "../../../../../core/api";
 import { Users } from "./_private/Users";
 import { Control } from "./_private/Users/Control";
-import { SSEProvider } from "../../../../../core/providers/SSEProvider";
-import { getListeners } from "apps/project/frontend/src/core/api/players/service";
+import { SSEProvider } from "../../../../../core/hooks/useSSE";
 
-const Page: NextPage<
+const Layout: FC<
   PropsWithChildren<{
     params: Promise<{ party: string }>;
   }>
@@ -17,8 +15,6 @@ const Page: NextPage<
   const params = await props.params;
 
   const party = await getPartyById({ id: params.party });
-
-  const listeners = await getListeners({ id: params.party });
 
   return (
     <SSEProvider url={`/api/players/${params.party}/listen`}>
@@ -44,7 +40,7 @@ const Page: NextPage<
               </div>
             </div>
             <div className="flex-shrink-0 ml-4">
-              <Control owner={party.owner.id} listeners={listeners} />
+              <Control owner={party.owner.id} />
             </div>
           </div>
 
@@ -64,4 +60,4 @@ const Page: NextPage<
   );
 };
 
-export default Page;
+export default Layout;

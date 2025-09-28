@@ -1,11 +1,11 @@
-import type { getAllPartiesResBodySchema } from "api/schemas/parties";
+import type { getAllPartiesSchema } from "api/schemas/parties";
 
 import Link from "next/link";
 import type { FC } from "react";
 import type { z } from "zod";
 
 export const Party: FC<{
-  party: z.infer<typeof getAllPartiesResBodySchema>[number];
+  party: z.infer<typeof getAllPartiesSchema.result>[number];
 }> = ({ party }) => {
   return (
     <Link
@@ -34,6 +34,7 @@ export const Party: FC<{
           )}
         </div>
         <div className="text-gray-400 group-hover:text-red-500 transition-colors">
+          {/** biome-ignore lint/a11y/noSvgWithoutTitle: ignore */}
           <svg
             className="w-5 h-5"
             fill="none"

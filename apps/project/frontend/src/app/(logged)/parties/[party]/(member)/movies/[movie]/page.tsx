@@ -52,9 +52,7 @@ const Page: NextPage<{
                 {movie.release && (
                   <span>{new Date(movie.release).getFullYear()}</span>
                 )}
-                {movie.rating && (
-                  <span>★ {movie.rating.toFixed(1)}</span>
-                )}
+                {movie.rating && <span>★ {movie.rating.toFixed(1)}</span>}
                 {movie.language && (
                   <span className="px-3 py-1 bg-gray-800 text-white text-sm rounded uppercase font-medium">
                     {movie.language}

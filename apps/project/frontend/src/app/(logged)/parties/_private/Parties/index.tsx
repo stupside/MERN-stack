@@ -1,11 +1,11 @@
-import type { getAllPartiesResBodySchema } from "api/schemas/parties";
+import type { getAllPartiesSchema } from "api/schemas/parties";
 
 import type { FC } from "react";
 import type { z } from "zod";
 import { Party } from "./Party";
 
 export const Parties: FC<{
-  parties: z.infer<typeof getAllPartiesResBodySchema>;
+  parties: z.infer<typeof getAllPartiesSchema.result>;
 }> = ({ parties }) => {
   return (
     <div>

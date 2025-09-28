@@ -1,10 +1,10 @@
-import type { getPartyByIdResBodySchema } from "api/schemas/parties";
+import type { getPartyByIdSchema } from "api/schemas/parties";
 import type { FC } from "react";
 import type z from "zod";
 import { MovieCard } from "../../../../../../../../core/components/movies";
 
 export const Movie: FC<{
-  movie: z.infer<typeof getPartyByIdResBodySchema>["movies"][number];
+  movie: z.infer<typeof getPartyByIdSchema.result>["movies"][number];
   party: string;
 }> = ({ movie, party }) => {
   return (

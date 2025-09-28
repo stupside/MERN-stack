@@ -6,16 +6,17 @@ type InferResult<T extends Schema> = T["result"] extends z.ZodTypeAny
   : undefined;
 
 // Extract parameter names from URL template like "/users/:id/posts/:postId" -> "id" | "postId"
-type ExtractParams<T extends string> = T extends `${string}:${infer Param}/${infer Rest}`
-  ? Param | ExtractParams<`/${Rest}`>
-  : T extends `${string}:${infer Param}`
-  ? Param
-  : never;
+type ExtractParams<T extends string> =
+  T extends `${string}:${infer Param}/${infer Rest}`
+    ? Param | ExtractParams<`/${Rest}`>
+    : T extends `${string}:${infer Param}`
+      ? Param
+      : never;
 
 // Check if URL params match schema params
 type ValidateUrlParams<
   TUrl extends string,
-  TSchema extends Schema
+  TSchema extends Schema,
 > = TSchema["params"] extends z.ZodTypeAny
   ? keyof z.infer<TSchema["params"]> extends ExtractParams<TUrl>
     ? ExtractParams<TUrl> extends keyof z.infer<TSchema["params"]>
@@ -23,13 +24,10 @@ type ValidateUrlParams<
       : never
     : never
   : ExtractParams<TUrl> extends never
-  ? TUrl
-  : never;
+    ? TUrl
+    : never;
 
-export const makeRequest = async <
-  T extends Schema,
-  TUrl extends string
->(
+export const makeRequest = async <T extends Schema, TUrl extends string>(
   url: ValidateUrlParams<TUrl, T>,
   method: "GET" | "POST" | "PUT" | "DELETE",
   schema: T,
@@ -37,8 +35,8 @@ export const makeRequest = async <
     body?: T["body"] extends z.ZodTypeAny ? z.infer<T["body"]> : undefined;
     query?: T["query"] extends z.ZodTypeAny ? z.infer<T["query"]> : undefined;
     params?: T["params"] extends z.ZodTypeAny
-    ? z.infer<T["params"]>
-    : undefined;
+      ? z.infer<T["params"]>
+      : undefined;
     headers?: Record<string, string>;
   } = {},
 ): Promise<InferResult<T>> => {

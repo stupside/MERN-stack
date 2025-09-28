@@ -28,7 +28,7 @@ const Page: NextPage = () => {
       };
 
       fetchMovies();
-    }, 400);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [name]);

@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 
 export const MovieCard: FC<{
-  href?: string;
-  actions?: ReactNode;
-  movie: {
+  readonly href?: string;
+  readonly movie: {
     ref: number;
     title?: string | null;
     rating?: number | null;
@@ -18,7 +17,7 @@ export const MovieCard: FC<{
       backdrop?: string | null;
     };
   };
-}> = ({ href, movie, actions }) => {
+}> = ({ href, movie }) => {
   const cardContent = (
     <>
       {movie.images?.poster ? (
@@ -47,9 +46,6 @@ export const MovieCard: FC<{
               )}
               {movie.rating && <span>★ {movie.rating.toFixed(1)}</span>}
             </div>
-            {actions && (
-              <div className="flex items-center space-x-1">{actions}</div>
-            )}
           </div>
         </div>
       </div>

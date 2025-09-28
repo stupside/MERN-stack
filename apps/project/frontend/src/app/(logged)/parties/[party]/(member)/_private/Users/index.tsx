@@ -6,17 +6,12 @@ import type z from "zod";
 import { LeaveButton } from "../LeaveButton";
 
 export const Users: FC<{
-  code: z.infer<typeof getPartyByIdSchema.result>["code"];
-  users: z.infer<typeof getPartyByIdSchema.result>["users"];
-  partyId: string;
+  readonly code: z.infer<typeof getPartyByIdSchema.result>["code"];
+  readonly users: z.infer<typeof getPartyByIdSchema.result>["users"];
+  readonly partyId: string;
 }> = ({ users, code, partyId }) => {
   const handleCopyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      // You could add a toast notification here
-    } catch (err) {
-      console.error("Failed to copy code:", err);
-    }
+    await navigator.clipboard.writeText(code);
   };
 
   return (

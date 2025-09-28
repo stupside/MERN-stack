@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-
 import type { PropsWithChildren } from "react";
 
 const Layout: NextPage<PropsWithChildren> = ({ children }) => {

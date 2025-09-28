@@ -1,13 +1,12 @@
 "use client";
 
-import { useSSEListeners } from "apps/project/frontend/src/core/hooks/sse/useSSEListeners";
-import { useSSEStatus } from "apps/project/frontend/src/core/hooks/sse/useSSEStatus";
+import { useSSE } from "apps/project/frontend/src/core/hooks/useSSE";
 import type { FC } from "react";
 
 const UserAvatar: FC<{
   readonly user: {
-    id: string;
-    name: string;
+    readonly id: string;
+    readonly name: string;
   };
   readonly isOwner: boolean;
 }> = ({ user, isOwner }) => {
@@ -30,13 +29,11 @@ const UserAvatar: FC<{
   );
 };
 
-const ConnectionIndicator: FC = () => {
-  const { isConnected } = useSSEStatus();
-
-  const title = isConnected ? "Live" : ("Connecting..." as const);
+const ConnectionIndicator: FC<{ isConnected: boolean }> = ({ isConnected }) => {
+  const title = isConnected ? "Live" : "Connecting...";
   const statusClass = isConnected
     ? "bg-green-500"
-    : ("bg-red-500 animate-pulse" as const);
+    : "bg-red-500 animate-pulse";
 
   return (
     <div className="flex items-center gap-2">
@@ -49,21 +46,17 @@ const ConnectionIndicator: FC = () => {
 const MAX_VISIBLE_USERS = 10 as const;
 
 export const Control: FC<{
-  readonly owner: string;
-  readonly listeners: Array<{ id: string; name: string }>;
-}> = ({ owner, listeners }) => {
-  const { users } = useSSEListeners({
-    listeners,
-  });
+  owner: string;
+}> = ({ owner }) => {
+  const { isConnected, users } = useSSE({});
 
   const visibleUsers = users.slice(0, MAX_VISIBLE_USERS);
-
   const hiddenUsers = users.length - MAX_VISIBLE_USERS;
   const hasHiddenUsers = hiddenUsers > 0;
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex items-center gap-3 px-3 py-2 transition-opacity opacity-100">
-      <ConnectionIndicator />
+      <ConnectionIndicator isConnected={isConnected} />
       {users.length > 0 && (
         <>
           <div className="w-px h-4 bg-gray-200" />

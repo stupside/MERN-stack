@@ -1,9 +1,6 @@
 "use server";
 
-import {
-  dispatchEventSchema,
-  getListenersSchema,
-} from "libraries/api/schemas/players";
+import { dispatchEventSchema } from "libraries/api/schemas/players";
 import { makeRequest } from "libraries/api/request";
 import { token } from "../../auth/service";
 
@@ -20,22 +17,6 @@ export const dispatchEvent = async (
     {
       params,
       body,
-      headers: {
-        Authorization: `Bearer ${await token()}`,
-      },
-    },
-  );
-};
-
-export const getListeners = async (
-  params: z.infer<typeof getListenersSchema.params>,
-) => {
-  return makeRequest(
-    `${process.env.BACKEND_URL}/players/:id/listeners`,
-    "GET",
-    getListenersSchema,
-    {
-      params,
       headers: {
         Authorization: `Bearer ${await token()}`,
       },

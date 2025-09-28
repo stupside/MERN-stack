@@ -1,4 +1,4 @@
-import type { getPartyByIdResBodySchema } from "api/schemas/parties";
+import type { getPartyByIdSchema } from "api/schemas/parties";
 import Link from "next/link";
 import type { FC } from "react";
 import type z from "zod";
@@ -7,7 +7,7 @@ import { Movie } from "./Movie";
 
 export const Movies: FC<{
   party: string;
-  movies: z.infer<typeof getPartyByIdResBodySchema>["movies"];
+  movies: z.infer<typeof getPartyByIdSchema.result>["movies"];
   searchHref: string;
 }> = ({ movies, party, searchHref }) => {
   const AddMovieCard = () => (
@@ -45,10 +45,6 @@ export const Movies: FC<{
         emptyState={{
           title: "No movies yet",
           subtitle: "Add some movies to your watchlist",
-          action: {
-            href: searchHref,
-            label: "Search Movies",
-          },
         }}
       />
     );

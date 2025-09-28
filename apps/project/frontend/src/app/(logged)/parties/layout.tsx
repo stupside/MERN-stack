@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import type { PropsWithChildren, ReactNode } from "react";
 
-const Page: NextPage<
+const Layout: NextPage<
   PropsWithChildren<{
-    modals: ReactNode;
+    modals?: ReactNode;
   }>
 > = ({ children, modals }) => {
   return (
@@ -14,4 +14,4 @@ const Page: NextPage<
   );
 };
 
-export default Page;
+export default Layout;

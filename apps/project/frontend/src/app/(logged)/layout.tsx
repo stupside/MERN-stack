@@ -5,11 +5,7 @@ import type { PropsWithChildren } from "react";
 import { info as getUserInfo, token } from "../../core/auth/service";
 import Me from "./parties/_private/Me";
 
-const Page: NextPage<
-  PropsWithChildren<{
-    modals: React.ReactNode;
-  }>
-> = async ({ children, modals }) => {
+const Layout: NextPage<PropsWithChildren> = async ({ children }) => {
   if (await token()) {
     const info = await getUserInfo();
 
@@ -19,7 +15,6 @@ const Page: NextPage<
           <Me user={info} />
         </header>
         <main className="flex-1">{children}</main>
-        {modals}
       </div>
     );
   }
@@ -27,4 +22,4 @@ const Page: NextPage<
   return redirect("/auth/login");
 };
 
-export default Page;
+export default Layout;

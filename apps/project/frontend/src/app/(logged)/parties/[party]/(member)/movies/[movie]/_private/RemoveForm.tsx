@@ -9,7 +9,7 @@ export const RemoveForm: React.FC<{ party: string; movie: number }> = ({
   movie,
 }) => {
   const [state, dispatch, isPending] = useActionState(
-    async (_: unknown, __: FormData) =>
+    async () =>
       removeMovieFromWatchlist({
         id: party,
         movie: movie,

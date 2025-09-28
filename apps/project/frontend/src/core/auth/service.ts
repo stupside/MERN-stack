@@ -47,6 +47,12 @@ export const login = async (body: z.infer<typeof loginUserSchema.body>) => {
     },
   );
 
+  (await cookies()).set({
+    name: USER_TOKEN_KEY,
+    value: result.token,
+    httpOnly: true,
+  });
+
   return result;
 };
 

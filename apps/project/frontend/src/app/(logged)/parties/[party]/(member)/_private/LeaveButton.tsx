@@ -8,7 +8,7 @@ export const LeaveButton: React.FC<{ partyId: string }> = ({ partyId }) => {
   const router = useRouter();
 
   const [state, dispatch, isPending] = useActionState(
-    async (_: unknown, __: FormData) => leaveParty({ id: partyId }),
+    async () => leaveParty({ id: partyId }),
     false,
   );
 
