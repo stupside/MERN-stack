@@ -15,8 +15,8 @@ export const CreateForm: FC = () => {
   );
 
   useEffect(() => {
-    if (state?.id) {
-      router.push(`/parties/${state.id}`);
+    if (state?.value) {
+      router.push(`/parties/${state.value.id}`);
     }
   }, [state, router]);
 

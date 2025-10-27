@@ -42,7 +42,7 @@ export const WatchButton: FC<{
     <button
       type="button"
       onClick={handleWatch}
-      className="w-full px-4 py-3 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white text-center font-medium rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+      className="w-full px-4 py-3 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white text-center font-medium rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
     >
       ▶ Watch Now
     </button>

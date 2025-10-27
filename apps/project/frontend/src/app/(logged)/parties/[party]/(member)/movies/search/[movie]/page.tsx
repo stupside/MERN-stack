@@ -10,6 +10,12 @@ const Page: NextPage<{
   const params = await props.params;
 
   const movie = await getMovieById({ id: Number.parseInt(params.movie, 10) });
+  if (movie.error) {
+    return <div className="container mx-auto px-4 py-8">{movie.error.map((error) => <div key={error.path}>{error.message}</div>)}</div>;
+  }
+  if (!movie.value) {
+    throw new Error("Movie not found");
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -24,12 +30,12 @@ const Page: NextPage<{
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {movie.images?.poster && (
+          {movie.value.images?.poster && (
             <div className="flex-shrink-0">
               <div className="w-64 h-96 overflow-hidden rounded-lg relative mb-4">
                 <Image
-                  src={movie.images.poster}
-                  alt={`${movie.title || "Movie"} poster`}
+                  src={movie.value.images.poster}
+                  alt={`${movie.value.title || "Movie"} poster`}
                   fill
                   className="object-cover"
                 />
@@ -38,25 +44,25 @@ const Page: NextPage<{
           )}
           <div className="flex-1">
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
-              {movie.title || "Untitled"}
+              {movie.value.title || "Untitled"}
             </h1>
 
             <div className="space-y-4 mb-8">
               <div className="flex items-center space-x-6 text-lg text-gray-600">
-                {movie.release && (
-                  <span>{new Date(movie.release).getFullYear()}</span>
+                {movie.value.release && (
+                  <span>{new Date(movie.value.release).getFullYear()}</span>
                 )}
-                {movie.rating && <span>★ {movie.rating.toFixed(1)}</span>}
-                {movie.language && (
+                {movie.value.rating && <span>★ {movie.value.rating.toFixed(1)}</span>}
+                {movie.value.language && (
                   <span className="px-3 py-1 bg-gray-800 text-white text-sm rounded uppercase font-medium">
-                    {movie.language}
+                    {movie.value.language}
                   </span>
                 )}
               </div>
 
-              {movie.genres && movie.genres.length > 0 && (
+              {movie.value.genres && movie.value.genres.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {movie.genres.map((genre, index) => (
+                  {movie.value.genres.map((genre, index) => (
                     <span
                       key={
                         typeof genre === "string" ? genre : genre.id || index
@@ -69,24 +75,24 @@ const Page: NextPage<{
                 </div>
               )}
 
-              {movie.overview && (
+              {movie.value.overview && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     Overview
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    {movie.overview}
+                    {movie.value.overview}
                   </p>
                 </div>
               )}
 
-              {movie.production && movie.production.length > 0 && (
+              {movie.value.production && movie.value.production.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">
                     Production Companies
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {movie.production.map((company) => (
+                    {movie.value.production.map((company) => (
                       <span
                         key={company.id}
                         className="px-3 py-1 bg-gray-200 text-gray-800 text-sm rounded-full"
@@ -100,7 +106,7 @@ const Page: NextPage<{
             </div>
 
             <div className="pt-6 border-t border-gray-200">
-              <AddForm party={params.party} movie={movie.ref} />
+              <AddForm party={params.party} movie={movie.value.ref} />
             </div>
           </div>
         </div>

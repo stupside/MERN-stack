@@ -7,7 +7,14 @@ const Page: NextPage<{
   params: Promise<{ party: string }>;
 }> = async (props) => {
   const params = await props.params;
+
   const party = await getPartyById({ id: params.party });
+  if (party.error) {
+    return <div className="container mx-auto px-6 py-8">{party.error.map((error) => <div key={error.path}>{error.message}</div>)}</div>;
+  }
+  if (!party.value) {
+    throw new Error("Party not found");
+  }
 
   return (
     <>
@@ -17,7 +24,7 @@ const Page: NextPage<{
       </div>
       <Movies
         party={params.party}
-        movies={party.movies}
+        movies={party.value.movies}
         searchHref={`/parties/${params.party}/movies/search`}
       />
     </>

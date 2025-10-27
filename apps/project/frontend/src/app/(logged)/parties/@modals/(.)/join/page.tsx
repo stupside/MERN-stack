@@ -1,7 +1,6 @@
 "use client";
 
 import type { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { joinParty } from "../../../../../../core/api";
@@ -17,8 +16,8 @@ const Page: NextPage = () => {
   );
 
   useEffect(() => {
-    if (state) {
-      router.push(`/parties/${state.id}`);
+    if (state?.value) {
+      router.push(`/parties/${state.value.id}`);
     }
   }, [state, router]);
 
@@ -52,17 +51,25 @@ const Page: NextPage = () => {
             </button>
           </form>
           <div className="mt-6 text-center">
-            {isPending && (
-              <p className="text-red-500 text-sm">Joining party...</p>
+            {state?.error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                {state.error.map((err) => (
+                  <div key={err.path}>
+                    <span className="font-medium">{err.path ? `${err.path}: ` : ""}</span>
+                    {err.message}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
           <div className="mt-6">
-            <Link
-              href="/parties"
-              className="block w-full px-4 py-2 text-center text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="block w-full px-4 py-2 text-center text-gray-600 hover:text-gray-800 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors cursor-pointer"
             >
               Close
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -8,6 +8,13 @@ import { Parties } from "./_private/Parties";
 const Page: NextPage = async () => {
   const parties = await getAllParties();
 
+  if (parties.error) {
+    return <div className="container mx-auto px-4 py-8">{parties.error.map((error) => <div key={error.path}>{error.message}</div>)}</div>;
+  }
+  if (!parties.value) {
+    throw new Error("Parties not found");
+  }
+
   return (
     <div className="container mx-auto px-6 py-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -30,7 +37,7 @@ const Page: NextPage = async () => {
         </div>
 
         <div>
-          <Parties parties={parties ?? []} />
+          <Parties parties={parties.value ?? []} />
         </div>
       </div>
     </div>

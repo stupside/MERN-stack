@@ -5,6 +5,7 @@ import {
   searchMoviesSchema,
 } from "libraries/api/schemas/movies";
 import { makeRequest } from "libraries/api/request";
+
 import { token } from "../../auth/service";
 
 import type { z } from "zod";
