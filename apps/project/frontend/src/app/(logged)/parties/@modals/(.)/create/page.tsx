@@ -3,14 +3,14 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { joinParty } from "../../../../../../core/api";
+import { createParty } from "../../../../../../core/api";
 
 const Page: NextPage = () => {
   const router = useRouter();
   const [state, dispatch, isPending] = useActionState(
     (_: unknown, formData: FormData) =>
-      joinParty({
-        code: formData.get("code") as string,
+      createParty({
+        name: formData.get("name") as string,
       }),
     null,
   );
@@ -27,19 +27,19 @@ const Page: NextPage = () => {
         <div className="p-8">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Join a party
+              Create a party
             </h2>
             <p className="text-gray-600 text-sm">
-              Enter the party code to join
+              Enter a name for your new party
             </p>
           </div>
           <form action={dispatch} className="space-y-5">
             <div>
               <input
-                name="code"
-                placeholder="Enter party code"
+                name="name"
+                placeholder="Party name"
                 required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none transition-all text-gray-800 placeholder-gray-500 text-center font-mono text-lg"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none transition-all text-gray-800 placeholder-gray-500"
               />
             </div>
             <button
@@ -47,7 +47,7 @@ const Page: NextPage = () => {
               disabled={isPending}
               className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 disabled:from-red-300 disabled:to-pink-400 text-white font-medium py-3 px-6 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
-              {isPending ? "Joining..." : "Join Party"}
+              {isPending ? "Creating..." : "Create Party"}
             </button>
           </form>
           <div className="mt-6 text-center">

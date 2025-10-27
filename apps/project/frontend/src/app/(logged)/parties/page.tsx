@@ -2,11 +2,17 @@ import type { NextPage } from "next";
 import Link from "next/link";
 
 import { getAllParties } from "../../../core/api";
-import { CreateForm } from "./_private/CreateForm";
 import { Parties } from "./_private/Parties";
 
 const Page: NextPage = async () => {
   const parties = await getAllParties();
+
+  if (parties.error) {
+    return <div className="container mx-auto px-4 py-8">{parties.error.map((error) => <div key={error.path}>{error.message}</div>)}</div>;
+  }
+  if (!parties.value) {
+    throw new Error("Parties not found");
+  }
 
   return (
     <div className="container mx-auto px-6 py-8">
@@ -25,12 +31,17 @@ const Page: NextPage = async () => {
             >
               Join Party
             </Link>
-            <CreateForm />
+            <Link
+              href="/parties/create"
+              className="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white font-medium py-2 px-4 rounded-lg transition-all whitespace-nowrap"
+            >
+              Create Party
+            </Link>
           </div>
         </div>
 
         <div>
-          <Parties parties={parties ?? []} />
+          <Parties parties={parties.value ?? []} />
         </div>
       </div>
     </div>

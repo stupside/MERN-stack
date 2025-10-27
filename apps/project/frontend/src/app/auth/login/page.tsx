@@ -8,6 +8,7 @@ import { login } from "../../../core/auth/service";
 
 const Page: NextPage = () => {
   const router = useRouter();
+
   const [state, dispatch, isPending] = useActionState(
     async (_: unknown, formData: FormData) =>
       login({
@@ -18,7 +19,7 @@ const Page: NextPage = () => {
   );
 
   useEffect(() => {
-    if (state) {
+    if (state && !state.error) {
       router.push("/parties");
     }
   }, [state, router]);
@@ -55,13 +56,22 @@ const Page: NextPage = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 disabled:from-red-300 disabled:to-pink-400 text-white font-medium py-4 px-6 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            className="w-full bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 disabled:from-red-300 disabled:to-pink-400 text-white font-medium py-4 px-6 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg cursor-pointer"
           >
             {isPending ? "Signing in..." : "Sign in"}
           </button>
         </form>
         <div className="mt-6 text-center">
-          {isPending && <p className="text-red-500 text-sm">Signing in...</p>}
+          {state?.error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+              {state.error.map((err) => (
+                <div key={err.path}>
+                  <span className="font-medium">{err.path ? `${err.path}: ` : ""}</span>
+                  {err.message}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="mt-8 pt-6 border-t border-gray-100 text-center">
           <p className="text-gray-600 text-sm">

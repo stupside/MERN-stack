@@ -47,11 +47,13 @@ export const login = async (body: z.infer<typeof loginUserSchema.body>) => {
     },
   );
 
-  (await cookies()).set({
-    name: USER_TOKEN_KEY,
-    value: result.token,
-    httpOnly: true,
-  });
+  if (result.value?.token) {
+    (await cookies()).set({
+      name: USER_TOKEN_KEY,
+      value: result.value.token,
+      httpOnly: true,
+    });
+  }
 
   return result;
 };

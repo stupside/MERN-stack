@@ -23,7 +23,14 @@ const Page: NextPage = () => {
         if (!name?.trim()) {
           setMovies([]);
         } else {
-          setMovies(await searchMovies({ name }));
+          const movies = await searchMovies({ name });
+          if (movies.error) {
+            throw new Error("Failed to search movies");
+          }
+          if (!movies.value) {
+            throw new Error("No movies found");
+          }
+          setMovies(movies.value);
         }
       };
 
