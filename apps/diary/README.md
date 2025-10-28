@@ -1,4 +1,4 @@
-# Lappeenrannan Teknillinen Yliopisto
+# Lappeenranta Teknillinen Yliopisto
 
 ## Software Development Skills Full-stack, Online Course
 
@@ -138,3 +138,7 @@ At the end of this period I had a working prototype of my project:
   - Users watching the movie will appear in the UI
   - The owner can play and pause the movie → it will play/pause the movie for others
   - User can see if a movie is played by the owner
+
+## October 27, 2025
+
+Before the submition of the project i have added validation feedback for form fields in the frontend as well as user feedback when a 4xx error is returned by the server. Errors are already returned by the server, but were not handled on client side.

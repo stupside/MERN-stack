@@ -2,6 +2,8 @@
 
 **02-mongo is based on the crash course at https://www.youtube.com/watch?v=2QQGWYe7IDU**
 
+During this course, I have learned how to use mongodb in a nodejs project.
+
 ## MongoDB Shell Commands Reference
 
 ```bash

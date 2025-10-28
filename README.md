@@ -1,4 +1,8 @@
-# MERN Stack Course Project
+# Lappeenranta Teknillinen Yliopisto
+
+## Software Development Skills Full-stack, Online Course
+
+**Kilian Houpeurt**
 
 This repository contains my learning journey and project development for the MERN Stack course at LUT University.
 
@@ -55,12 +59,6 @@ cp apps/project/backend/.env.local apps/project/backend/.env
 # Get your token from: https://www.themoviedb.org/settings/api
 ```
 
-Required environment variables:
-- `TMDB_API_TOKEN` - Your TMDB API token for movie information
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - Secret key for JWT token generation
-- `PORT` - Backend server port
-
 ### Step 4: Start the Application
 
 Run both frontend and backend in development mode:
@@ -87,7 +85,7 @@ Once everything is running:
 yarn install
 
 # Start database
-cd apps/project/backend && docker-compose up -d
+cd apps/project/backend && docker compose up
 
 # Start development servers (in separate terminals)
 yarn workspace backend run dev
@@ -129,13 +127,12 @@ yarn workspace frontend run dev
 
 - Created Node.js backend project with TypeScript configuration
 - Added some hello world console log to make sure the app run fine
-- Added add express to the dependencies and made an hello world route
+- Added express to the dependencies and made an hello world route
 
 **Frontend Project**:
 
-- Created React.js frontend project with TypeScript configuration
-- I added NextJS because i wanted to learn it and is welcomed in portfolios.
+- Created React.js frontend project with TypeScript configuration and NextJS.
 
-### Until September 28, 2025
+### Until October 28, 2025
 
 Watched the course materials and worked on the project. More details can be found in the README in `apps/diary`.

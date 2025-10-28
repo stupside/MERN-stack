@@ -2,6 +2,8 @@
 
 **01-node is based on the crash course at https://www.youtube.com/watch?v=32M1al-Y6Ag**
 
+During this course, I learned how to setup a nodejs server that can respond to user requests, as well as interacting with some of the standard libraries.
+
 ## Learning Steps
 
 1. Created the project with a minimal hello world main file
