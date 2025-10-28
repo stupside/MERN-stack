@@ -6,6 +6,13 @@
 
 This repository contains my learning journey and project development for the MERN Stack course at LUT University.
 
+## Screenshots
+
+![Frontend - Party page](images/party.png)
+![Frontend - Movie page](images/movie.png)
+![Frontend - Party movie page](images/party_movie.png)
+![Frontend - Party movie player page](images/party_movie_player.png)
+
 ## Project Structure
 
 The code for both the frontend and the backend can be found at `apps/project`. My learning diary can be found at `apps/diary`.
