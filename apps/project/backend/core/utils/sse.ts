@@ -209,9 +209,20 @@ class Room {
   private startCleanupIfNeeded(): void {
     if (!this.cleanupInterval) {
       this.cleanupInterval = setInterval(() => {
+        // Send heartbeat to keep connections alive
+        this.sendHeartbeat();
+        // Clean up stale connections
         this.cleanupStaleConnections();
       }, this.config.heartbeat);
     }
+  }
+
+  private sendHeartbeat(): void {
+    // Send a heartbeat event to all connections to keep them alive
+    this.broadcast({
+      type: "heartbeat",
+      timestamp: Date.now(),
+    });
   }
 
   private cleanupStaleConnections(): void {

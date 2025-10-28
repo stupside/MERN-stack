@@ -71,6 +71,9 @@ export const listenPlayerSchema = {
       }),
       user,
     }),
+    baseEvent.extend({
+      type: z.literal("heartbeat"),
+    }),
   ]),
   params: z.object({ id: z.string() }),
   query: z.object({ token: z.string() }),

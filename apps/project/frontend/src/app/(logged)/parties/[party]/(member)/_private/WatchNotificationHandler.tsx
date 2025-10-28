@@ -15,6 +15,7 @@ export const WatchNotificationHandler = ({ partyId }: { partyId: string }) => {
       id: string;
       name: string;
     };
+    timestamp: number;
   } | null>(null);
 
   useSSE({
@@ -22,6 +23,7 @@ export const WatchNotificationHandler = ({ partyId }: { partyId: string }) => {
       setWatchNotification({
         movie: event.movie,
         owner: event.user,
+        timestamp: event.timestamp,
       });
     },
   });
@@ -32,6 +34,7 @@ export const WatchNotificationHandler = ({ partyId }: { partyId: string }) => {
 
   return (
     <WatchNotification
+      key={watchNotification.timestamp}
       movie={watchNotification.movie}
       owner={watchNotification.owner}
       party={partyId}

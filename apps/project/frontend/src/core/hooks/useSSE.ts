@@ -60,7 +60,10 @@ export const useSSE = (handlers: EventHandlers) => {
 
           switch (eventData.type) {
             case "room:join":
-              setUsers(prev => [...prev.filter(u => u.id !== eventData.user.id), eventData.user]);
+              setUsers(prev => {
+                const updated = [...prev.filter(u => u.id !== eventData.user.id), eventData.user];
+                return updated;
+              });
               break;
             case "room:leave":
               setUsers(prev => prev.filter(u => u.id !== eventData.user.id));
