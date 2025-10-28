@@ -4,16 +4,16 @@
 
 **Kilian Houpeurt**
 
-# LEARNING DIARY - MERN STACK
+# Learning diary — MERN Stack
 
-More information about the diary can be found in the following directories:
+More information about the diary is available in the following directories:
 - `01-node`
 - `02-mongo`
 - `03-express`
 - `04-react`
 - `05-mern`
 
-In those folders, you will find a README.md explaining what I have learned and what I have done, as well as the materials produced during the tutorials.
+In those folders you'll find a README.md that explains what I learned and what I did, along with the materials produced during the tutorials.
 
 ---
 

@@ -2,7 +2,7 @@
 
 **03-express is based on the crash course at https://www.youtube.com/watch?v=CnH3kAXSrmU**
 
-In this course, I have learned how to setup an express server, to achieve something close to what was already done in the nodejs course. Still course goes a little be further by showing how to use middlewares to intercept requests before they are processed by the server, allowing input validation, logging and etc. I also learned a way to organise the project for better maintenability.
+In this course, I learned how to set up an Express server to achieve similar goals to the Node.js course. The course goes a bit further by showing how to use middleware to intercept requests before they are handled by the server, allowing for input validation, logging, etc. I also learned how to organize the project for better maintainability.
 
 ## Learning Steps
 

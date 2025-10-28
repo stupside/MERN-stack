@@ -2,7 +2,7 @@
 
 **04-react is based on the crash course at https://www.youtube.com/watch?v=w7ejDZ8SWv8**
 
-In this course, I learned how to use React to make a single page application.
+In this course, I learned how to use React to build a single-page application.
 
 ## Learning Steps
 

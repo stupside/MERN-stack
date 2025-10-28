@@ -1,10 +1,12 @@
 # Lappeenranta Teknillinen Yliopisto
 
-## Software Development Skills Full-stack, Online Course
+## Software Development Skills — Full-stack (Online Course)
 
 **Kilian Houpeurt**
 
 This repository contains my learning journey and project development for the MERN Stack course at LUT University.
+
+[Link to the video](https://www.youtube.com/watch?v=XI-ajtwaDZU)
 
 ## Screenshots
 
@@ -13,9 +15,9 @@ This repository contains my learning journey and project development for the MER
 ![Frontend - Party movie page](images/party_movie.png)
 ![Frontend - Party movie player page](images/party_movie_player.png)
 
-## Project Structure
+## Project structure
 
-The code for both the frontend and the backend can be found at `apps/project`. My learning diary can be found at `apps/diary`.
+The frontend and backend code are under `apps/project`. My learning diary is in `apps/diary`.
 
 ## Installation & Setup
 
@@ -49,7 +51,7 @@ Set up MongoDB using Docker:
 cd apps/project/backend
 
 # Start MongoDB container
-docker-compose up -d
+docker compose up
 ```
 
 This will start a MongoDB instance on `localhost:27017`.
